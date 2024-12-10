@@ -18,6 +18,8 @@ spring:
           predicates:
             - Path=/companies/**, /products/**
 
+        - id: auth-service
+
       discovery:
         locator:
           enabled: true
