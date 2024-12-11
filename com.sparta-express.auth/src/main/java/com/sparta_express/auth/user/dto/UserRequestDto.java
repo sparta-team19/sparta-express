@@ -1,6 +1,6 @@
-package com.sparta_express.auth.dtos;
+package com.sparta_express.auth.user.dto;
 
-import com.sparta_express.auth.entity.UserRole;
+import com.sparta_express.auth.user.entity.UserRole;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

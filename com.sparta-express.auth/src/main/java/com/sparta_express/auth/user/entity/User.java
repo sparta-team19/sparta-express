@@ -1,8 +1,8 @@
-package com.sparta_express.auth.entity;
+package com.sparta_express.auth.user.entity;
 
 
 import com.sparta_express.auth.common.entity.BaseEntity;
-import com.sparta_express.auth.dtos.UserRequestDto;
+import com.sparta_express.auth.user.dto.UserRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
