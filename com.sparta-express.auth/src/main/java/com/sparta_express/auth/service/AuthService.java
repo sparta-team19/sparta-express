@@ -1,6 +1,7 @@
 package com.sparta_express.auth.service;
 
-import com.sparta_express.auth.AuthConfig;
+import com.sparta_express.auth.common.auditing.AuditorContext;
+import com.sparta_express.auth.config.AuthConfig;
 import com.sparta_express.auth.entity.User;
 import com.sparta_express.auth.dtos.UserRequestDto;
 import com.sparta_express.auth.repository.UserRepository;
@@ -36,6 +37,9 @@ public class AuthService {
     public void signup(UserRequestDto requestDto) {
         String encodedPassword = authConfig.passwordEncoder().encode(requestDto.getPassword());
         User user = User.of(requestDto, encodedPassword);
+
+        AuditorContext.setCurrentEmail(requestDto.getEmail());
+
         userRepository.save(user);
     }
 }

@@ -14,6 +14,7 @@ public class SoftDeleteEntityListener {
 
         if (softDeleteEntity.getIsDeleted() == Boolean.FALSE
             && softDeleteEntity.getDeletedAt() == null) {
+
             auditorAware.getCurrentAuditor().ifPresent(softDeleteEntity::setDeletedBy);
             softDeleteEntity.setDeletedAt(LocalDateTime.now());
         }

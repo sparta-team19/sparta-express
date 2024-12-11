@@ -3,8 +3,6 @@ package com.sparta_express.auth.common.entity;
 import com.sparta_express.auth.common.auditing.SoftDeleteEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
