@@ -1,5 +1,7 @@
 package com.sparta_express.auth.service;
 
+import com.sparta_express.auth.common.CustomException;
+import com.sparta_express.auth.common.ErrorType;
 import com.sparta_express.auth.common.auditing.AuditorContext;
 import com.sparta_express.auth.config.AuthConfig;
 import com.sparta_express.auth.entity.User;
@@ -38,8 +40,18 @@ public class AuthService {
         String encodedPassword = authConfig.passwordEncoder().encode(requestDto.getPassword());
         User user = User.of(requestDto, encodedPassword);
 
+        checkDuplicateEmail(requestDto.getEmail());
+
+
+
         AuditorContext.setCurrentEmail(requestDto.getEmail());
 
         userRepository.save(user);
+    }
+
+    private void checkDuplicateEmail(String email) {
+        userRepository.findByEmail(email).ifPresent(user -> {
+            throw new CustomException(ErrorType.DUPLICATE_EMAIL);
+        });
     }
 }
