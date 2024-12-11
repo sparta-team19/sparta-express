@@ -19,6 +19,9 @@ spring:
             - Path=/companies/**, /products/**
 
         - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/users/**
 
       discovery:
         locator:
@@ -27,4 +30,8 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://server:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+
+service:
+  jwt:
+    secret-key: ${SECRET_KEY}
