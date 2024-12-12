@@ -1,4 +1,4 @@
-package com.sparta_express.company_product.common;
+package com.sparta_express.hub.common.exception;
 
 import lombok.Getter;
 
