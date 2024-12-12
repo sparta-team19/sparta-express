@@ -8,8 +8,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ResponseStatus {
 
-  // 사용 예시
-//  LOGIN_SUCCESS(HttpStatus.OK, "로그인에 성공하였습니다."),
+  GET_SHIPMENT_ROUTES_SUCCESS(HttpStatus.OK, "배송 허브 경로 조회에 성공하였습니다."),
   ;
 
   private final HttpStatus httpStatus;
