@@ -1,4 +1,4 @@
-package com.sparta_express.hub.common.response;
+package com.sparta_express.hub.presentation.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
