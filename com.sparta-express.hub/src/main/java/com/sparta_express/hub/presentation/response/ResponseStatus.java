@@ -1,4 +1,4 @@
-package com.sparta_express.company_product.common;
+package com.sparta_express.hub.presentation.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

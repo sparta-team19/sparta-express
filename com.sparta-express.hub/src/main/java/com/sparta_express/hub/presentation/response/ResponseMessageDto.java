@@ -1,12 +1,11 @@
-package com.sparta_express.company_product.common;
+package com.sparta_express.hub.presentation.response;
 
 import lombok.Getter;
-import org.springframework.http.ResponseEntity;
 
 @Getter
 public class ResponseMessageDto {
-  private int status;
-  private String message;
+  private final int status;
+  private final String message;
 
   public ResponseMessageDto(ResponseStatus status) {
     this.status = status.getHttpStatus().value();

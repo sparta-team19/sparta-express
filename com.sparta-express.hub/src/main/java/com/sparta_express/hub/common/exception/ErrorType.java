@@ -1,4 +1,4 @@
-package com.sparta_express.company_product.common;
+package com.sparta_express.hub.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,11 @@ public enum ErrorType {
     NOT_FOUND_USER(HttpStatus.LOCKED, "존재하지 않는 회원입니다."),
     NOT_AVAILABLE_PERMISSION(HttpStatus.LOCKED, "권한이 없습니다.")
      */
-  ;
+
+    //hub
+    USER_ID_INVALID(HttpStatus.BAD_REQUEST, "잘못된 회원 id"),
+    INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "잘못된 요청 헤더")
+    ;
 
   private final HttpStatus httpStatus;
   private final String message;
