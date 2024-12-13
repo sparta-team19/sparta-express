@@ -1,6 +1,6 @@
 spring:
   application:
-    name: auth-service
+    name: user-service
   datasource:
     url: ${DB_URL}
     username: ${DB_ID}
@@ -16,6 +16,7 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDiS_PORT}
+      password: ${REDIS_PASSWORD}
 
 eureka:
   client:
@@ -24,7 +25,7 @@ eureka:
 
 service:
   jwt:
-    access-expiration: 3600000
+    access-expiration: 1800000
     secret-key: ${SECRET_KEY}
     access:
       expiration: 1000 * 60 * 30

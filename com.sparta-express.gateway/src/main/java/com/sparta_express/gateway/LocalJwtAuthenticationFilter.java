@@ -16,7 +16,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Component
+@Component("localJwtAuthenticationFilter")
 public class LocalJwtAuthenticationFilter implements GlobalFilter {
 
     @Value("${service.jwt.secret-key}")
@@ -35,6 +35,8 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
+
+
 
         return chain.filter(exchange);
     }

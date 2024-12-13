@@ -33,11 +33,11 @@ public class JwtTokenProvider {
 
     private static Key key;
 
-    @Value("${service.jwt.access.expiration}")
-    private long accessTokenValidityInSeconds;
+//    @Value("${service.jwt.access.expiration}")
+    private long accessTokenValidityInSeconds = 1000 * 60 * 30;
 
-    @Value("${service.jwt.refresh.expiration}")
-    private long refreshTokenValidityInSeconds;
+//    @Value("${service.jwt.refresh.expiration}")
+    private long refreshTokenValidityInSeconds = 1000 * 60 * 60 * 24 * 3;
 
     private static long accessTokenValidate;
     private static long refreshTokenValidate;

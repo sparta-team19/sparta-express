@@ -2,6 +2,7 @@ package com.sparta_express.auth.user.dto;
 
 import com.sparta_express.auth.user.entity.UserRole;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,6 @@ public class UserRequestDto {
     @NotBlank
     private String slackId;
 
-    @NotBlank
+    @NotNull
     private UserRole role;
 }

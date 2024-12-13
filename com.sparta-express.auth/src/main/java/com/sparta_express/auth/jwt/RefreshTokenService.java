@@ -13,8 +13,8 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public void saveTokenInfo(Long employeeId, String refreshToken, String accessToken) {
-        refreshTokenRepository.save(new RefreshToken(String.valueOf(employeeId), refreshToken, accessToken));
+    public void saveTokenInfo(Long userId, String refreshToken, String accessToken) {
+        refreshTokenRepository.save(new RefreshToken(String.valueOf(userId), refreshToken, accessToken));
     }
 
     @Transactional

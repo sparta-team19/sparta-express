@@ -1,6 +1,6 @@
 package com.sparta_express.auth.common.entity;
 
-public interface ResCodeIfs {
+public interface    ResCodeIfs {
 
     Integer getHttpStatusCode();
 

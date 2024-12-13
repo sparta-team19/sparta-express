@@ -3,12 +3,17 @@
 //import com.sparta_express.auth.jwt.JwtTokenValidator;
 //import com.sparta_express.auth.jwt.RefreshToken;
 //import com.sparta_express.auth.jwt.RefreshTokenRepository;
+//import com.sparta_express.auth.user.dto.UserRequestDto;
+//import com.sparta_express.auth.user.entity.User;
+//import com.sparta_express.auth.user.repository.UserRepository;
 //import io.jsonwebtoken.ExpiredJwtException;
 //import jakarta.servlet.FilterChain;
 //import jakarta.servlet.ServletException;
 //import jakarta.servlet.http.HttpServletRequest;
 //import jakarta.servlet.http.HttpServletResponse;
 //import java.io.IOException;
+//
+//import lombok.extern.slf4j.Slf4j;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +23,7 @@
 //import org.springframework.web.filter.OncePerRequestFilter;
 //import org.springframework.web.util.CookieGenerator;
 //
+//@Slf4j
 //@Component
 //public class JwtTokenFilter extends OncePerRequestFilter {
 //
@@ -28,7 +34,7 @@
 //    private UserDetailsService userDetailsService; // 사용자 세부 정보 서비스
 //
 //    @Autowired
-//    private EmployeeRepository employeeRepository; // Employee 리포지토리
+//    private UserRepository userRepository; // user 리포지토리
 //
 //    @Autowired
 //    private RefreshTokenRepository refreshTokenRepository; // Refresh Token 리포지토리
@@ -45,13 +51,14 @@
 //            String token = authorizationHeader.substring(7); // "Bearer " 부분 제거
 //
 //            // Access Token 검증
-//            Employee found;
+//            User found;
+//
 //            try {
 //                // Access Token 유효성 검증
-//                jwtTokenValidator.validateToken(token); // 유효성 검증 (예외 발생 시 아래로 넘어감)
+//                jwtTokenValidator.validateToken(token, response); // 유효성 검증 (예외 발생 시 아래로 넘어감)
 //
 //                // 사용자 정보 로드
-//                found = employeeRepository.findByEmail(JwtTokenUtil.getEmail(token, jwtTokenValidator.getKey()))
+//                found = userRepository.findByEmail(JwtTokenUtil.getEmail(token, jwtTokenValidator.getKey()))
 //                    .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_FOUND));
 //
 //            } catch (ExpiredJwtException e) {

@@ -49,16 +49,6 @@ public class JwtTokenValidator {
         return null;
     }
 
-    // header 에서 RefreshToken 가져오기
-    public String getJwtRefreshTokenFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader(JwtTokenProvider.REFRESH_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(
-            JwtTokenProvider.BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
     public boolean validateToken(String token, HttpServletResponse response) throws IOException {
         try {
             Jwts.parser().setSigningKey(key).build().parseClaimsJws(token);
