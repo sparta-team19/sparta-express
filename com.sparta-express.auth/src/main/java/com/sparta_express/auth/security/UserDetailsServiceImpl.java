@@ -1,4 +1,4 @@
-package com.sparta_express.auth.security.handler;
+package com.sparta_express.auth.security;
 
 import com.sparta_express.auth.user.entity.User;
 import com.sparta_express.auth.user.repository.UserRepository;

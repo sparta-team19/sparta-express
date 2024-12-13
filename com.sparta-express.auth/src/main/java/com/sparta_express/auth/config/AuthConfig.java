@@ -4,7 +4,7 @@ import com.sparta_express.auth.jwt.JwtTokenValidator;
 import com.sparta_express.auth.jwt.RefreshTokenService;
 import com.sparta_express.auth.security.filter.JwtAuthenticationFilter;
 import com.sparta_express.auth.security.handler.CustomAccessDeniedHandler;
-import com.sparta_express.auth.security.handler.UserDetailsServiceImpl;
+import com.sparta_express.auth.security.UserDetailsServiceImpl;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

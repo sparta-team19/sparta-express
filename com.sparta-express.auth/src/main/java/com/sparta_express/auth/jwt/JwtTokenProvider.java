@@ -2,9 +2,13 @@ package com.sparta_express.auth.jwt;
 
 import com.sparta_express.auth.user.entity.UserRole;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import java.security.Key;
 import java.util.Base64;
@@ -79,5 +83,37 @@ public class JwtTokenProvider {
     // 토큰에서 사용자 정보 가져오기
     public static Claims getUserInfoFromToken(String token) {
         return Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+    public static String getEmailFromToken(String token) {
+        try {
+            Claims claims = getUserInfoFromToken(token);
+            String email = claims.getSubject(); // 이메일 가져오기
+
+            if (email == null || email.isEmpty()) {
+                throw new IllegalArgumentException("이메일이 없습니다."); // 이메일이 없을 경우 예외 발생
+            }
+
+            return email;
+        } catch (MalformedJwtException | SignatureException e) {
+            throw new IllegalArgumentException("유효하지 않은 JWT입니다."); // JWT가 유효하지 않은 경우
+        }
+    }
+
+    public static void isExpired(String token) {
+        try {
+            // 토큰의 Claims 가져오기
+            Claims claims = Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
+            // 만료 시간 확인
+            if (claims.getExpiration().before(new Date())) {
+                throw new ExpiredJwtException((Header) claims, null, "JWT 토큰이 만료되었습니다.");
+            }
+        } catch (ExpiredJwtException e) {
+            throw e; // 만료된 토큰 예외를 그대로 던짐
+        } catch (SignatureException e) {
+            throw new IllegalArgumentException("JWT 서명이 유효하지 않습니다."); // 서명이 유효하지 않은 경우
+        } catch (Exception e) {
+            throw new IllegalArgumentException("JWT 처리 중 오류가 발생했습니다."); // 기타 예외 처리
+        }
     }
 }

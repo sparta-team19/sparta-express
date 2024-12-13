@@ -7,7 +7,7 @@ import com.sparta_express.auth.common.ResponseMessageDto;
 import com.sparta_express.auth.common.ResponseStatus;
 import com.sparta_express.auth.jwt.JwtTokenProvider;
 import com.sparta_express.auth.jwt.RefreshTokenService;
-import com.sparta_express.auth.security.handler.UserDetailsImpl;
+import com.sparta_express.auth.security.UserDetailsImpl;
 import com.sparta_express.auth.user.dto.LoginRequestDto;
 import com.sparta_express.auth.user.entity.UserRole;
 import jakarta.servlet.FilterChain;

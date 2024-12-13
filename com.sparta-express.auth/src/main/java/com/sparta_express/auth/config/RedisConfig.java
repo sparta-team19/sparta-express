@@ -16,13 +16,13 @@ public class RedisConfig {
     private String host;
     @Value("${spring.data.redis.port}")
     private int port;
-    @Value("${spring.data.redis.password}")
-    private String password;
+//    @Value("${spring.data.redis.password}")
+//    private String password;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         LettuceConnectionFactory factory = new LettuceConnectionFactory(host, port);
-        factory.setPassword(password); // 비밀번호 설정
+//        factory.setPassword(password); // 비밀번호 설정
         return factory;
     }
 
