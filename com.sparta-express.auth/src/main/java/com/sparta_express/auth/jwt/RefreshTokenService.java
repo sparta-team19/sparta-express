@@ -16,10 +16,4 @@ public class RefreshTokenService {
     public void saveTokenInfo(Long userId, String refreshToken, String accessToken) {
         refreshTokenRepository.save(new RefreshToken(String.valueOf(userId), refreshToken, accessToken));
     }
-
-    @Transactional
-    public void removeRefreshToken(String accessToken) {
-        refreshTokenRepository.findByAccessToken(accessToken)
-            .ifPresent(refreshToken -> refreshTokenRepository.delete(refreshToken));
-    }
 }

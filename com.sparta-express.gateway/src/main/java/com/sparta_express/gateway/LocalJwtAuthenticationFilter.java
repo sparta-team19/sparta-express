@@ -26,7 +26,7 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
         if (path.equals("/api/v1/users/signup") || path.equals("/api/v1/users/login")) {
-            return chain.filter(exchange);  // /signIn 경로는 필터를 적용하지 않음
+            return chain.filter(exchange);  // /signup, /login 경로는 필터를 적용하지 않음
         }
 
         String token = extractToken(exchange);
@@ -35,8 +35,6 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
-
-
 
         return chain.filter(exchange);
     }
