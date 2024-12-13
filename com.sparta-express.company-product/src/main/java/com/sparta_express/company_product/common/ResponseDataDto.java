@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ResponseDataDto<T> {
+
   private ResponseStatus status;
   private String message;
   private T data;
@@ -14,6 +15,7 @@ public class ResponseDataDto<T> {
     this.data = data;
   }
 
-  // 사용 예시
-  // return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.CARD_UPDATE_SUCCESS, responseDto));
+  /* 사용 예시
+   return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.CARD_UPDATE_SUCCESS, responseDto));*/
+
 }
