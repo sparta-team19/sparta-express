@@ -14,6 +14,7 @@ public class RequestExtractor {
 
         HttpServletRequest request
                 = (HttpServletRequest) RequestContextHolder.getRequestAttributes();
+
         if (!(request instanceof ServletRequestAttributes)) {
             throw new IllegalStateException("""
                         RequestContextHolder.getRequestAttributes() is not ServletRequestAttributes.
@@ -21,11 +22,15 @@ public class RequestExtractor {
                     """);
         }
 
+
         String extractedHeader
                 = request.getHeader(target);
+
         if (extractedHeader == null) {
             throw new CustomException(ErrorType.INVALID_REQUEST_HEADER);
         }
+
+
         return extractedHeader;
     }
 
