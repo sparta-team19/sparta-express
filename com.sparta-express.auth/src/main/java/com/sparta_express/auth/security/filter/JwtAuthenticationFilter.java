@@ -74,7 +74,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("Access_Token : {}", accessToken);
         log.info("Refresh_Token : {}", refreshToken);
 
-        sendAccessAndRefreshToken(response, accessToken, refreshToken);
+        sendAccessToken(response, accessToken);
 
         ResponseMessageDto commonResponse = new ResponseMessageDto(ResponseStatus.LOGIN_SUCCESS);
 
@@ -94,12 +94,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         new ObjectMapper().writeValue(response.getOutputStream(), errorResponse);
     }
 
-    private void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken,
-                                           String refreshToken) {
+    private void sendAccessToken(HttpServletResponse response, String accessToken) {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         response.setHeader(JwtTokenProvider.ACCESS_HEADER, accessToken);
-        response.setHeader(JwtTokenProvider.REFRESH_HEADER, refreshToken);
     }
 }
