@@ -5,9 +5,11 @@ import com.sparta_express.auth.common.ErrorType;
 import com.sparta_express.auth.common.auditing.AuditorContext;
 import com.sparta_express.auth.config.AuthConfig;
 import com.sparta_express.auth.jwt.RefreshTokenRepository;
+import com.sparta_express.auth.user.dto.SignUpRequestDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
 import com.sparta_express.auth.user.dto.UserResponseDto;
 import com.sparta_express.auth.user.entity.User;
+import com.sparta_express.auth.user.entity.UserRole;
 import com.sparta_express.auth.user.repository.DeliveryManagerRepository;
 import com.sparta_express.auth.user.repository.UserRepository;
 import io.jsonwebtoken.io.Decoders;
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void signup(UserRequestDto requestDto) {
+    public void signup(SignUpRequestDto requestDto) {
         String encodedPassword = authConfig.passwordEncoder().encode(requestDto.getPassword());
         User user = User.of(requestDto, encodedPassword);
 
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
         return usersPage.map(UserResponseDto::from);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserResponseDto getUser(Long userId, User loginUser) {
         User user = userRepository.findById(userId).orElseThrow(() ->
@@ -77,14 +80,37 @@ public class UserServiceImpl implements UserService {
         return UserResponseDto.from(user);
     }
 
+    @Transactional
     @Override
-    public UserResponseDto updateUser(Long userId, User loginUser) {
+    public UserResponseDto updateUser(Long userId, User loginUser, UserRequestDto requestDto) {
         validateUserModification(userId, loginUser);
 
         User user = userRepository.findById(userId).orElseThrow(() ->
             new CustomException(ErrorType.NOT_FOUND_USER));
 
+        user.updateUser(requestDto);
+
         return UserResponseDto.from(user);
+    }
+
+    @Override
+    public Void deleteUser(Long userId, User loginUser) {
+        if(isLoginUserOrManager(userId, loginUser)) {
+            User user = userRepository.findById(userId).orElseThrow(() ->
+                new CustomException(ErrorType.NOT_FOUND_USER));
+
+            user.setIsDeleted(Boolean.TRUE);
+        }
+        return null;
+    }
+
+    private boolean isLoginUserOrManager(Long userId, User loginUser) {
+        if(userId.equals(loginUser.getId()) || UserRole.MASTER == loginUser.getRole()) {
+            return true;
+        } else {
+            new CustomException(ErrorType.UNAUTHORIZED_ACCESS);
+        }
+        return false;
     }
 
     // 본인 확인

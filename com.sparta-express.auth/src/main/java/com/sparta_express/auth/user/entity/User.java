@@ -2,6 +2,7 @@ package com.sparta_express.auth.user.entity;
 
 
 import com.sparta_express.auth.common.entity.BaseEntity;
+import com.sparta_express.auth.user.dto.SignUpRequestDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,16 +56,17 @@ public class User extends BaseEntity {
 
     @Builder
     private User(String username, String email, String password
-        , String nickname, String slackId, UserRole role) {
+        , String nickname, String slackId, UserRole role, Boolean isPublic) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.slackId = slackId;
         this.role = role;
+        this.isPublic = isPublic;
     }
 
-    public static User of(UserRequestDto requestDto, String encodedPassword) {
+    public static User of(SignUpRequestDto requestDto, String encodedPassword) {
         return builder()
             .username(requestDto.getUsername())
             .email(requestDto.getEmail())
@@ -73,5 +75,19 @@ public class User extends BaseEntity {
             .slackId(requestDto.getSlackId())
             .role(requestDto.getRole())
             .build();
+    }
+
+    public void updateUser(UserRequestDto requestDto) {
+        builder()
+            .username(requestDto.getUsername())
+            .email(requestDto.getEmail())
+            .nickname(requestDto.getNickname())
+            .slackId(requestDto.getSlackId())
+            .isPublic(requestDto.getIsPublic())
+            .build();
+    }
+
+    public void deleteUser() {
+
     }
 }

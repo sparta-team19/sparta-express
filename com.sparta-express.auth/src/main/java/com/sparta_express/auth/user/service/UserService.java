@@ -1,5 +1,6 @@
 package com.sparta_express.auth.user.service;
 
+import com.sparta_express.auth.user.dto.SignUpRequestDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
 import com.sparta_express.auth.user.dto.UserResponseDto;
 import com.sparta_express.auth.user.entity.User;
@@ -8,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
-    void signup(UserRequestDto requestDto);
+    void signup(SignUpRequestDto requestDto);
 
     void checkDuplicateEmail(String email);
 
@@ -16,5 +17,7 @@ public interface UserService {
 
     UserResponseDto getUser(Long userId, User user);
 
-    UserResponseDto updateUser(Long userId, User user);
+    UserResponseDto updateUser(Long userId, User user, UserRequestDto requestDto);
+
+    Void deleteUser(Long userId, User user);
 }

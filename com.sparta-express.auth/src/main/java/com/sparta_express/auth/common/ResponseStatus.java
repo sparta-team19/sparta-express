@@ -13,7 +13,8 @@ public enum ResponseStatus {
     SIGNUP_SUCCESS(HttpStatus.CREATED, "회원가입 성공"),
     LOGIN_SUCCESS(HttpStatus.OK, "로그인 성공"),
     GET_USER_SUCCESS(HttpStatus.OK, "유저 조회에 성공했습니다."),
-    UPDATE_USER_SUCCESS(HttpStatus.OK, "유저 정보 수정에 성공했습니다.");
+    UPDATE_USER_SUCCESS(HttpStatus.OK, "유저 정보 수정에 성공했습니다."),
+    DELETE_USER_SUCCESS(HttpStatus.OK, "회원 탈퇴에 성공했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
