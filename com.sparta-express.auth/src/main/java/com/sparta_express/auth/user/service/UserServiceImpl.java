@@ -66,7 +66,15 @@ public class UserServiceImpl implements UserService {
     public Page<UserResponseDto> getUsers(Pageable pageable, User user) {
         Page<User> usersPage = userRepository.findAll(pageable);
 
-        return usersPage.map(UserResponseDto::of);
+        return usersPage.map(UserResponseDto::from);
+    }
+
+    @Override
+    public UserResponseDto getUser(Long userId, User loginUser) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_USER));
+
+        return UserResponseDto.from(user);
     }
 
     public void checkDuplicateEmail(String email) {

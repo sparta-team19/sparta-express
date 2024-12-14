@@ -30,7 +30,7 @@ public class UserResponseDto {
         this.isPublic = isPublic;
     }
 
-    public static UserResponseDto of(User user) {
+    public static UserResponseDto from(User user) {
         return builder()
             .username(user.getUsername())
             .email(user.getEmail())

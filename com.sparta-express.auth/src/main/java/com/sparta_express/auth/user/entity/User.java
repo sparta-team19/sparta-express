@@ -8,11 +8,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "p_users")
@@ -44,6 +47,11 @@ public class User extends BaseEntity {
 
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic = Boolean.TRUE;
+
+    @OneToOne
+    @JoinColumn(name = "delivery_managers_id")
+    @Setter(value = AccessLevel.NONE)
+    private DeliveryManager deliveryManager;
 
     @Builder
     private User(String username, String email, String password
