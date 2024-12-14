@@ -5,7 +5,9 @@ import com.sparta_express.auth.common.ResponseMessageDto;
 import com.sparta_express.auth.common.ResponseStatus;
 import com.sparta_express.auth.jwt.JwtTokenProvider;
 import com.sparta_express.auth.security.UserDetailsImpl;
+import com.sparta_express.auth.user.dto.DataDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
+import com.sparta_express.auth.user.dto.UserResponseDto;
 import com.sparta_express.auth.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +46,10 @@ public class UserController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<ResponseDataDto<PagedModel<Page<?>>>> getUsers(
+    public ResponseEntity<ResponseDataDto<PagedModel<Page<UserResponseDto>>>> getUsers(
         Pageable pageable,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Page<?> responseDto = userService.getUsers(pageable, userDetails.getUser());
+        Page<UserResponseDto> responseDto = userService.getUsers(pageable, userDetails.getUser());
         return ResponseEntity.ok(new ResponseDataDto(ResponseStatus.GET_USER_SUCCESS,
             new PagedModel(responseDto)));
     }

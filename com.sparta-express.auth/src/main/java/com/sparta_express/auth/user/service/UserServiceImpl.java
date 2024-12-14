@@ -5,10 +5,8 @@ import com.sparta_express.auth.common.ErrorType;
 import com.sparta_express.auth.common.auditing.AuditorContext;
 import com.sparta_express.auth.config.AuthConfig;
 import com.sparta_express.auth.jwt.RefreshTokenRepository;
-import com.sparta_express.auth.user.dto.DeliveryManagerResponseDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
 import com.sparta_express.auth.user.dto.UserResponseDto;
-import com.sparta_express.auth.user.entity.DeliveryManager;
 import com.sparta_express.auth.user.entity.User;
 import com.sparta_express.auth.user.repository.DeliveryManagerRepository;
 import com.sparta_express.auth.user.repository.UserRepository;
@@ -65,28 +63,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<?> getUsers(Pageable pageable, User user) {
-        // 이거 로직을 수정해야할듯 ( 유저가 로그인유저 기준임)
-        // TODO: 질문 - 사용자별로 딱 맞는 Dto를 쓰는게 맞는지 (검증 로직을 계속 돌려야함), 그냥 DeliveryManagerDto로 써서 일반유저는 null값을 두는게 맞는 지.. 아니지 없자나?
-        if (isDeliveryManager(user)) {
+    public Page<UserResponseDto> getUsers(Pageable pageable, User user) {
+        Page<User> usersPage = userRepository.findAll(pageable);
 
-            Page<DeliveryManager> deliveryManagersPage = deliveryManagerRepository.findAllByUserId(
-                user.getId(), pageable);
-
-            return deliveryManagersPage.map(DeliveryManagerResponseDto::of);
-
-        } else {
-            // 일반 사용자에 대한 처리
-            Page<User> usersPage = userRepository.findAll(pageable); // User 목록을 페이지로 가져오기
-
-            return usersPage.map(UserResponseDto::of);
-        }
-    }
-
-    private Boolean isDeliveryManager(User user) {
-        return deliveryManagerRepository.findByUserId(user.getId())
-            .map(deliveryManager -> true)
-            .orElse(false);
+        return usersPage.map(UserResponseDto::of);
     }
 
     public void checkDuplicateEmail(String email) {
