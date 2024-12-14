@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserResponseDto {
 
+    private Long userId;
     private String username;
     private String email;
     private String password;
@@ -20,7 +21,8 @@ public class UserResponseDto {
     private Boolean isPublic;
 
     @Builder
-    private UserResponseDto(String username, String email, String password, String nickname, String slackId, UserRole role, Boolean isPublic) {
+    private UserResponseDto(Long userId, String username, String email, String password, String nickname, String slackId, UserRole role, Boolean isPublic) {
+        this.userId = userId;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -32,6 +34,7 @@ public class UserResponseDto {
 
     public static UserResponseDto from(User user) {
         return builder()
+            .userId(user.getId())
             .username(user.getUsername())
             .email(user.getEmail())
             .password(user.getPassword())
