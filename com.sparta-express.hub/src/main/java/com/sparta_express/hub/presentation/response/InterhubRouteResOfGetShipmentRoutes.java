@@ -1,30 +1,31 @@
-package com.sparta_express.hub.presentation.dto;
+package com.sparta_express.hub.presentation.response;
 
-import com.sparta_express.hub.application.InterhubRouteStatus;
+import com.sparta_express.hub.domain.model.InterhubRoute;
+import com.sparta_express.hub.domain.model.enumumerate.InterhubRouteStatus;
 import lombok.Builder;
-import lombok.NonNull;
 import lombok.Value;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 @Value
 @Builder
-public class GetShipmentRoutesResInterhubRoute {
+public class InterhubRouteResOfGetShipmentRoutes {
 
-    @NonNull UUID originHubId;
-    @NonNull UUID destinationHubId;
-    @NonNull int distanceKm;
-    @NonNull int estimatedMinutes;
-    @NonNull InterhubRouteStatus status;
-    @NonNull LocalDateTime createdAt;
-    @NonNull long createdBy;//todo  멘토님 문의후 loginId, pk중 결정
-    @NonNull LocalDateTime updatedAt;
-    @NonNull long updatedBy;
+    UUID originHubId;
+    UUID destinationHubId;
+    int distanceKm;
+    int estimatedMinutes;
+    InterhubRouteStatus status;
+    LocalDateTime createdAt;
+    String createdBy;
+    LocalDateTime updatedAt;
+    String updatedBy;
 
-    public static GetShipmentRoutesResInterhubRoute from(InterhubRoute interhubRoute) {
+    public static InterhubRouteResOfGetShipmentRoutes from(InterhubRoute interhubRoute) {
 
-        return GetShipmentRoutesResInterhubRoute.builder()
+        return InterhubRouteResOfGetShipmentRoutes.builder()
                 .originHubId(interhubRoute.getOriginHubId())
                 .destinationHubId(interhubRoute.getDestinationHubId())
                 .distanceKm(interhubRoute.getDistanceKm())
