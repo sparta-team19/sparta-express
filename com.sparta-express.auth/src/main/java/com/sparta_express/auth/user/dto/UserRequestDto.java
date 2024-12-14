@@ -7,11 +7,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class UserRequestDto {
 
     @Size(min = 4, max = 10, message = "유저이름은 4자 이상, 10자 이하로 입력해야 합니다.")

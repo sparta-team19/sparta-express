@@ -17,7 +17,8 @@ public enum ErrorType {
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "권한이 없습니다."),
     LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "로그인 실패"),
     TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "Refresh Token이 존재하지 않습니다. 다시 로그인 해주세요."),
-    NOT_ACCESS_TOKEN(HttpStatus.NOT_FOUND, "Access Token이 존재하지 않습니다.");
+    NOT_ACCESS_TOKEN(HttpStatus.NOT_FOUND, "Access Token이 존재하지 않습니다."),
+    NOT_FOUND_DELIVERY_MANAGER(HttpStatus.NOT_FOUND, "배송 담당자가 존재하지 않습니다.");
 
 
   private final HttpStatus httpStatus;
