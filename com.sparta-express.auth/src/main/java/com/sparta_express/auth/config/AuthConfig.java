@@ -3,6 +3,7 @@ package com.sparta_express.auth.config;
 import com.sparta_express.auth.jwt.JwtTokenValidator;
 import com.sparta_express.auth.jwt.RefreshTokenService;
 import com.sparta_express.auth.security.filter.JwtAuthenticationFilter;
+import com.sparta_express.auth.security.filter.JwtAuthorizationFilter;
 import com.sparta_express.auth.security.handler.CustomAccessDeniedHandler;
 import com.sparta_express.auth.security.UserDetailsServiceImpl;
 import jakarta.servlet.Filter;
@@ -48,10 +49,15 @@ public class AuthConfig {
                 exception.accessDeniedHandler(accessDeniedHandler));
 
         // 필터 관리
-//        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter(refreshTokenService, jwtTokenValidator, userDetailsService);
     }
 
     @Bean
