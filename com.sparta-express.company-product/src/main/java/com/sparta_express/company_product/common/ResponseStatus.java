@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ResponseStatus {
 
-  /* 사용 예시
-  LOGIN_SUCCESS(HttpStatus.OK, "로그인에 성공하였습니다."),*/
+  COMPANY_CREATE_SUCCESS(HttpStatus.CREATED, "업체 생성이 성공적으로 완료되었습니다."),
+  COMPANY_LIST_SUCCESS(HttpStatus.OK, "업체 목록 조회가 성공적으로 완료되었습니다."),
+  COMPANY_DETAIL_SUCCESS(HttpStatus.OK, "업체 상세 조회가 성공적으로 완료되었습니다."),
+  COMPANY_UPDATE_SUCCESS(HttpStatus.OK, "업체 수정이 성공적으로 완료되었습니다."),
+  COMPANY_DELETE_SUCCESS(HttpStatus.OK, "업체 삭제가 성공적으로 완료되었습니다."),
   ;
 
   private final HttpStatus httpStatus;

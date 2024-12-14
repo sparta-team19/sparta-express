@@ -40,4 +40,8 @@ public class BaseEntity {
         createdBy = "John";
     }
 
+    public void delete() {
+        isDelete = true;
+    }
+
 }

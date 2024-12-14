@@ -37,18 +37,26 @@ public class Company extends BaseEntity {
     private String address;
 
     @Builder
-    private Company(String name, String address, CompanyType companyType) {
+    private Company(String name, String address, CompanyType companyType, Hub hub) {
         this.name = name;
         this.address = address;
         this.companyType = companyType;
+        this.hub = hub;
     }
 
-    public static Company of(String name, String address, CompanyType companyType) {
+    public static Company of(String name, String address, CompanyType companyType, Hub hub) {
         return builder()
                 .name(name)
                 .address(address)
                 .companyType(companyType)
+                .hub(hub)
                 .build();
+    }
+
+    public void update(String name, String address, CompanyType companyType) {
+        if (name != null) this.name = name;
+        if (address != null) this.address = address;
+        if (companyType != null) this.companyType = companyType;
     }
 
 }
