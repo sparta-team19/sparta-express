@@ -15,4 +15,6 @@ public interface UserService {
     Page<UserResponseDto> getUsers(Pageable pageable, User user);
 
     UserResponseDto getUser(Long userId, User user);
+
+    UserResponseDto updateUser(Long userId, User user);
 }

@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,11 +66,26 @@ public class UserController {
      * @return
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<ResponseDataDto<UserResponseDto>> getUsers(
+    public ResponseEntity<ResponseDataDto<UserResponseDto>> getUser(
         @PathVariable Long userId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserResponseDto responseDto = userService.getUser(userId, userDetails.getUser());
         return ResponseEntity.ok(new ResponseDataDto(ResponseStatus.GET_USER_SUCCESS,
+            responseDto));
+    }
+
+    /**
+     * 유저 정보 수정
+     * @param userId
+     * @param userDetails
+     * @return
+     */
+    @PutMapping("/{userId}")
+    public ResponseEntity<ResponseDataDto<UserResponseDto>> updateUser(
+        @PathVariable Long userId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserResponseDto responseDto = userService.updateUser(userId, userDetails.getUser());
+        return ResponseEntity.ok(new ResponseDataDto(ResponseStatus.UPDATE_USER_SUCCESS,
             responseDto));
     }
 }

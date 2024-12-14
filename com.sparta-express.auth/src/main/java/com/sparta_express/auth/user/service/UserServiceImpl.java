@@ -77,6 +77,24 @@ public class UserServiceImpl implements UserService {
         return UserResponseDto.from(user);
     }
 
+    @Override
+    public UserResponseDto updateUser(Long userId, User loginUser) {
+        validateUserModification(userId, loginUser);
+
+        User user = userRepository.findById(userId).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_USER));
+
+        return UserResponseDto.from(user);
+    }
+
+    // 본인 확인
+    private void validateUserModification(Long userId, User loginUser) {
+        if(!userId.equals(loginUser.getId())) {
+            new CustomException(ErrorType.UNAUTHORIZED_ACCESS);
+        }
+    }
+
+    // 이메일 중복 검사
     public void checkDuplicateEmail(String email) {
         userRepository.findByEmail(email).ifPresent(user -> {
             throw new CustomException(ErrorType.DUPLICATE_EMAIL);
