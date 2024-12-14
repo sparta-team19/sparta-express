@@ -7,6 +7,8 @@ import com.sparta_express.auth.jwt.JwtTokenProvider;
 import com.sparta_express.auth.jwt.JwtTokenValidator;
 import com.sparta_express.auth.jwt.RefreshToken;
 import com.sparta_express.auth.jwt.RefreshTokenRepository;
+import com.sparta_express.auth.jwt.RefreshTokenService;
+import com.sparta_express.auth.security.UserDetailsServiceImpl;
 import com.sparta_express.auth.user.entity.User;
 import com.sparta_express.auth.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -16,6 +18,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,7 +27,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -32,13 +34,12 @@ import org.springframework.web.util.CookieGenerator;
 
 @Slf4j(topic = "JWT 검증 및 인가")
 @Component
+@RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtTokenValidator jwtTokenValidator; // JWT 검증 서비스
-
-    @Autowired
-    private UserDetailsService userDetailsService; // 사용자 세부 정보 서비스
+    private final RefreshTokenService refreshTokenService;
+    private final JwtTokenValidator jwtTokenValidator; // JWT 검증 서비스
+    private final UserDetailsServiceImpl userDetailsService; // 사용자 세부 정보 서비스
 
     @Autowired
     private UserRepository userRepository; // user 리포지토리
@@ -53,6 +54,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain)
         throws ServletException, IOException {
+
+        log.info("authorization 필터 진입---------------------------------------------");
         String authorizationHeader = request.getHeader(AUTH_HEADER);
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -138,7 +141,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 putRefreshTokenInAuthorization(response);
             }
 
-            setAuthentication(claims.getSubject());
+            setAuthentication(claims.get("user_id").toString());
 
         }
 

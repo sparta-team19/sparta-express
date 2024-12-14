@@ -88,7 +88,7 @@ public class JwtTokenProvider {
     public static String getEmailFromToken(String token) {
         try {
             Claims claims = getUserInfoFromToken(token);
-            String email = claims.getSubject(); // 이메일 가져오기
+            String email = claims.get("user_id").toString(); // 이메일 가져오기
 
             if (email == null || email.isEmpty()) {
                 throw new IllegalArgumentException("이메일이 없습니다."); // 이메일이 없을 경우 예외 발생
