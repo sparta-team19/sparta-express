@@ -31,7 +31,7 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
 
         String token = extractToken(exchange);
 
-        if (token == null || !validateToken(token)) {
+        if (token == null || !validateToken(token, exchange)) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
@@ -47,14 +47,18 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
         return null;
     }
 
-    private boolean validateToken(String token) {
+    private boolean validateToken(String token, ServerWebExchange exchange) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
             Jws<Claims> claimsJws = Jwts.parser()
                 .verifyWith(key)
                 .build().parseSignedClaims(token);
             log.info("#####payload :: " + claimsJws.getPayload().toString());
-
+            Claims claims = claimsJws.getBody();
+            exchange.getRequest().mutate()
+                .header("X-User-Id", claims.get("user_id").toString())
+                .header("X-Role", claims.get("role").toString())
+                .build();
             // 추가적인 검증 로직 (예: 토큰 만료 여부 확인, 로그인 체크 검증 로직 등)을 여기에 추가할 수 있습니다.
             return true;
         } catch (Exception e) {

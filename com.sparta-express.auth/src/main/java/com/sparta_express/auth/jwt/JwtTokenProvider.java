@@ -60,8 +60,8 @@ public class JwtTokenProvider {
 
         return BEARER_PREFIX +
             Jwts.builder()
-                .subject(email) // 사용자 식별자값(email)
-                .claim(AUTHORIZATION_KEY, role) // 사용자 권한
+                .claim("user_id", email) // 사용자 식별자값(email)
+                .claim("role", role) // 사용자 권한
                 .expiration(new Date(System.currentTimeMillis() + accessTokenValidate)) // 만료 시간
                 .issuedAt(new Date(System.currentTimeMillis())) // 발급일
                 .signWith(key, SignatureAlgorithm.HS256) // 암호화 알고리즘
