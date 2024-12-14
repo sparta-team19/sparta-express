@@ -26,7 +26,6 @@ public class JwtTokenProvider {
     public static final String REFRESH_HEADER = "Refresh-Token";
 
     // 사용자 권한 값의 KEY
-    public static final String AUTHORIZATION_KEY = "auth";
     public static final String REFRESH_TOKEN = "refreshToken";
 
     // Token 식별자
