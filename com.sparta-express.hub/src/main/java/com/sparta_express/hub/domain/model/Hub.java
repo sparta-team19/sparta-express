@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
 
 import java.util.UUID;
 
@@ -31,4 +34,10 @@ public class Hub extends BaseEntity {
     @Column
     private Double longitude;
 
+    public Point geometryPoint() {
+
+        return JTSFactoryFinder.getGeometryFactory().createPoint(
+                new Coordinate(this.latitude, this.longitude)
+        );
+    }
 }

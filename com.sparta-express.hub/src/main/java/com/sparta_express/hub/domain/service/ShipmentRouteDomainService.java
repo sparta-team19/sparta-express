@@ -1,15 +1,22 @@
 package com.sparta_express.hub.domain.service;
 
+import com.sparta_express.hub.domain.dto.HubToDestinationRoute;
+import com.sparta_express.hub.domain.map.MapApplication;
 import com.sparta_express.hub.domain.model.FinalHubToDestination;
 import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
 import com.sparta_express.hub.domain.repository.HubRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparingDouble;
+import static java.util.Comparator.comparingInt;
 
 
 @Service
@@ -17,14 +24,16 @@ import java.util.stream.Collectors;
 public class ShipmentRouteDomainService {
 
     private final HubRepository hubRepo;
+    private final MapApplication mapApplication;
+
 
     public final ShipmentRoute findShipmentRoutes(UUID originHubId,
-                                                  String destinationAddress) {
+                                                  Point destination) {
 
         List<Hub> hubList = hubRepo.readAllHubs();
 
         FinalHubToDestination finalHubToDestination
-                = findFinalHubToDestination(hubList, destinationAddress);
+                = findFinalHubToDestination(hubList, destination);
 
         List<InterhubRoute> shipmentInterhubRoutes
                 = findShipmentInterhubRoutes(originHubId, finalHubToDestination.getFinalHubId(), hubList);
@@ -36,36 +45,40 @@ public class ShipmentRouteDomainService {
     }
 
 
-    public final FinalHubToDestination findFinalHubToDestination(String destinationAddress) {
-        return findFinalHubToDestination(hubRepo.readAllHubs(), destinationAddress);
+    public final FinalHubToDestination findFinalHubToDestination(Point destinationPoint) {
+        return findFinalHubToDestination(hubRepo.readAllHubs(), destinationPoint);
     }
 
     protected final FinalHubToDestination findFinalHubToDestination(List<Hub> hubList,
-                                                                    String destinationAddress) {
+                                                                    Point destination) {
 
-        assert (!hubList.isEmpty() && !destinationAddress.isBlank());
+        assert (!hubList.isEmpty() && destination.isValid());
 
-        // FinalHub - destinationAddress 간 거리, 시간 탐색 및 저장
+        Hub finalHub = findNearestHub(destination, hubList);
 
-        //findShipmentRouteFromNearestHub(String destinationAddress, List<Hub> hubList
-        // 마지막 허브, 마지막허브에서 목적지까지의 거리, 시간 계산, 외부 api domain에 dip 추상화 시켜야함
-        UUID destinationHubId = findNearestHubId(destinationAddress, hubList);
+        HubToDestinationRoute route = mapApplication.searchRoute(finalHub.geometryPoint(), destination);
 
         return FinalHubToDestination.builder()
-                .distanceKm()
-                .estimatedMinutes()
-                .finalHubId()
+                .distanceKm(route.getDistanceKm())
+                .estimatedMinutes(route.getEstimatedMinutes())
+                .finalHubId(finalHub.getId())
                 .build();
     }
 
 
-    public final UUID findNearestHubId(String destinationAddress) {
-        return findNearestHubId(destinationAddress, hubRepo.readAllHubs());
+    public final Hub findNearestHub(Point target) {
+        return findNearestHub(target, hubRepo.readAllHubs());
     }
 
-    protected final UUID findNearestHubId(String destinationAddress, List<Hub> hubList) {
+    protected final Hub findNearestHub(Point target, List<Hub> hubList) {
 
-        return null;
+        assert (!hubList.isEmpty() && target.isValid());
+
+        Hub nearestHub = hubList.stream().min(
+                comparingDouble(hub -> hub.geometryPoint().distance(target))
+        ).orElseThrow();
+
+        return nearestHub;
     }
 
 
@@ -74,9 +87,10 @@ public class ShipmentRouteDomainService {
 
         return findShipmentInterhubRoutes(originHubId, destinationHubId, hubRepo.readAllHubs());
     }
+
     protected final List<InterhubRoute> findShipmentInterhubRoutes(UUID originHubId,
-                                                                UUID destinationHubId,
-                                                                List<Hub> hubList) {
+                                                                   UUID destinationHubId,
+                                                                   List<Hub> hubList) {
 
         assert (originHubId != destinationHubId
                 && hubList.stream().anyMatch(hub -> hub.getId().equals(originHubId))
@@ -91,7 +105,7 @@ public class ShipmentRouteDomainService {
                 Hub::getId, HubRouteInfo::initMemo
         ));
         PriorityQueue<HubRouteInfo> hubRouteQue
-                = new PriorityQueue<>(Comparator.comparingInt(HubRouteInfo::getDistance));
+                = new PriorityQueue<>(comparingInt(HubRouteInfo::getDistance));
         hubRouteQue.addAll(hubGraph.get(originHubId).stream()
                 .map(HubRouteInfo::initQueue).toList()
         );
@@ -119,7 +133,23 @@ public class ShipmentRouteDomainService {
             }
         }
 
-        return hubRouteMemo.get(destinationHubId).getInterhubRoutes();
+        return hubRouteMemo.get(destinationHubId).interhubRoutes;
     }
 
+
+    @Value
+    private static class HubRouteInfo {
+
+        int distance;
+        List<InterhubRoute> interhubRoutes;
+        UUID hubId;
+
+        public static HubRouteInfo initMemo(Hub hub) {
+            return new HubRouteInfo(Integer.MAX_VALUE, new ArrayList<>(), hub.getId());
+        }
+
+        public static HubRouteInfo initQueue(InterhubRoute routeFromOrigin) {
+            return new HubRouteInfo(routeFromOrigin.getDistanceKm(), List.of(routeFromOrigin), routeFromOrigin.getDestinationHubId());
+        }
+    }
 }
