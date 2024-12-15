@@ -4,6 +4,7 @@ import com.sparta_express.company_product.common.BaseEntity;
 import com.sparta_express.company_product.product.model.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,19 +21,21 @@ public class Order extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "product_id")
+    @OneToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    /*@OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "shipment_id")
-    private Shipment shipment;
+    private Shipment shipment;*/
 
-    @Column(nullable = false)
-    private UUID requesterId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requester_id", nullable = false)
+    private User requester;
 
-    @Column(nullable = false)
-    private UUID receiverId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private User receiver;
 
     @Column(nullable = false)
     private Integer quantity;
@@ -42,6 +45,32 @@ public class Order extends BaseEntity {
     private String requestDetails;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OrderStatus orderStatus;
+
+    @Builder
+    public Order(Product product, User requester, User receiver,
+                 Integer quantity, LocalDateTime dueDate, String requestDetails, OrderStatus orderStatus) {
+        this.product = product;
+        this.requester = requester;
+        this.receiver = receiver;
+        this.quantity = quantity;
+        this.dueDate = dueDate;
+        this.requestDetails = requestDetails;
+        this.orderStatus = orderStatus != null ? orderStatus : OrderStatus.PENDING; // 기본값 설정
+    }
+
+    public static Order of(Product product, User requester, User receiver,
+                           Integer quantity, LocalDateTime dueDate, String requestDetails) {
+        return Order.builder()
+                .product(product)
+                .requester(requester)
+                .receiver(receiver)
+                .quantity(quantity)
+                .dueDate(dueDate)
+                .requestDetails(requestDetails)
+                .orderStatus(OrderStatus.PENDING)
+                .build();
+    }
 
 }

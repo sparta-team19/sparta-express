@@ -33,7 +33,7 @@ public class CompanyResponse {
                 company.getAddress(),
                 company.getCompanyType(),
                 company.getHub(),
-                null
+                company.getProducts()
         );
     }
 

@@ -43,7 +43,7 @@ public class Hub extends BaseEntity {
         this.longitude = longitude;
     }
 
-    public static Hub createHub(String name, String address, String status, Double latitude, Double longitude) {
+    public static Hub of(String name, String address, String status, Double latitude, Double longitude) {
         return Hub.builder()
                 .name(name)
                 .address(address)

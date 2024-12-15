@@ -6,17 +6,12 @@ import lombok.Getter;
 public class CustomException extends RuntimeException {
 
   public static final String ERROR = "ERROR";
-  private String result;
-  private ErrorType errorType;
+  private final String result;
+  private final ErrorType errorType;
 
   public CustomException(ErrorType errorType) {
     this.result = ERROR;
     this.errorType = errorType;
   }
-
-  /*사용 예시
-   if(user.isEmpty()){
-      throw new CustomException(ErrorType.NOT_FOUND_USER);
-   }*/
 
 }

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorType {
 
-  COMPANY_NOT_FOUND(HttpStatus.NOT_FOUND, "회사를 찾을 수 없습니다."),
+  NOT_FOUND(HttpStatus.NOT_FOUND, "대상을 찾을 수 없습니다."),
   ;
 
   private final HttpStatus httpStatus;

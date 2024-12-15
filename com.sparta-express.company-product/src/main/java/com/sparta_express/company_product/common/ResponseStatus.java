@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ResponseStatus {
 
-  COMPANY_CREATE_SUCCESS(HttpStatus.CREATED, "업체 생성이 성공적으로 완료되었습니다."),
-  COMPANY_LIST_SUCCESS(HttpStatus.OK, "업체 목록 조회가 성공적으로 완료되었습니다."),
-  COMPANY_DETAIL_SUCCESS(HttpStatus.OK, "업체 상세 조회가 성공적으로 완료되었습니다."),
-  COMPANY_UPDATE_SUCCESS(HttpStatus.OK, "업체 수정이 성공적으로 완료되었습니다."),
-  COMPANY_DELETE_SUCCESS(HttpStatus.OK, "업체 삭제가 성공적으로 완료되었습니다."),
+  CREATE_SUCCESS(HttpStatus.CREATED, "생성이 성공적으로 완료되었습니다."),
+  LIST_SUCCESS(HttpStatus.OK, "목록 조회가 성공적으로 완료되었습니다."),
+  DETAIL_SUCCESS(HttpStatus.OK, "상세 조회가 성공적으로 완료되었습니다."),
+  UPDATE_SUCCESS(HttpStatus.OK, "수정이 성공적으로 완료되었습니다."),
+  DELETE_SUCCESS(HttpStatus.OK, "삭제가 성공적으로 완료되었습니다."),
   ;
 
   private final HttpStatus httpStatus;

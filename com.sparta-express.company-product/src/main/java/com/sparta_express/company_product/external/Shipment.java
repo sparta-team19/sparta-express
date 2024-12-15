@@ -21,15 +21,15 @@ public class Shipment extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private Order order;  // 주문과 연관된 관계
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "origin_hub_id", nullable = false)
-    private Hub originHub;  // 출발 허브
+    private Hub originHub;
 
     @ManyToOne
     @JoinColumn(name = "destination_hub_id", nullable = false)
-    private Hub destinationHub;  // 도착 허브
+    private Hub destinationHub;
 
     @Column(name = "delivery_address", nullable = false)
     private String deliveryAddress;
@@ -38,7 +38,7 @@ public class Shipment extends BaseEntity {
     private String recipientName;
 
     @Column(name = "recipient_slack_id")
-    private String recipientSlackId;  // 선택적 필드
+    private String recipientSlackId;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

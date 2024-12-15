@@ -2,11 +2,12 @@ package com.sparta_express.company_product.company.service;
 
 import com.sparta_express.company_product.common.CustomException;
 import com.sparta_express.company_product.common.ErrorType;
-import com.sparta_express.company_product.company.dto.CompanyResponse;
 import com.sparta_express.company_product.company.dto.CreateCompanyRequest;
 import com.sparta_express.company_product.company.dto.UpdateCompanyRequest;
 import com.sparta_express.company_product.company.model.Company;
 import com.sparta_express.company_product.company.repository.CompanyRepository;
+import com.sparta_express.company_product.external.Hub;
+import com.sparta_express.company_product.external.HubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,17 +21,19 @@ import java.util.UUID;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final HubRepository hubRepository;
 
     // 업체 생성
     @Transactional
     public Company createCompany(CreateCompanyRequest request) {
-        // findHubByHubId
+        Hub hub = hubRepository.findById(request.getHubId())
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
 
         Company company = Company.of(
                 request.getName(),
                 request.getAddress(),
                 request.getCompanyType(),
-                null
+                hub
         );
 
         return companyRepository.save(company);
@@ -44,15 +47,14 @@ public class CompanyService {
     // 업체 상세 조회
     public Company getCompanyById(UUID id) {
         return companyRepository.findByIdAndIsDeleteFalse(id)
-                .orElseThrow(() -> new CustomException(ErrorType.COMPANY_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
     }
 
     // 업체 수정
     @Transactional
     public Company updateCompany(UUID companyId, UpdateCompanyRequest request) {
         Company company = companyRepository.findByIdAndIsDeleteFalse(companyId)
-                .orElseThrow(() -> new CustomException(ErrorType.COMPANY_NOT_FOUND));
-
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
         company.update(request.getName(), request.getAddress(), request.getCompanyType());
         return companyRepository.save(company);
     }
@@ -61,7 +63,7 @@ public class CompanyService {
     @Transactional
     public void deleteCompany(UUID companyId) {
         Company company = companyRepository.findByIdAndIsDeleteFalse(companyId)
-                .orElseThrow(() -> new CustomException(ErrorType.COMPANY_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
         company.delete();
     }
 

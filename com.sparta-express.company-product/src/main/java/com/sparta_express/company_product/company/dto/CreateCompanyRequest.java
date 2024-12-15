@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 public class CreateCompanyRequest {
 
@@ -18,6 +20,6 @@ public class CreateCompanyRequest {
     private CompanyType companyType;
 
     @NotNull
-    private String hubId;
+    private UUID hubId;
 
 }

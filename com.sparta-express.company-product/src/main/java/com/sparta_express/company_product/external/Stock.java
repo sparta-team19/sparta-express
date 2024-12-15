@@ -1,7 +1,6 @@
-package com.sparta_express.company_product.stock.model;
+package com.sparta_express.company_product.external;
 
 import com.sparta_express.company_product.common.BaseEntity;
-import com.sparta_express.company_product.external.Hub;
 import com.sparta_express.company_product.product.model.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
