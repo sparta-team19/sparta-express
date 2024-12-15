@@ -21,9 +21,9 @@ public class ShipmentRouteResponse {
     private UUID destinationHubId;
     private String deliveryAddress;
     private ShipmentStatusEnum status;
-    private Float estimatedDistance;
+    private Integer estimatedDistance;
     private Integer estimatedTime;
-    private Float actualDistance;
+    private Integer actualDistance;
     private Integer actualTime;
     private UUID deliveryManagerId;
     private String userId;
@@ -37,8 +37,8 @@ public class ShipmentRouteResponse {
     private ShipmentRouteResponse(UUID orderId, UUID shipmentId, UUID shipmentRouteId,
                                   Integer sequence, UUID originHubId, UUID destinationHubId,
                                   String deliveryAddress, ShipmentStatusEnum status,
-                                  Float estimatedDistance, Integer estimatedTime,
-                                  Float actualDistance, Integer actualTime,
+                                  Integer estimatedDistance, Integer estimatedTime,
+                                  Integer actualDistance, Integer actualTime,
                                   UUID deliveryManagerId, String userId, LocalDateTime createdAt,
                                   LocalDateTime updatedAt, String createdBy,
                                   String updatedBy, Boolean isDelete) {

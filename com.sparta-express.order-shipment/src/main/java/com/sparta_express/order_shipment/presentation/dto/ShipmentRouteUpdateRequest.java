@@ -17,11 +17,11 @@ public class ShipmentRouteUpdateRequest {
     private UUID destinationHubId;
     private String deliveryAddress;
     private ShipmentStatusEnum status;
-    private Float estimatedDistance;
+    private Integer estimatedDistance;
     private Integer estimatedTime;
-    private Float actualDistance;
+    private Integer actualDistance;
     private Integer actualTime;
-    private Long deliveryManagerId;
+    private UUID deliveryManagerId;
 
     public ShipmentRouteUpdateDto toDto() {
         return ShipmentRouteUpdateDto.of(
