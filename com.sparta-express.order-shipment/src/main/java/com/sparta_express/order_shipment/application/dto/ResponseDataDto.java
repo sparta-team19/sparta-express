@@ -1,12 +1,12 @@
-package com.sparta_express.order_shipment.common;
+package com.sparta_express.order_shipment.application.dto;
 
 import lombok.Getter;
 
 @Getter
 public class ResponseDataDto<T> {
-  private ResponseStatus status;
-  private String message;
-  private T data;
+  private final ResponseStatus status;
+  private final String message;
+  private final T data;
 
   public ResponseDataDto(ResponseStatus responseStatus, T data) {
     this.status = responseStatus;
