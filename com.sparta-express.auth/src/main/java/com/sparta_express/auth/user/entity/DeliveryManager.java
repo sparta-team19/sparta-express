@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -52,7 +53,13 @@ public class DeliveryManager extends BaseEntity {
     public static DeliveryManager from(UserRequestDto requestDto) {
         return builder()
             .type(requestDto.getType())
-            .deliverySequence(requestDto.getDeliverySequence())
+            .build();
+    }
+
+    public static DeliveryManager of(UserRequestDto requestDto, int deliverySequence) {
+        return builder()
+            .type(requestDto.getType())
+            .deliverySequence(deliverySequence)
             .build();
     }
 }

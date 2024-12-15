@@ -12,4 +12,6 @@ public interface DeliveryManagerRepository extends JpaRepository<DeliveryManager
     Page<DeliveryManager> findAllByUserId(Long id, Pageable pageable);
 
     Optional<DeliveryManager> findByUserId(Long id);
+
+    Integer findMaxDeliverySequence();
 }

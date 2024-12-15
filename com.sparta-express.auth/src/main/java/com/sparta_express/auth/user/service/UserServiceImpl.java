@@ -122,7 +122,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public DeliveryManagerResponseDto createDeliveryManager(String userId, UserRequestDto requestDto) {
-        DeliveryManager deliveryManager = DeliveryManager.from(requestDto);
+
+        // 현재 최대 deliverySequence 값 조회
+        Integer maxSequence = deliveryManagerRepository.findMaxDeliverySequence();
+
+        // 새로운 deliverySequence 설정
+        int newDeliverySequence = (maxSequence == null ? 1 : maxSequence + 1);
+
+        DeliveryManager deliveryManager = DeliveryManager.of(requestDto, newDeliverySequence);
+
         deliveryManagerRepository.save(deliveryManager);
 
         return DeliveryManagerResponseDto.of(deliveryManager);

@@ -12,5 +12,4 @@ public class UserRequestDto {
     private String slackId;
     private Boolean isPublic;
     private DeliveryType type;
-    private int deliverySequence;
 }
