@@ -1,6 +1,6 @@
 spring:
   application:
-    name: user-service
+    name: ai-slcak
   datasource:
     url: ${DB_URL}
     username: ${DB_ID}
@@ -21,19 +21,15 @@ spring:
       port: ${REDiS_PORT}
       password: ${REDIS_PASSWORD}
 
+gemini:
+  api:
+    url: ${GEMINI_URL}
+    key: ${GEMINI_KEY}
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-service:
-  jwt:
-    access-expiration: 1800000
-    secret-key: ${SECRET_KEY}
-    access:
-      expiration: 1000 * 60 * 30
-    refresh:
-      expiration: 1000 * 60 * 60 * 24 * 3
-
 server:
-  port: 8083
+  port: 8085

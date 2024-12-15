@@ -1,6 +1,6 @@
 package com.sparta_express.ai.common.entity;
 
-import com.sparta_express.auth.common.auditing.SoftDeleteEntityListener;
+import com.sparta_express.ai.common.auditing.SoftDeleteEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

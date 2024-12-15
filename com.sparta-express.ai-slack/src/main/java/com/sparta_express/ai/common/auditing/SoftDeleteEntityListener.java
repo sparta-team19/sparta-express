@@ -1,6 +1,6 @@
 package com.sparta_express.ai.common.auditing;
 
-import com.sparta_express.auth.common.entity.SoftDeleteEntity;
+import com.sparta_express.ai.common.entity.SoftDeleteEntity;
 import jakarta.persistence.PreUpdate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
