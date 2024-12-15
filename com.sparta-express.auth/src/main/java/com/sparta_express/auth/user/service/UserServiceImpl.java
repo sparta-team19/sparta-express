@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
         deliveryManagerRepository.save(deliveryManager);
 
-        return DeliveryManagerResponseDto.of(deliveryManager);
+        return DeliveryManagerResponseDto.from(deliveryManager);
     }
 
     @Transactional(readOnly = true)
