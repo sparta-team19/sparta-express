@@ -17,7 +17,8 @@ public enum ResponseStatus {
     DELETE_USER_SUCCESS(HttpStatus.OK, "회원 탈퇴에 성공했습니다."),
     SEARCH_USER_SUCCESS(HttpStatus.OK, "회원 검색에 성공했습니다."),
 
-    CREATE_DELIVERY_MANAGER_SUCCESS(HttpStatus.OK, "배송 담당자 등록에 성공했습니다.");
+    CREATE_DELIVERY_MANAGER_SUCCESS(HttpStatus.CREATED, "배송 담당자 등록에 성공했습니다."),
+    GET_DELIVERY_MANAGER_SUCCESS(HttpStatus.OK, "배송 담당자 조회에 성공했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

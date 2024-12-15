@@ -63,7 +63,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<ResponseDataDto<PagedModel<Page<UserResponseDto>>>> getUsers(
-        Pageable pageable,
+        @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Page<UserResponseDto> responseDto = userService.getUsers(pageable, userDetails.getUser());
         return ResponseEntity.ok(new ResponseDataDto(ResponseStatus.GET_USER_SUCCESS,
@@ -151,5 +151,19 @@ public class UserController {
         return ResponseEntity.ok(
             new ResponseDataDto<>(ResponseStatus.CREATE_DELIVERY_MANAGER_SUCCESS,
                 userService.createDeliveryManager(userId, requestDto)));
+    }
+
+    @GetMapping("/delivery")
+    public ResponseEntity<ResponseDataDto<Page<DeliveryManagerResponseDto>>> getDeliveryManagers(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) UserRole role,
+        @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable
+    ) {
+        if (!(role == UserRole.DELIVERY_MANAGER || role == UserRole.MASTER)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        return ResponseEntity.ok(
+            new ResponseDataDto<>(ResponseStatus.GET_DELIVERY_MANAGER_SUCCESS,
+                userService.getDeliveryManagers(userId, pageable)));
     }
 }

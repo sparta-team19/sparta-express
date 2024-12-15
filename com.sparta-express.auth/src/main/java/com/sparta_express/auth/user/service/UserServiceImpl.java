@@ -127,6 +127,13 @@ public class UserServiceImpl implements UserService {
         return DeliveryManagerResponseDto.of(deliveryManager);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable) {
+        Page<DeliveryManager> deliveryManagerPage = deliveryManagerRepository.findAll(pageable);
+        return deliveryManagerPage.map(DeliveryManagerResponseDto::of);
+    }
+
     private boolean isLoginUserOrManager(Long userId, User loginUser) {
         if(userId.equals(loginUser.getId()) || UserRole.MASTER == loginUser.getRole()) {
             return true;
