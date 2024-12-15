@@ -1,6 +1,7 @@
 package com.sparta_express.auth.common.auditing;
 
 import com.sparta_express.auth.common.entity.SoftDeleteEntity;
+import jakarta.persistence.PreUpdate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
@@ -10,9 +11,12 @@ public class SoftDeleteEntityListener {
 
     private final AuditorAware<String> auditorAware;
 
+    // Entity가 update 되었을 때
+    @PreUpdate
     public void softDeleteHandle(SoftDeleteEntity softDeleteEntity) {
 
-        if (softDeleteEntity.getIsDeleted() == Boolean.FALSE
+        // isDeleted가 True면 deletedAt, deletedBy 설정
+        if (softDeleteEntity.getIsDeleted() == Boolean.TRUE
             && softDeleteEntity.getDeletedAt() == null) {
 
             auditorAware.getCurrentAuditor().ifPresent(softDeleteEntity::setDeletedBy);
