@@ -8,6 +8,7 @@ import com.sparta_express.order_shipment.stock.dto.StockResponse;
 import com.sparta_express.order_shipment.stock.dto.UpdateStockRequest;
 import com.sparta_express.order_shipment.stock.model.Stock;
 import com.sparta_express.order_shipment.stock.service.StockService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class StockController {
 
     // 재고 생성
     @PostMapping
-    public ResponseEntity<ResponseDataDto<StockResponse>> createStock(@RequestBody CreateStockRequest request) {
+    public ResponseEntity<ResponseDataDto<StockResponse>> createStock(@Valid @RequestBody CreateStockRequest request) {
         Stock stock = stockService.createStock(request);
         StockResponse stockResponse = StockResponse.from(stock);
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.CREATE_SUCCESS, stockResponse));
@@ -55,8 +56,10 @@ public class StockController {
 
     // 재고 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseMessageDto> deleteStock(@PathVariable UUID id) {
-        stockService.deleteStock(id);
+    public ResponseEntity<ResponseMessageDto> deleteStock(
+            @RequestHeader("X-User-Id") String email,
+            @PathVariable UUID id) {
+        stockService.deleteStock(id, email);
         return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_SUCCESS));
     }
 

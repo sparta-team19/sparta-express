@@ -70,10 +70,10 @@ public class OrderService {
 
     // 주문 삭제
     @Transactional
-    public void deleteOrder(UUID id) {
+    public void deleteOrder(UUID id, String email) {
         Order order = orderRepository.findByIdAndIsDeleteFalse(id)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-        order.delete();
+        order.delete(email);
     }
 
 }

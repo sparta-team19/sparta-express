@@ -10,16 +10,16 @@ import java.util.UUID;
 @Getter
 public class CreateCompanyRequest {
 
-    @NotBlank
+    @NotBlank(message = "회사명은 필수 입력 항목입니다.")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "회사 주소는 필수 입력 항목입니다.")
     private String address;
 
-    @NotNull
+    @NotNull(message = "회사 종류는 필수 입력 항목입니다.")
     private CompanyType companyType;
 
-    @NotNull
+    @NotNull(message = "허브 ID는 필수 입력 항목입니다.")
     private UUID hubId;
 
 }

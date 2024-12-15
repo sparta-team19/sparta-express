@@ -8,6 +8,7 @@ import com.sparta_express.order_shipment.order.dto.CreateOrderRequest;
 import com.sparta_express.order_shipment.order.dto.OrderResponse;
 import com.sparta_express.order_shipment.order.dto.UpdateOrderRequest;
 import com.sparta_express.order_shipment.order.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class OrderController {
     // 주문 생성
     @PostMapping
     public ResponseEntity<ResponseDataDto<OrderResponse>> createOrder(
-            @RequestBody CreateOrderRequest createOrderRequest) {
+            @Valid @RequestBody CreateOrderRequest createOrderRequest) {
         Order order = orderService.createOrder(createOrderRequest);
         OrderResponse orderResponse = OrderResponse.from(order);
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.CREATE_SUCCESS, orderResponse));
@@ -61,8 +62,10 @@ public class OrderController {
 
     // 주문 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseMessageDto> deleteOrder(@PathVariable UUID id) {
-        orderService.deleteOrder(id);
+    public ResponseEntity<ResponseMessageDto> deleteOrder(
+            @RequestHeader("X-User-Id") String email,
+            @PathVariable UUID id) {
+        orderService.deleteOrder(id, email);
         return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_SUCCESS));
     }
 

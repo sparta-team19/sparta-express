@@ -8,6 +8,7 @@ import com.sparta_express.company_product.product.dto.ProductResponse;
 import com.sparta_express.company_product.product.dto.UpdateProductRequest;
 import com.sparta_express.company_product.product.model.Product;
 import com.sparta_express.company_product.product.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ProductController {
     // 상품 생성
     @PostMapping
     public ResponseEntity<ResponseDataDto<ProductResponse>> createProduct(
-            @RequestBody CreateProductRequest createProductRequest) {
+            @Valid @RequestBody CreateProductRequest createProductRequest) {
         Product product = productService.createProduct(createProductRequest);
         ProductResponse productResponse = ProductResponse.from(product);
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.CREATE_SUCCESS, productResponse));
@@ -60,8 +61,10 @@ public class ProductController {
 
     // 상품 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseMessageDto> deleteProduct(@PathVariable UUID id) {
-        productService.deleteProduct(id);
+    public ResponseEntity<ResponseMessageDto> deleteProduct(
+            @RequestHeader("X-User-Id") String email,
+            @PathVariable UUID id) {
+        productService.deleteProduct(id, email);
         return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_SUCCESS));
     }
 

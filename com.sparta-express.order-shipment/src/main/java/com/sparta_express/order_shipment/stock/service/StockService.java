@@ -64,10 +64,10 @@ public class StockService {
     }
 
     // 재고 삭제
-    public void deleteStock(UUID id) {
+    public void deleteStock(UUID id, String email) {
         Stock stock = stockRepository.findByIdAndIsDeleteFalse(id)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-        stock.delete();
+        stock.delete(email);
     }
 
 }

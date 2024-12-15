@@ -7,6 +7,7 @@ import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -24,27 +25,25 @@ public class BaseEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @CreatedBy
     @Column(nullable = false, updatable = false)
     private String createdBy;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @LastModifiedBy
     private String updatedBy;
 
     private LocalDateTime deletedAt;
 
+
     private String deletedBy;
 
-    @PrePersist
-    public void prePersist() {
-        createdBy = "John";
-    }
-
-    public void delete() {
+    public void delete(String email) {
         isDelete = true;
         deletedAt = LocalDateTime.now();
-        deletedBy = "John";
+        deletedBy = email;
     }
 
 }

@@ -61,10 +61,10 @@ public class ProductService {
 
     // 상품 삭제
     @Transactional
-    public void deleteProduct(UUID productId) {
+    public void deleteProduct(UUID productId, String email) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-        product.delete();
+        product.delete(email);
     }
 
 }

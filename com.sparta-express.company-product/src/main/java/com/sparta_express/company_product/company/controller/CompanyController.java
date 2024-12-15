@@ -8,6 +8,8 @@ import com.sparta_express.company_product.company.dto.CreateCompanyRequest;
 import com.sparta_express.company_product.company.dto.UpdateCompanyRequest;
 import com.sparta_express.company_product.company.model.Company;
 import com.sparta_express.company_product.company.service.CompanyService;
+import com.sparta_express.company_product.external.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +27,8 @@ public class CompanyController {
 
     // 업체 생성
     @PostMapping
-    public ResponseEntity<ResponseDataDto<CompanyResponse>> createCompany(@RequestBody CreateCompanyRequest createCompanyRequest) {
+    public ResponseEntity<ResponseDataDto<CompanyResponse>> createCompany(
+            @Valid @RequestBody CreateCompanyRequest createCompanyRequest) {
         Company company = companyService.createCompany(createCompanyRequest);
         CompanyResponse companyResponse = CompanyResponse.from(company);
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.CREATE_SUCCESS, companyResponse));
@@ -60,8 +63,10 @@ public class CompanyController {
 
     // 업체 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseMessageDto> deleteCompany(@PathVariable UUID id) {
-        companyService.deleteCompany(id);
+    public ResponseEntity<ResponseMessageDto> deleteCompany(
+            @RequestHeader("X-User-Id") String email,
+            @PathVariable UUID id) {
+        companyService.deleteCompany(id, email);
         return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_SUCCESS));
     }
 

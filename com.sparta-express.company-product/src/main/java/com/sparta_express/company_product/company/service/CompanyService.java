@@ -8,6 +8,7 @@ import com.sparta_express.company_product.company.model.Company;
 import com.sparta_express.company_product.company.repository.CompanyRepository;
 import com.sparta_express.company_product.external.Hub;
 import com.sparta_express.company_product.external.HubRepository;
+import com.sparta_express.company_product.external.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,10 +62,10 @@ public class CompanyService {
 
     // 업체 삭제
     @Transactional
-    public void deleteCompany(UUID companyId) {
+    public void deleteCompany(UUID companyId, String email) {
         Company company = companyRepository.findByIdAndIsDeleteFalse(companyId)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-        company.delete();
+        company.delete(email);
     }
 
 }

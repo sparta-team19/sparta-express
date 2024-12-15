@@ -22,7 +22,7 @@ public class CompanyResponse {
 
     private CompanyType companyType;
 
-    private Hub hub;
+    private UUID hubId;
 
     private List<Product> products;
 
@@ -32,7 +32,7 @@ public class CompanyResponse {
                 company.getName(),
                 company.getAddress(),
                 company.getCompanyType(),
-                company.getHub(),
+                company.getHub().getId(),
                 company.getProducts()
         );
     }
