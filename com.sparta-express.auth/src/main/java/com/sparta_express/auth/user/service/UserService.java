@@ -1,6 +1,7 @@
 package com.sparta_express.auth.user.service;
 
 import com.querydsl.core.types.Predicate;
+import com.sparta_express.auth.user.dto.DeliveryManagerResponseDto;
 import com.sparta_express.auth.user.dto.SignUpRequestDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
 import com.sparta_express.auth.user.dto.UserResponseDto;
@@ -24,4 +25,6 @@ public interface UserService {
     Void deleteUser(Long userId, User user);
 
     Page<UserResponseDto> serchUser(String userId, UserRole role, Predicate predicate, Pageable pageable);
+
+    DeliveryManagerResponseDto createDeliveryManager(String userId, UserRequestDto requestDto);
 }

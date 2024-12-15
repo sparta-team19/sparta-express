@@ -6,9 +6,11 @@ import com.sparta_express.auth.common.ErrorType;
 import com.sparta_express.auth.common.auditing.AuditorContext;
 import com.sparta_express.auth.config.AuthConfig;
 import com.sparta_express.auth.jwt.RefreshTokenRepository;
+import com.sparta_express.auth.user.dto.DeliveryManagerResponseDto;
 import com.sparta_express.auth.user.dto.SignUpRequestDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
 import com.sparta_express.auth.user.dto.UserResponseDto;
+import com.sparta_express.auth.user.entity.DeliveryManager;
 import com.sparta_express.auth.user.entity.User;
 import com.sparta_express.auth.user.entity.UserRole;
 import com.sparta_express.auth.user.repository.DeliveryManagerRepository;
@@ -106,6 +108,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<UserResponseDto> serchUser(String userId, UserRole role, Predicate predicate, Pageable pageable) {
         if(role != UserRole.MASTER) {
@@ -113,6 +116,15 @@ public class UserServiceImpl implements UserService {
         }
         Page<User> usersPage = userRepository.findAll(predicate, pageable);
         return usersPage.map(UserResponseDto::from);
+    }
+
+    @Transactional
+    @Override
+    public DeliveryManagerResponseDto createDeliveryManager(String userId, UserRequestDto requestDto) {
+        DeliveryManager deliveryManager = DeliveryManager.from(requestDto);
+        deliveryManagerRepository.save(deliveryManager);
+
+        return DeliveryManagerResponseDto.of(deliveryManager);
     }
 
     private boolean isLoginUserOrManager(Long userId, User loginUser) {

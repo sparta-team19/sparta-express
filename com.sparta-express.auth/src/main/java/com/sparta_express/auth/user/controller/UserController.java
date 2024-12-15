@@ -1,10 +1,13 @@
 package com.sparta_express.auth.user.controller;
 
 import com.querydsl.core.types.Predicate;
+import com.sparta_express.auth.common.CustomException;
+import com.sparta_express.auth.common.ErrorType;
 import com.sparta_express.auth.common.ResponseDataDto;
 import com.sparta_express.auth.common.ResponseMessageDto;
 import com.sparta_express.auth.common.ResponseStatus;
 import com.sparta_express.auth.security.UserDetailsImpl;
+import com.sparta_express.auth.user.dto.DeliveryManagerResponseDto;
 import com.sparta_express.auth.user.dto.SignUpRequestDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
 import com.sparta_express.auth.user.dto.UserResponseDto;
@@ -136,5 +139,17 @@ public class UserController {
             userService.serchUser(userId, role, predicate, pageable)));
     }
 
-
+    @PostMapping("/delivery")
+    public ResponseEntity<ResponseDataDto<DeliveryManagerResponseDto>> createDeliveryManager(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) UserRole role,
+        @RequestBody UserRequestDto requestDto
+    ) {
+        if (!(role == UserRole.DELIVERY_MANAGER || role == UserRole.MASTER)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        return ResponseEntity.ok(
+            new ResponseDataDto<>(ResponseStatus.CREATE_DELIVERY_MANAGER_SUCCESS,
+                userService.createDeliveryManager(userId, requestDto)));
+    }
 }
