@@ -6,7 +6,6 @@ import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,7 +24,7 @@ public class ShipmentRouteDomainService {
 
 
     public final ShipmentRoute findShipmentRoutes(UUID originHubId,
-                                                  Point destination) {
+                                                  Position destination) {
 
         List<Hub> hubList = hubRepo.readAllHubs();
 
@@ -33,7 +32,9 @@ public class ShipmentRouteDomainService {
                 = findFinalHubToDestination(hubList, destination);
 
         List<InterhubRoute> shipmentInterhubRoutes
-                = findShipmentInterhubRoutes(originHubId, finalHubToDestination.getFinalHubId(), hubList);
+                = findShipmentInterhubRoutes(
+                originHubId, finalHubToDestination.getFinalHubId(), hubList
+        );
 
         return ShipmentRoute.builder()
                 .interhubRoutes(shipmentInterhubRoutes)
@@ -42,18 +43,18 @@ public class ShipmentRouteDomainService {
     }
 
 
-    public final FinalHubToDestination findFinalHubToDestination(Point destinationPoint) {
+    public final FinalHubToDestination findFinalHubToDestination(Position destinationPoint) {
         return findFinalHubToDestination(hubRepo.readAllHubs(), destinationPoint);
     }
 
     protected final FinalHubToDestination findFinalHubToDestination(List<Hub> hubList,
-                                                                    Point destination) {
+                                                                    Position destination) {
 
-        assert (!hubList.isEmpty() && destination.isValid());
+        assert (!hubList.isEmpty());
 
         Hub finalHub = findNearestHub(destination, hubList);
 
-        HubToDestinationDTO route = mapApplication.searchRoute(finalHub.geometryPoint(), destination);
+        HubToDestinationDTO route = mapApplication.searchRoute(finalHub.geometryPosition(), destination);
 
         return FinalHubToDestination.builder()
                 .distanceKm(route.getDistanceKm())
@@ -63,16 +64,16 @@ public class ShipmentRouteDomainService {
     }
 
 
-    public final Hub findNearestHub(Point target) {
+    public final Hub findNearestHub(Position target) {
         return findNearestHub(target, hubRepo.readAllHubs());
     }
 
-    protected final Hub findNearestHub(Point target, List<Hub> hubList) {
+    protected final Hub findNearestHub(Position target, List<Hub> hubList) {
 
-        assert (!hubList.isEmpty() && target.isValid());
+        assert (!hubList.isEmpty());
 
         Hub nearestHub = hubList.stream().min(
-                comparingDouble(hub -> hub.geometryPoint().distance(target))
+                comparingDouble(hub -> hub.geometryPosition().distance(target))
         ).orElseThrow();
 
         return nearestHub;

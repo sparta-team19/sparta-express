@@ -1,13 +1,13 @@
 package com.sparta_express.hub.application;
 
+import com.sparta_express.hub.domain.Position;
 import com.sparta_express.hub.domain.ShipmentRouteDomainService;
 import com.sparta_express.hub.domain.model.FinalHubToDestination;
 import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
-import com.sparta_express.hub.infrastructure.map.MapApplicationImpl;
+import com.sparta_express.hub.infrastructure.map.MapInfra;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Point;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ShipmentRouteService {
 
     private final ShipmentRouteDomainService shipmentRouteDomainService;
-    private final MapApplicationImpl mapApp;
+    private final MapInfra mapApp;
 
 
     @Cacheable(cacheNames = "shipmentRoutes",
@@ -28,7 +28,7 @@ public class ShipmentRouteService {
     public ShipmentRoute findShipmentRoutes(UUID originHubId, String destinationAddress) {
 
         return shipmentRouteDomainService.findShipmentRoutes(
-                originHubId, findGeometryPoint(destinationAddress)
+                originHubId, findGeometryPosition(destinationAddress)
         );
     }
 
@@ -46,7 +46,7 @@ public class ShipmentRouteService {
     public final FinalHubToDestination findFinalHubToDestination(String destinationAddress) {
 
         return shipmentRouteDomainService.findFinalHubToDestination(
-                findGeometryPoint(destinationAddress)
+                findGeometryPosition(destinationAddress)
         );
     }
 
@@ -54,11 +54,12 @@ public class ShipmentRouteService {
     public final Hub findNearestHub(String address) {
 
         return shipmentRouteDomainService.findNearestHub(
-                findGeometryPoint(address)
+                findGeometryPosition(address)
         );
     }
 
-    protected final Point findGeometryPoint(String address) {
+    @Cacheable(cacheNames = "addressGeometryPositions", key = "#address")
+    protected final Position findGeometryPosition(String address) {
 
         return mapApp.searchGeometryPoint(address);
     }

@@ -1,15 +1,13 @@
 package com.sparta_express.hub.domain.model;
 
 
+import com.sparta_express.hub.domain.Position;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.geotools.geometry.jts.JTSFactoryFinder;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Point;
 
 import java.util.UUID;
 
@@ -34,10 +32,12 @@ public class Hub extends BaseEntity {
     @Column
     private Double longitude;
 
-    public Point geometryPoint() {
+    public Position geometryPosition() {
 
-        return JTSFactoryFinder.getGeometryFactory().createPoint(
-                new Coordinate(this.latitude, this.longitude)
-        );
+        return Position.builder()
+                .latitude(latitude)
+                .longitude(longitude)
+                .build();
     }
+
 }
