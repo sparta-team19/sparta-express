@@ -151,6 +151,16 @@ public class UserServiceImpl implements UserService {
         return DeliveryManagerResponseDto.of(deliveryManager);
     }
 
+    @Transactional
+    @Override
+    public DeliveryManagerResponseDto updateDeliveryManager(UUID deliveryId,
+        UserRequestDto requestDto) {
+        DeliveryManager deliveryManager = deliveryManagerRepository.findById(deliveryId).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
+        deliveryManager.updateDeliveryManager(requestDto);
+        return DeliveryManagerResponseDto.of(deliveryManager);
+    }
+
     private boolean isLoginUserOrManager(Long userId, User loginUser) {
         if(userId.equals(loginUser.getId()) || UserRole.MASTER == loginUser.getRole()) {
             return true;

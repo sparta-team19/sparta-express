@@ -141,6 +141,13 @@ public class UserController {
             userService.serchUser(userId, role, predicate, pageable)));
     }
 
+    /**
+     * 배송 담당자 등록
+     * @param userId
+     * @param role
+     * @param requestDto
+     * @return
+     */
     @PostMapping("/delivery")
     public ResponseEntity<ResponseDataDto<DeliveryManagerResponseDto>> createDeliveryManager(
         @RequestHeader(value = "X-User-Id", required = true) String userId,
@@ -155,6 +162,13 @@ public class UserController {
                 userService.createDeliveryManager(userId, requestDto)));
     }
 
+    /**
+     * 배송 담당자 정보 조회
+     * @param userId
+     * @param role
+     * @param pageable
+     * @return
+     */
     @GetMapping("/delivery")
     public ResponseEntity<ResponseDataDto<Page<DeliveryManagerResponseDto>>> getDeliveryManagers(
         @RequestHeader(value = "X-User-Id", required = true) String userId,
@@ -169,6 +183,12 @@ public class UserController {
                 userService.getDeliveryManagers(userId, pageable)));
     }
 
+    /**
+     * 배송 담당자 정보 단일 조회
+     * @param role
+     * @param deliveryId
+     * @return
+     */
     @GetMapping("/delivery/{deliveryId}")
     public ResponseEntity<ResponseDataDto<DeliveryManagerResponseDto>> getDeliveryManager(
         @RequestHeader(value = "X-Role", required = true) UserRole role,
@@ -180,5 +200,19 @@ public class UserController {
         return ResponseEntity.ok(
             new ResponseDataDto<>(ResponseStatus.GET_DELIVERY_MANAGER_SUCCESS,
                 userService.getDeliveryManager(deliveryId)));
+    }
+
+    @PutMapping("/delivery/{deliveryId}")
+    public ResponseEntity<ResponseDataDto<DeliveryManagerResponseDto>> updateDeliveryManager(
+        @RequestHeader(value = "X-Role", required = true) UserRole role,
+        @PathVariable UUID deliveryId,
+        @RequestBody UserRequestDto requestDto
+    ) {
+        if (!(role == UserRole.DELIVERY_MANAGER || role == UserRole.MASTER)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        return ResponseEntity.ok(
+            new ResponseDataDto<>(ResponseStatus.GET_DELIVERY_MANAGER_SUCCESS,
+                userService.updateDeliveryManager(deliveryId, requestDto)));
     }
 }

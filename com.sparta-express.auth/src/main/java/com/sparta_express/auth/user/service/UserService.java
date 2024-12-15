@@ -32,4 +32,6 @@ public interface UserService {
     Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable);
 
     DeliveryManagerResponseDto getDeliveryManager(UUID deliveryId);
+
+    DeliveryManagerResponseDto updateDeliveryManager(UUID deliveryId, UserRequestDto requestDto);
 }

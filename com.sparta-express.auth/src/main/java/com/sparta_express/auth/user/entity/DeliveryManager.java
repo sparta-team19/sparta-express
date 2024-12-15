@@ -62,4 +62,10 @@ public class DeliveryManager extends BaseEntity {
             .deliverySequence(deliverySequence)
             .build();
     }
+
+    public void updateDeliveryManager(UserRequestDto requestDto) {
+        builder()
+            .type(requestDto.getType())
+            .build();
+    }
 }
