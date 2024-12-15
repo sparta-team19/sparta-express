@@ -93,6 +93,7 @@ public class UserServiceImpl implements UserService {
         return UserResponseDto.from(user);
     }
 
+    @Transactional
     @Override
     public Void deleteUser(Long userId, User loginUser) {
         if(isLoginUserOrManager(userId, loginUser)) {

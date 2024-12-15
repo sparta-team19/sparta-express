@@ -78,6 +78,7 @@ public class UserController {
 
     /**
      * 유저 정보 수정
+     *
      * @param userId
      * @param userDetails
      * @return
@@ -87,16 +88,24 @@ public class UserController {
         @PathVariable Long userId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody UserRequestDto requestDto) {
-        UserResponseDto responseDto = userService.updateUser(userId, userDetails.getUser(), requestDto);
+        UserResponseDto responseDto = userService.updateUser(userId, userDetails.getUser(),
+            requestDto);
         return ResponseEntity.ok(new ResponseDataDto(ResponseStatus.UPDATE_USER_SUCCESS,
             responseDto));
     }
 
+    /**
+     * 회원 삭제
+     *
+     * @param userId
+     * @param userDetails
+     * @return
+     */
     @DeleteMapping("/{userId}")
     public ResponseEntity<ResponseMessageDto> deleteUser(
         @PathVariable Long userId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        userService.deleteUser(userId,userDetails.getUser());
+        userService.deleteUser(userId, userDetails.getUser());
         return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_USER_SUCCESS));
     }
 }
