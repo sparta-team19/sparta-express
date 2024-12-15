@@ -1,5 +1,7 @@
 package com.sparta_express.auth.security;
 
+import com.sparta_express.auth.common.CustomException;
+import com.sparta_express.auth.common.ErrorType;
 import com.sparta_express.auth.user.entity.User;
 import com.sparta_express.auth.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userRepository.findByEmailAndIsDeleted(email, Boolean.FALSE)
             .orElseThrow(
-                () -> new UsernameNotFoundException("Not found" + email));
+                () -> new CustomException(ErrorType.NOT_FOUND_USER));
 
         return new UserDetailsImpl(user);
     }
