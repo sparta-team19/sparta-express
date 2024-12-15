@@ -1,4 +1,4 @@
-package com.sparta_express.hub.domain.repository;
+package com.sparta_express.hub.domain;
 
 import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;

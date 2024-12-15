@@ -1,4 +1,4 @@
-package com.sparta_express.hub.infrastructure.config;
+package com.sparta_express.hub.infrastructure.repository;
 
 import com.sparta_express.hub.common.utils.RequestExtractor;
 import org.springframework.data.domain.AuditorAware;

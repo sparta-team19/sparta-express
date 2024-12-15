@@ -2,7 +2,7 @@ package com.sparta_express.hub.infrastructure.repository;
 
 import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;
-import com.sparta_express.hub.domain.repository.HubRepository;
+import com.sparta_express.hub.domain.HubRepository;
 
 import java.util.List;
 

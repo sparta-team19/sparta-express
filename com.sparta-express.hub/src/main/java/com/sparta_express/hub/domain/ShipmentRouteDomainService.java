@@ -1,12 +1,9 @@
-package com.sparta_express.hub.domain.service;
+package com.sparta_express.hub.domain;
 
-import com.sparta_express.hub.domain.dto.HubToDestinationRoute;
-import com.sparta_express.hub.domain.map.MapApplication;
 import com.sparta_express.hub.domain.model.FinalHubToDestination;
 import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
-import com.sparta_express.hub.domain.repository.HubRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.locationtech.jts.geom.Point;
@@ -56,7 +53,7 @@ public class ShipmentRouteDomainService {
 
         Hub finalHub = findNearestHub(destination, hubList);
 
-        HubToDestinationRoute route = mapApplication.searchRoute(finalHub.geometryPoint(), destination);
+        HubToDestinationDTO route = mapApplication.searchRoute(finalHub.geometryPoint(), destination);
 
         return FinalHubToDestination.builder()
                 .distanceKm(route.getDistanceKm())
@@ -96,6 +93,7 @@ public class ShipmentRouteDomainService {
                 && hubList.stream().anyMatch(hub -> hub.getId().equals(originHubId))
                 && hubList.stream().anyMatch(hub -> hub.getId().equals(destinationHubId)));
 
+
         Map<UUID, List<InterhubRoute>> hubGraph
                 = hubRepo.readAllInterhubRoutes().stream().collect(
                 Collectors.groupingBy(InterhubRoute::getOriginHubId)
@@ -119,8 +117,8 @@ public class ShipmentRouteDomainService {
                 hubRouteMemo.put(hubId, newRouteInfo);
 
                 List<HubRouteInfo> nextHubsToAdd
-                        = hubGraph.get(hubId).stream().map(
-                        nextInterhubRoute -> {
+                        = hubGraph.get(hubId).stream().map(nextInterhubRoute -> {
+
                             int nextDistance = newDistance + nextInterhubRoute.getDistanceKm();
                             UUID nextHubId = nextInterhubRoute.getDestinationHubId();
                             List<InterhubRoute> nextInterhubRoutes = newRouteInfo.getInterhubRoutes();
