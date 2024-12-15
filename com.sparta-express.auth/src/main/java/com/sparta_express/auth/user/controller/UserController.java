@@ -15,6 +15,7 @@ import com.sparta_express.auth.user.entity.User;
 import com.sparta_express.auth.user.entity.UserRole;
 import com.sparta_express.auth.user.service.UserService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -165,5 +167,18 @@ public class UserController {
         return ResponseEntity.ok(
             new ResponseDataDto<>(ResponseStatus.GET_DELIVERY_MANAGER_SUCCESS,
                 userService.getDeliveryManagers(userId, pageable)));
+    }
+
+    @GetMapping("/delivery/{deliveryId}")
+    public ResponseEntity<ResponseDataDto<DeliveryManagerResponseDto>> getDeliveryManager(
+        @RequestHeader(value = "X-Role", required = true) UserRole role,
+        @PathVariable UUID deliveryId
+    ) {
+        if (!(role == UserRole.DELIVERY_MANAGER || role == UserRole.MASTER)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        return ResponseEntity.ok(
+            new ResponseDataDto<>(ResponseStatus.GET_DELIVERY_MANAGER_SUCCESS,
+                userService.getDeliveryManager(deliveryId)));
     }
 }

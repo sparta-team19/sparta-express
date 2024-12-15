@@ -17,6 +17,7 @@ import com.sparta_express.auth.user.repository.DeliveryManagerRepository;
 import com.sparta_express.auth.user.repository.UserRepository;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.util.UUID;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -132,6 +133,14 @@ public class UserServiceImpl implements UserService {
     public Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable) {
         Page<DeliveryManager> deliveryManagerPage = deliveryManagerRepository.findAll(pageable);
         return deliveryManagerPage.map(DeliveryManagerResponseDto::of);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public DeliveryManagerResponseDto getDeliveryManager(UUID deliveryId) {
+        DeliveryManager deliveryManager = deliveryManagerRepository.findById(deliveryId).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
+        return DeliveryManagerResponseDto.of(deliveryManager);
     }
 
     private boolean isLoginUserOrManager(Long userId, User loginUser) {

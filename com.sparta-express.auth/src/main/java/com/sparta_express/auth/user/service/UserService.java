@@ -7,6 +7,7 @@ import com.sparta_express.auth.user.dto.UserRequestDto;
 import com.sparta_express.auth.user.dto.UserResponseDto;
 import com.sparta_express.auth.user.entity.User;
 import com.sparta_express.auth.user.entity.UserRole;
+import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -29,4 +30,6 @@ public interface UserService {
     DeliveryManagerResponseDto createDeliveryManager(String userId, UserRequestDto requestDto);
 
     Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable);
+
+    DeliveryManagerResponseDto getDeliveryManager(UUID deliveryId);
 }
