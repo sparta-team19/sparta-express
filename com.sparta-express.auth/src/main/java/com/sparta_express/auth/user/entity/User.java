@@ -74,6 +74,7 @@ public class User extends BaseEntity {
             .nickname(requestDto.getNickname())
             .slackId(requestDto.getSlackId())
             .role(requestDto.getRole())
+            .isPublic(Boolean.TRUE)
             .build();
     }
 

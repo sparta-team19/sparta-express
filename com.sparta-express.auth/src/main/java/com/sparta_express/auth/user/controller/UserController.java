@@ -1,5 +1,6 @@
 package com.sparta_express.auth.user.controller;
 
+import com.querydsl.core.types.Predicate;
 import com.sparta_express.auth.common.ResponseDataDto;
 import com.sparta_express.auth.common.ResponseMessageDto;
 import com.sparta_express.auth.common.ResponseStatus;
@@ -7,11 +8,16 @@ import com.sparta_express.auth.security.UserDetailsImpl;
 import com.sparta_express.auth.user.dto.SignUpRequestDto;
 import com.sparta_express.auth.user.dto.UserRequestDto;
 import com.sparta_express.auth.user.dto.UserResponseDto;
+import com.sparta_express.auth.user.entity.User;
+import com.sparta_express.auth.user.entity.UserRole;
 import com.sparta_express.auth.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -108,4 +115,26 @@ public class UserController {
         userService.deleteUser(userId, userDetails.getUser());
         return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_USER_SUCCESS));
     }
+
+    /**
+     * 회원 검색
+     *
+     * @param userId
+     * @param role
+     * @param pageable
+     * @param predicate
+     * @return
+     */
+    @GetMapping("search")
+    public ResponseEntity<ResponseDataDto<Page<UserResponseDto>>> searchUser(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) UserRole role,
+        @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable,
+        @QuerydslPredicate(root = User.class) Predicate predicate
+    ) {
+        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.SEARCH_USER_SUCCESS,
+            userService.serchUser(userId, role, predicate, pageable)));
+    }
+
+
 }

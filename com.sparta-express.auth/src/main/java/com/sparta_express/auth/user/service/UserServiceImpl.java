@@ -1,5 +1,6 @@
 package com.sparta_express.auth.user.service;
 
+import com.querydsl.core.types.Predicate;
 import com.sparta_express.auth.common.CustomException;
 import com.sparta_express.auth.common.ErrorType;
 import com.sparta_express.auth.common.auditing.AuditorContext;
@@ -103,6 +104,15 @@ public class UserServiceImpl implements UserService {
             user.setIsDeleted(Boolean.TRUE);
         }
         return null;
+    }
+
+    @Override
+    public Page<UserResponseDto> serchUser(String userId, UserRole role, Predicate predicate, Pageable pageable) {
+        if(role != UserRole.MASTER) {
+            new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        Page<User> usersPage = userRepository.findAll(predicate, pageable);
+        return usersPage.map(UserResponseDto::from);
     }
 
     private boolean isLoginUserOrManager(Long userId, User loginUser) {

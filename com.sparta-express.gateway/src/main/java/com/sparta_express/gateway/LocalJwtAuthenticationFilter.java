@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -54,11 +55,12 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
                 .verifyWith(key)
                 .build().parseSignedClaims(token);
             log.info("#####payload :: " + claimsJws.getPayload().toString());
-            Claims claims = claimsJws.getBody();
+            Claims claims = claimsJws.getPayload();
             exchange.getRequest().mutate()
                 .header("X-User-Id", claims.get("user_id").toString())
                 .header("X-Role", claims.get("role").toString())
                 .build();
+
             // 추가적인 검증 로직 (예: 토큰 만료 여부 확인, 로그인 체크 검증 로직 등)을 여기에 추가할 수 있습니다.
             return true;
         } catch (Exception e) {
