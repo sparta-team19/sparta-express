@@ -20,7 +20,8 @@ public enum ResponseStatus {
     CREATE_DELIVERY_MANAGER_SUCCESS(HttpStatus.CREATED, "배송 담당자 등록에 성공했습니다."),
     GET_DELIVERY_MANAGER_SUCCESS(HttpStatus.OK, "배송 담당자 조회에 성공했습니다."),
     PUT_DELIVERY_MANAGER_SUCCESS(HttpStatus.OK, "배송 담당자 수정에 성공했습니다."),
-    DELETE_DELIVERY_MANAGER_SUCCESS(HttpStatus.OK, "배송 담당자 삭제에 성공했습니다.");
+    DELETE_DELIVERY_MANAGER_SUCCESS(HttpStatus.OK, "배송 담당자 삭제에 성공했습니다."),
+    SEARCH_DELIVERY_MANAGER_SUCCESS(HttpStatus.OK, "배송 담당자 검색에 성공했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

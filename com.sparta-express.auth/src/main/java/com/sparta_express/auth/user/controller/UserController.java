@@ -245,4 +245,18 @@ public class UserController {
         return ResponseEntity.ok(
             new ResponseMessageDto(ResponseStatus.DELETE_DELIVERY_MANAGER_SUCCESS));
     }
+
+    @GetMapping("/delivery/search")
+    public ResponseEntity<ResponseDataDto<Page<DeliveryManagerResponseDto>>> searchDeliveryManager(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) UserRole role,
+        @PageableDefault(sort = "id", direction = Direction.DESC) Pageable pageable,
+        @QuerydslPredicate(root = User.class) Predicate predicate
+    ) {
+        if (!(role == UserRole.DELIVERY_MANAGER || role == UserRole.MASTER)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.SEARCH_DELIVERY_MANAGER_SUCCESS,
+            userService.searchDeliveryManager(predicate, pageable)));
+    }
 }

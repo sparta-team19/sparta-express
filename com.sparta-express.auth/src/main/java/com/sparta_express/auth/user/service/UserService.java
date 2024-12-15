@@ -36,4 +36,6 @@ public interface UserService {
     DeliveryManagerResponseDto updateDeliveryManager(UUID deliveryId, UserRequestDto requestDto);
 
     void deleteDeliveryManager(UUID deliveryId);
+
+    Page<DeliveryManagerResponseDto> searchDeliveryManager(Predicate predicate, Pageable pageable);
 }

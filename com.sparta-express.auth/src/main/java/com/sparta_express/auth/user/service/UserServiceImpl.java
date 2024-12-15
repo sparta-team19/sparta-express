@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable) {
         Page<DeliveryManager> deliveryManagerPage = deliveryManagerRepository.findAll(pageable);
-        return deliveryManagerPage.map(DeliveryManagerResponseDto::of);
+        return deliveryManagerPage.map(DeliveryManagerResponseDto::from);
     }
 
     @Transactional(readOnly = true)
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
         DeliveryManager deliveryManager = deliveryManagerRepository.findById(deliveryId)
             .orElseThrow(() ->
                 new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
-        return DeliveryManagerResponseDto.of(deliveryManager);
+        return DeliveryManagerResponseDto.from(deliveryManager);
     }
 
     @Transactional
@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() ->
                 new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
         deliveryManager.updateDeliveryManager(requestDto);
-        return DeliveryManagerResponseDto.of(deliveryManager);
+        return DeliveryManagerResponseDto.from(deliveryManager);
     }
 
     @Transactional
@@ -173,6 +173,14 @@ public class UserServiceImpl implements UserService {
                 new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
 
         deliveryManager.setIsDeleted(Boolean.TRUE);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<DeliveryManagerResponseDto> searchDeliveryManager(Predicate predicate,
+        Pageable pageable) {
+        Page<DeliveryManager> deliveryManagerPage = deliveryManagerRepository.findAll(predicate, pageable);
+        return deliveryManagerPage.map(DeliveryManagerResponseDto::from);
     }
 
     private boolean isLoginUserOrManager(Long userId, User loginUser) {

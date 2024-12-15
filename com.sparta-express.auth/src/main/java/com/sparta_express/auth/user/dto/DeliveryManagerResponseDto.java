@@ -23,7 +23,7 @@ public class DeliveryManagerResponseDto {
         this.deliverySequence = deliverySequence;
     }
 
-    public static DeliveryManagerResponseDto of(DeliveryManager deliveryManager) {
+    public static DeliveryManagerResponseDto from(DeliveryManager deliveryManager) {
         return builder()
             .deliveryManagerId(deliveryManager.getId())
             .type(deliveryManager.getType())
