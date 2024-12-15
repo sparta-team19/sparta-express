@@ -23,7 +23,7 @@ spring:
           predicates:
             - Path=/api/v1/users/**
 
-        - id: ai-slcak
+        - id: ai-slack
           uri: lb://ai-slack
           predicates:
             - Path=/api/v1/ai/**
