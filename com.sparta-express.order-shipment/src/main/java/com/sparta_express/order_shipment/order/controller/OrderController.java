@@ -43,7 +43,7 @@ public class OrderController {
 
     // 주문 상세 조회
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDataDto<OrderResponse>> getOrderById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDataDto<OrderResponse>> getOrderById(@PathVariable UUID id) {
         Order order = orderService.getOrderById(id);
         OrderResponse orderResponse = OrderResponse.from(order);
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.DETAIL_SUCCESS, orderResponse));

@@ -39,4 +39,8 @@ public class Stock extends com.sparta_express.order_shipment.common.BaseEntity {
         return new Stock(product, hub, stockQuantity);
     }
 
+    public void update(Integer stockQuantity) {
+        if (stockQuantity != null) this.stockQuantity = stockQuantity;
+    }
+
 }

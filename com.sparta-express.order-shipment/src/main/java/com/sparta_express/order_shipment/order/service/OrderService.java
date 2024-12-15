@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,7 +55,7 @@ public class OrderService {
     }
 
     // 주문 상세 조회
-    public Order getOrderById(Long id) {
+    public Order getOrderById(UUID id) {
         return orderRepository.findByIdAndIsDeleteFalse(id)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
     }
