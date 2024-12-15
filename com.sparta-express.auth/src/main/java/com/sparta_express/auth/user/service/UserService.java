@@ -34,4 +34,6 @@ public interface UserService {
     DeliveryManagerResponseDto getDeliveryManager(UUID deliveryId);
 
     DeliveryManagerResponseDto updateDeliveryManager(UUID deliveryId, UserRequestDto requestDto);
+
+    void deleteDeliveryManager(UUID deliveryId);
 }

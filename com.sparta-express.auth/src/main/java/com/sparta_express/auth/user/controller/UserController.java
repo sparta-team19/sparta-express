@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -143,6 +142,7 @@ public class UserController {
 
     /**
      * 배송 담당자 등록
+     *
      * @param userId
      * @param role
      * @param requestDto
@@ -164,6 +164,7 @@ public class UserController {
 
     /**
      * 배송 담당자 정보 조회
+     *
      * @param userId
      * @param role
      * @param pageable
@@ -185,6 +186,7 @@ public class UserController {
 
     /**
      * 배송 담당자 정보 단일 조회
+     *
      * @param role
      * @param deliveryId
      * @return
@@ -202,6 +204,14 @@ public class UserController {
                 userService.getDeliveryManager(deliveryId)));
     }
 
+    /**
+     * 배송 담당자 수정
+     *
+     * @param role
+     * @param deliveryId
+     * @param requestDto
+     * @return
+     */
     @PutMapping("/delivery/{deliveryId}")
     public ResponseEntity<ResponseDataDto<DeliveryManagerResponseDto>> updateDeliveryManager(
         @RequestHeader(value = "X-Role", required = true) UserRole role,
@@ -212,7 +222,27 @@ public class UserController {
             throw new CustomException(ErrorType.ACCESS_DENIED);
         }
         return ResponseEntity.ok(
-            new ResponseDataDto<>(ResponseStatus.GET_DELIVERY_MANAGER_SUCCESS,
+            new ResponseDataDto<>(ResponseStatus.PUT_DELIVERY_MANAGER_SUCCESS,
                 userService.updateDeliveryManager(deliveryId, requestDto)));
+    }
+
+    /**
+     * 배송 담당자 삭제
+     *
+     * @param role
+     * @param deliveryId
+     * @return
+     */
+    @DeleteMapping("/delivery/{deliveryId}")
+    public ResponseEntity<ResponseMessageDto> deleteDeliveryManager(
+        @RequestHeader(value = "X-Role", required = true) UserRole role,
+        @PathVariable UUID deliveryId
+    ) {
+        if (!(role == UserRole.DELIVERY_MANAGER || role == UserRole.MASTER)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        userService.deleteDeliveryManager(deliveryId);
+        return ResponseEntity.ok(
+            new ResponseMessageDto(ResponseStatus.DELETE_DELIVERY_MANAGER_SUCCESS));
     }
 }

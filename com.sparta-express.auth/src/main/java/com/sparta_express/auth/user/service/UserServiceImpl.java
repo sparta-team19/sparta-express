@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Void deleteUser(Long userId, User loginUser) {
-        if(isLoginUserOrManager(userId, loginUser)) {
+        if (isLoginUserOrManager(userId, loginUser)) {
             User user = userRepository.findById(userId).orElseThrow(() ->
                 new CustomException(ErrorType.NOT_FOUND_USER));
 
@@ -111,8 +111,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<UserResponseDto> serchUser(String userId, UserRole role, Predicate predicate, Pageable pageable) {
-        if(role != UserRole.MASTER) {
+    public Page<UserResponseDto> serchUser(String userId, UserRole role, Predicate predicate,
+        Pageable pageable) {
+        if (role != UserRole.MASTER) {
             new CustomException(ErrorType.ACCESS_DENIED);
         }
         Page<User> usersPage = userRepository.findAll(predicate, pageable);
@@ -121,7 +122,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public DeliveryManagerResponseDto createDeliveryManager(String userId, UserRequestDto requestDto) {
+    public DeliveryManagerResponseDto createDeliveryManager(String userId,
+        UserRequestDto requestDto) {
 
         // 현재 최대 deliverySequence 값 조회
         Integer maxSequence = deliveryManagerRepository.findMaxDeliverySequence();
@@ -146,8 +148,9 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public DeliveryManagerResponseDto getDeliveryManager(UUID deliveryId) {
-        DeliveryManager deliveryManager = deliveryManagerRepository.findById(deliveryId).orElseThrow(() ->
-            new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
+        DeliveryManager deliveryManager = deliveryManagerRepository.findById(deliveryId)
+            .orElseThrow(() ->
+                new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
         return DeliveryManagerResponseDto.of(deliveryManager);
     }
 
@@ -155,14 +158,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public DeliveryManagerResponseDto updateDeliveryManager(UUID deliveryId,
         UserRequestDto requestDto) {
-        DeliveryManager deliveryManager = deliveryManagerRepository.findById(deliveryId).orElseThrow(() ->
-            new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
+        DeliveryManager deliveryManager = deliveryManagerRepository.findById(deliveryId)
+            .orElseThrow(() ->
+                new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
         deliveryManager.updateDeliveryManager(requestDto);
         return DeliveryManagerResponseDto.of(deliveryManager);
     }
 
+    @Transactional
+    @Override
+    public void deleteDeliveryManager(UUID deliveryId) {
+        DeliveryManager deliveryManager = deliveryManagerRepository.findById(deliveryId)
+            .orElseThrow(() ->
+                new CustomException(ErrorType.NOT_FOUND_DELIVERY_MANAGER));
+
+        deliveryManager.setIsDeleted(Boolean.TRUE);
+    }
+
     private boolean isLoginUserOrManager(Long userId, User loginUser) {
-        if(userId.equals(loginUser.getId()) || UserRole.MASTER == loginUser.getRole()) {
+        if (userId.equals(loginUser.getId()) || UserRole.MASTER == loginUser.getRole()) {
             return true;
         } else {
             new CustomException(ErrorType.UNAUTHORIZED_ACCESS);
@@ -172,7 +186,7 @@ public class UserServiceImpl implements UserService {
 
     // 본인 확인
     private void validateUserModification(Long userId, User loginUser) {
-        if(!userId.equals(loginUser.getId())) {
+        if (!userId.equals(loginUser.getId())) {
             new CustomException(ErrorType.UNAUTHORIZED_ACCESS);
         }
     }
