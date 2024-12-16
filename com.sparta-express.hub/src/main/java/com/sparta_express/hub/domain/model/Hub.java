@@ -4,17 +4,14 @@ package com.sparta_express.hub.domain.model;
 import com.sparta_express.hub.domain.Position;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 
 //root aggregate
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @Getter

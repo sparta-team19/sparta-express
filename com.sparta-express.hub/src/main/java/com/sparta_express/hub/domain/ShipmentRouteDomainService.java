@@ -90,9 +90,9 @@ public class ShipmentRouteDomainService {
                                                                    UUID destinationHubId,
                                                                    List<Hub> hubList) {
 
-        assert (originHubId != destinationHubId
-                && hubList.stream().anyMatch(hub -> hub.getId().equals(originHubId))
-                && hubList.stream().anyMatch(hub -> hub.getId().equals(destinationHubId)));
+        assert (originHubId != destinationHubId);
+        assert (hubList.stream().anyMatch(hub -> hub.getId().equals(originHubId)));
+        assert (hubList.stream().anyMatch(hub -> hub.getId().equals(destinationHubId)));
 
 
         Map<UUID, List<InterhubRoute>> hubGraph
@@ -119,15 +119,15 @@ public class ShipmentRouteDomainService {
 
                 List<HubRouteInfo> nextHubsToAdd
                         = hubGraph.get(hubId).stream().map(nextInterhubRoute -> {
-
                             int nextDistance = newDistance + nextInterhubRoute.getDistanceKm();
                             UUID nextHubId = nextInterhubRoute.getDestinationHubId();
-                            List<InterhubRoute> nextInterhubRoutes = newRouteInfo.getInterhubRoutes();
+                            List<InterhubRoute> nextInterhubRoutes = new ArrayList<>(newRouteInfo.getInterhubRoutes());
                             nextInterhubRoutes.add(nextInterhubRoute);
 
                             return new HubRouteInfo(nextDistance, nextInterhubRoutes, nextHubId);
                         }
                 ).toList();
+
                 hubRouteQue.addAll(nextHubsToAdd);
             }
         }
