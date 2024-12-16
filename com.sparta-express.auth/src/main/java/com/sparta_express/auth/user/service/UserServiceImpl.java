@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable) {
+    public Page<DeliveryManagerResponseDto> getDeliveryManagers(Pageable pageable) {
         Page<DeliveryManager> deliveryManagerPage = deliveryManagerRepository.findAll(pageable);
         return deliveryManagerPage.map(DeliveryManagerResponseDto::from);
     }

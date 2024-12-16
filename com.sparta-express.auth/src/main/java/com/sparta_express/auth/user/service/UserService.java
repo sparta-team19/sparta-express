@@ -29,7 +29,7 @@ public interface UserService {
 
     DeliveryManagerResponseDto createDeliveryManager(Long id, String userId, UserRequestDto requestDto);
 
-    Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable);
+    Page<DeliveryManagerResponseDto> getDeliveryManagers(Pageable pageable);
 
     DeliveryManagerResponseDto getDeliveryManager(UUID deliveryId);
 

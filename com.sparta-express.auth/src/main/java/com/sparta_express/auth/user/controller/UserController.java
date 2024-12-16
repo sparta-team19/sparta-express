@@ -183,7 +183,7 @@ public class UserController {
         }
         return ResponseEntity.ok(
             new ResponseDataDto<>(ResponseStatus.GET_DELIVERY_MANAGER_SUCCESS,
-                userService.getDeliveryManagers(userId, pageable)));
+                userService.getDeliveryManagers(pageable)));
     }
 
     /**
