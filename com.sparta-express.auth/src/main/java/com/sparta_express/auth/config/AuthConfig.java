@@ -38,7 +38,7 @@ public class AuthConfig {
 
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/v1/users/signup", "/users/login").permitAll()
+                .requestMatchers("/api/v1/users/**", "/users/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
