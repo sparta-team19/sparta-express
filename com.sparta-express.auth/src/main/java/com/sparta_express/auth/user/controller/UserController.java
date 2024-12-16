@@ -144,13 +144,15 @@ public class UserController {
      * 배송 담당자 등록
      *
      * @param userId
+     * @param email
      * @param role
      * @param requestDto
      * @return
      */
-    @PostMapping("/delivery")
+    @PostMapping("/{userId}/delivery")
     public ResponseEntity<ResponseDataDto<DeliveryManagerResponseDto>> createDeliveryManager(
-        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @PathVariable Long userId,
+        @RequestHeader(value = "X-User-Id", required = true) String email,
         @RequestHeader(value = "X-Role", required = true) UserRole role,
         @RequestBody UserRequestDto requestDto
     ) {
@@ -159,7 +161,7 @@ public class UserController {
         }
         return ResponseEntity.ok(
             new ResponseDataDto<>(ResponseStatus.CREATE_DELIVERY_MANAGER_SUCCESS,
-                userService.createDeliveryManager(userId, requestDto)));
+                userService.createDeliveryManager(userId, email, requestDto)));
     }
 
     /**
