@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 public interface DeliveryManagerRepository extends JpaRepository<DeliveryManager, UUID>,
@@ -17,6 +18,7 @@ public interface DeliveryManagerRepository extends JpaRepository<DeliveryManager
 
     Optional<DeliveryManager> findByUserId(Long id);
 
+    @Query("SELECT MAX(d.deliverySequence) FROM DeliveryManager d")
     Integer findMaxDeliverySequence();
 
     Page<DeliveryManager> findAll(Predicate predicate, Pageable pageable);
