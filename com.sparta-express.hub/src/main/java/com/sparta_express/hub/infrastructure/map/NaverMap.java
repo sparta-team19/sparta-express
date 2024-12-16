@@ -20,6 +20,6 @@ public class NaverMap implements MapInfra {
 
     @Override
     public Position searchGeometryPoint(String address) {
-        return naverGeocoding.searchGeometryPosition(address);
+        return naverGeocoding.searchPosition(address);
     }
 }

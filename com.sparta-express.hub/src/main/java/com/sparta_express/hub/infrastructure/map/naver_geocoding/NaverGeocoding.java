@@ -23,7 +23,7 @@ public class NaverGeocoding {
     }
 
 
-    public Position searchGeometryPosition(String address) {
+    public Position searchPosition(String address) {
 
         NaverGeocodingResponse.Address searched
                 = geocodingClient.searchCoordinates(clientId, clientSecret, ACCEPT_HEADER, address)
@@ -34,5 +34,4 @@ public class NaverGeocoding {
                 .latitude(searched.getLatitude())
                 .build();
     }
-
 }

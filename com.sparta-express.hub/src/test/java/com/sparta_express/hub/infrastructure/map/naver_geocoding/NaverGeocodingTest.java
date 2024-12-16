@@ -17,7 +17,7 @@ class NaverGeocodingTest {
     @Test
     void searchGeometryPosition() {
         String address = "포항시 송도동 418-14";
-        Position position = naverGeocoding.searchGeometryPosition(address);
+        Position position = naverGeocoding.searchPosition(address);
 
         assertThat(position).isEqualTo(Position.builder().longitude(129.345).latitude(36.345).build());
     }
