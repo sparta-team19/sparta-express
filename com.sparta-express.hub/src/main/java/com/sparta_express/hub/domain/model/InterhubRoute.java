@@ -20,11 +20,13 @@ public class InterhubRoute extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false, columnDefinition = "UUID")
-    private final UUID originHubId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "origin_hub_id", nullable = false, columnDefinition = "UUID")
+    private final Hub originHub;
 
-    @Column(nullable = false, columnDefinition = "UUID")
-    private final UUID destinationHubId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "destination_hub_id", nullable = false, columnDefinition = "UUID")
+    private final Hub destinationHub;
 
     @Column(nullable = false)
     private final int distanceKm;
@@ -38,18 +40,27 @@ public class InterhubRoute extends BaseEntity {
 
 
     @Builder(toBuilder = true)
-    public InterhubRoute(UUID originHubId,
-                         UUID destinationHubId,
+    public InterhubRoute(Hub originHub,
+                         Hub destinationHub,
                          int distanceKm,
                          int estimatedMinutes,
                          InterhubRouteStatus status) {
 
+        assert (!originHub.equals(destinationHub));
         assert (distanceKm > 0 && estimatedMinutes > 0);
 
-        this.originHubId = originHubId;
-        this.destinationHubId = destinationHubId;
+        this.originHub = originHub;
+        this.destinationHub = destinationHub;
         this.distanceKm = distanceKm;
         this.estimatedMinutes = estimatedMinutes;
         this.status = status;
+    }
+
+    public UUID getOriginHubId() {
+        return originHub.getId();
+    }
+
+    public UUID getDestinationHubId() {
+        return destinationHub.getId();
     }
 }
