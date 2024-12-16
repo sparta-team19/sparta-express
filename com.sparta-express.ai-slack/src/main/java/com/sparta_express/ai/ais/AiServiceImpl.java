@@ -1,6 +1,9 @@
 package com.sparta_express.ai.ais;
 
+import com.sparta_express.ai.common.CustomException;
+import com.sparta_express.ai.common.ErrorType;
 import com.sparta_express.ai.core.Ai;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,15 @@ public class AiServiceImpl implements AiService{
         Ai ai = Ai.of(prompt, message);
 
         aiRepository.save(ai);
+
+        return AiResponseDto.from(ai);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public AiResponseDto getAiRequest(UUID requestId) {
+        Ai ai = aiRepository.findById(requestId).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_AI));
 
         return AiResponseDto.from(ai);
     }

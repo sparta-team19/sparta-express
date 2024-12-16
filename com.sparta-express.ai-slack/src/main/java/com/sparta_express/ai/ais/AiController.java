@@ -5,8 +5,11 @@ import com.sparta_express.ai.common.ErrorType;
 import com.sparta_express.ai.common.ResponseDataDto;
 import com.sparta_express.ai.common.ResponseStatus;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +32,12 @@ public class AiController {
         } catch (HttpClientErrorException e) {
             throw new CustomException(ErrorType.HTTP_CLIENT_ERROR);
         }
+    }
+
+    @GetMapping("/request/{requestId}")
+    public ResponseEntity<ResponseDataDto<AiResponseDto>> getAiRequest(
+        @PathVariable UUID requestId
+    ) {
+        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.GET_AI_SUCCESS, aiService.getAiRequest(requestId)));
     }
 }
