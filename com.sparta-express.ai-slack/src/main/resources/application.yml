@@ -26,6 +26,13 @@ gemini:
     url: ${GEMINI_URL}
     key: ${GEMINI_KEY}
 
+slack:
+  bot:
+    token: ${SLACK_BOT_TOKEN}
+  default:
+    channel: C07K61091EG
+
+
 eureka:
   client:
     service-url:
