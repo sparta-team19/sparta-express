@@ -4,8 +4,6 @@ import com.sparta_express.company_product.common.CustomException;
 import com.sparta_express.company_product.common.ErrorType;
 import com.sparta_express.company_product.company.model.Company;
 import com.sparta_express.company_product.company.repository.CompanyRepository;
-import com.sparta_express.company_product.external.Hub;
-import com.sparta_express.company_product.external.HubRepository;
 import com.sparta_express.company_product.product.dto.CreateProductRequest;
 import com.sparta_express.company_product.product.dto.UpdateProductRequest;
 import com.sparta_express.company_product.product.model.Product;
@@ -24,7 +22,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CompanyRepository companyRepository;
-    private final HubRepository hubRepository;
 
     // 상품 생성
     @Transactional
@@ -32,10 +29,7 @@ public class ProductService {
         Company company = companyRepository.findById(request.getCompanyId())
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
 
-        Hub hub = hubRepository.findById(request.getHubId())
-                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-
-        Product product = Product.of(request.getName(), request.getPrice(), company, hub);
+        Product product = Product.of(request.getName(), request.getPrice(), company, request.getHubId());
         return productRepository.save(product);
     }
 

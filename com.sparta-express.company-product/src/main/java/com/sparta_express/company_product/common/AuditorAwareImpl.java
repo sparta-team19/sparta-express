@@ -1,8 +1,6 @@
 package com.sparta_express.company_product.common;
 
-import com.sparta_express.company_product.external.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;

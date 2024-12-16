@@ -1,20 +1,16 @@
 package com.sparta_express.order_shipment.stock.dto;
 
-import com.sparta_express.order_shipment.external.Hub;
-import com.sparta_express.order_shipment.external.Product;
 import lombok.Getter;
+
+import java.util.UUID;
 
 @Getter
 public class UpdateStockRequest {
 
-    private Product product;
-    private Hub hub;
-    private Integer stockQuantity;
+    private UUID productId;
 
-    public UpdateStockRequest(Product product, Hub hub, Integer stockQuantity) {
-        this.product = product;
-        this.hub = hub;
-        this.stockQuantity = stockQuantity;
-    }
+    private UUID hubId;
+
+    private Integer stockQuantity;
 
 }

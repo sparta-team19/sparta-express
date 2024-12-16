@@ -15,10 +15,10 @@ public class CreateOrderRequest {
     private UUID productId;
 
     @NotNull(message = "요청자 ID는 필수 항목입니다.")
-    private Long requesterId;
+    private UUID requesterId;
 
     @NotNull(message = "수령자 ID는 필수 항목입니다.")
-    private Long receiverId;
+    private UUID receiverId;
 
     @NotNull(message = "수량은 필수 항목입니다.")
     @Positive(message = "수량은 0보다 큰 값이어야 합니다.")

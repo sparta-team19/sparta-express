@@ -1,14 +1,10 @@
 package com.sparta_express.order_shipment.order.service;
 
-import com.sparta_express.company_product.external.Order;
 import com.sparta_express.order_shipment.common.CustomException;
 import com.sparta_express.order_shipment.common.ErrorType;
-import com.sparta_express.order_shipment.external.Product;
-import com.sparta_express.order_shipment.external.ProductRepository;
-import com.sparta_express.order_shipment.external.User;
-import com.sparta_express.order_shipment.external.UserRepository;
 import com.sparta_express.order_shipment.order.dto.CreateOrderRequest;
 import com.sparta_express.order_shipment.order.dto.UpdateOrderRequest;
+import com.sparta_express.order_shipment.order.model.Order;
 import com.sparta_express.order_shipment.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,29 +19,17 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public Order createOrder(CreateOrderRequest request) {
-        Product product = productRepository.findByIdAndIsDeleteFalse(request.getProductId())
-                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-
-        User requester = userRepository.findById(request.getRequesterId())
-                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-
-        User receiver = userRepository.findById(request.getReceiverId())
-                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-
         Order order = Order.of(
-                product,
-                requester,
-                receiver,
+                request.getProductId(),
+                request.getRequesterId(),
+                request.getReceiverId(),
                 request.getQuantity(),
                 request.getDueDate(),
                 request.getRequestDetails()
         );
-
         return orderRepository.save(order);
     }
 

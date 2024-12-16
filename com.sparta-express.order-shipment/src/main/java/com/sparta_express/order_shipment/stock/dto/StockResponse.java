@@ -9,23 +9,23 @@ import java.util.UUID;
 @Getter
 public class StockResponse {
 
-    private UUID id;
-    private String productName;
-    private String hubName;
-    private Integer stockQuantity;
+    private final UUID id;
+    private final UUID productId;
+    private final UUID hubId;
+    private final Integer stockQuantity;
 
-    private StockResponse(UUID id, String productName, String hubName, Integer stockQuantity) {
+    private StockResponse(UUID id, UUID productId, UUID hubId, Integer stockQuantity) {
         this.id = id;
-        this.productName = productName;
-        this.hubName = hubName;
+        this.productId = productId;
+        this.hubId = hubId;
         this.stockQuantity = stockQuantity;
     }
 
     public static StockResponse from(Stock stock) {
         return new StockResponse(
                 stock.getId(),
-                stock.getProduct().getName(),
-                stock.getHub().getName(),
+                stock.getProductId(),
+                stock.getHubId(),
                 stock.getStockQuantity()
         );
     }

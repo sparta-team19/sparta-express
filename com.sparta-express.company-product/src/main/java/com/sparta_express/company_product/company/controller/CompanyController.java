@@ -8,7 +8,6 @@ import com.sparta_express.company_product.company.dto.CreateCompanyRequest;
 import com.sparta_express.company_product.company.dto.UpdateCompanyRequest;
 import com.sparta_express.company_product.company.model.Company;
 import com.sparta_express.company_product.company.service.CompanyService;
-import com.sparta_express.company_product.external.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

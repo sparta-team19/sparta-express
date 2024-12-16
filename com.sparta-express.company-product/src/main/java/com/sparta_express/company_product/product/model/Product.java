@@ -3,9 +3,7 @@ package com.sparta_express.company_product.product.model;
 
 import com.sparta_express.company_product.common.BaseEntity;
 import com.sparta_express.company_product.company.model.Company;
-import com.sparta_express.company_product.external.Hub;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,24 +25,25 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToOne
-    @JoinColumn(name = "hub_id")
-    private Hub hub;
+    @Column(nullable = false)
+    private UUID hubId;
 
     private String name;
 
     private Integer price;
 
     @Builder
-    private Product(Company company, Hub hub, String name, Integer price) {
+    private Product(Company company, UUID hubId, String name, Integer price) {
+        this.company = company;
+        this.hubId = hubId;
         this.name = name;
         this.price = price;
     }
 
-    public static Product of(String name, Integer price, Company company, Hub hub) {
+    public static Product of(String name, Integer price, Company company, UUID hubId) {
         return builder()
                 .company(company)
-                .hub(hub)
+                .hubId(hubId)
                 .name(name)
                 .price(price)
                 .build();

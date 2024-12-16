@@ -2,7 +2,6 @@ package com.sparta_express.company_product.company.dto;
 
 import com.sparta_express.company_product.company.model.Company;
 import com.sparta_express.company_product.company.model.CompanyType;
-import com.sparta_express.company_product.external.Hub;
 import com.sparta_express.company_product.product.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +31,7 @@ public class CompanyResponse {
                 company.getName(),
                 company.getAddress(),
                 company.getCompanyType(),
-                company.getHub().getId(),
+                company.getHubId(),
                 company.getProducts()
         );
     }

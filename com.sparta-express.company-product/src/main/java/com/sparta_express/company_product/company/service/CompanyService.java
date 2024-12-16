@@ -6,9 +6,6 @@ import com.sparta_express.company_product.company.dto.CreateCompanyRequest;
 import com.sparta_express.company_product.company.dto.UpdateCompanyRequest;
 import com.sparta_express.company_product.company.model.Company;
 import com.sparta_express.company_product.company.repository.CompanyRepository;
-import com.sparta_express.company_product.external.Hub;
-import com.sparta_express.company_product.external.HubRepository;
-import com.sparta_express.company_product.external.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,21 +19,16 @@ import java.util.UUID;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-    private final HubRepository hubRepository;
 
     // 업체 생성
     @Transactional
     public Company createCompany(CreateCompanyRequest request) {
-        Hub hub = hubRepository.findById(request.getHubId())
-                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND));
-
         Company company = Company.of(
                 request.getName(),
                 request.getAddress(),
                 request.getCompanyType(),
-                hub
+                request.getHubId()
         );
-
         return companyRepository.save(company);
     }
 

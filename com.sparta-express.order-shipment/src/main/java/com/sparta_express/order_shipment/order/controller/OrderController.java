@@ -1,19 +1,18 @@
 package com.sparta_express.order_shipment.order.controller;
 
-import com.sparta_express.company_product.external.Order;
 import com.sparta_express.order_shipment.common.ResponseDataDto;
 import com.sparta_express.order_shipment.common.ResponseMessageDto;
 import com.sparta_express.order_shipment.common.ResponseStatus;
 import com.sparta_express.order_shipment.order.dto.CreateOrderRequest;
 import com.sparta_express.order_shipment.order.dto.OrderResponse;
 import com.sparta_express.order_shipment.order.dto.UpdateOrderRequest;
+import com.sparta_express.order_shipment.order.model.Order;
 import com.sparta_express.order_shipment.order.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 

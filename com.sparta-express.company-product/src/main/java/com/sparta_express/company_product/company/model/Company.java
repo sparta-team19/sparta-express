@@ -1,7 +1,6 @@
 package com.sparta_express.company_product.company.model;
 
 import com.sparta_express.company_product.common.BaseEntity;
-import com.sparta_express.company_product.external.Hub;
 import com.sparta_express.company_product.product.model.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,9 +21,8 @@ public class Company extends BaseEntity {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hub_id")
-    private Hub hub;
+    @Column(nullable = false)
+    private UUID hubId;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
@@ -37,19 +35,19 @@ public class Company extends BaseEntity {
     private String address;
 
     @Builder
-    private Company(String name, String address, CompanyType companyType, Hub hub) {
+    private Company(String name, String address, CompanyType companyType, UUID hubId) {
         this.name = name;
         this.address = address;
         this.companyType = companyType;
-        this.hub = hub;
+        this.hubId = hubId;
     }
 
-    public static Company of(String name, String address, CompanyType companyType, Hub hub) {
+    public static Company of(String name, String address, CompanyType companyType, UUID hubId) {
         return builder()
                 .name(name)
                 .address(address)
                 .companyType(companyType)
-                .hub(hub)
+                .hubId(hubId)
                 .build();
     }
 

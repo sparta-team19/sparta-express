@@ -1,7 +1,6 @@
 package com.sparta_express.order_shipment.stock.model;
 
-import com.sparta_express.order_shipment.external.Hub;
-import com.sparta_express.order_shipment.external.Product;
+import com.sparta_express.order_shipment.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,30 +12,28 @@ import java.util.UUID;
 @Table(name = "p_stocks")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Stock extends com.sparta_express.order_shipment.common.BaseEntity {
+public class Stock extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(nullable = false)
+    private UUID productId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hub_id")
-    private Hub hub;
+    @Column(nullable = false)
+    private UUID hubId;
 
     private Integer stockQuantity;
 
-    public Stock(Product product, Hub hub, Integer stockQuantity) {
-        this.product = product;
-        this.hub = hub;
+    public Stock(UUID productId, UUID hubId, Integer stockQuantity) {
+        this.productId = productId;
+        this.hubId = hubId;
         this.stockQuantity = stockQuantity;
     }
 
-    public static Stock of(Product product, Hub hub, Integer stockQuantity) {
-        return new Stock(product, hub, stockQuantity);
+    public static Stock of(UUID productId, UUID hubId, Integer stockQuantity) {
+        return new Stock(productId, hubId, stockQuantity);
     }
 
     public void update(Integer stockQuantity) {
