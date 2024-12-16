@@ -1,23 +1,39 @@
 package com.sparta_express.hub.presentation.controller;
 
+import com.sparta_express.hub.domain.HubToDestinationDTO;
 import com.sparta_express.hub.domain.Position;
-import com.sparta_express.hub.infrastructure.map.naver_geocoding.NaverGeocoding;
+import com.sparta_express.hub.infrastructure.map.NaverMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/test")
 @RequiredArgsConstructor
 public class TestController {
 
-    private final NaverGeocoding naverGeocoding;
+    private final NaverMap naverMap;
 
-    @GetMapping("/test")
+    @GetMapping("/geocoding")
     public Position geocodingTest() {
         String address = "포항시 송도동 418-14";
-        Position position = naverGeocoding.searchPosition(address);
+        Position position = naverMap.searchPosition(address);
 
         return position;
+
+    }
+
+    @GetMapping("/direction5")
+    public HubToDestinationDTO direction5Test() {
+//        36.036453, 129.375581
+
+        Position start = Position.builder().latitude(36.036453).longitude(129.375581).build(); //"포항시 송도동 418-14";
+        Position goal = Position.builder().latitude(35.856675).longitude(129.225107).build(); //"경주 시청";
+
+        HubToDestinationDTO hubToDestinationDTO = naverMap.searchRoute(start, goal);
+
+        return hubToDestinationDTO;
 
     }
 }

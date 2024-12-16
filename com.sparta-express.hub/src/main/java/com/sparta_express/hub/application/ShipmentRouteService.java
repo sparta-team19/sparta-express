@@ -61,6 +61,6 @@ public class ShipmentRouteService {
     @Cacheable(cacheNames = "addressGeometryPositions", key = "#address")
     protected final Position findGeometryPosition(String address) {
 
-        return mapApp.searchGeometryPoint(address);
+        return mapApp.searchPosition(address);
     }
 }

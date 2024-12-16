@@ -105,8 +105,8 @@ public class ShipmentRouteDomainService {
         ));
         PriorityQueue<HubRouteInfo> hubRouteQue
                 = new PriorityQueue<>(comparingInt(HubRouteInfo::getDistance));
-        hubRouteQue.addAll(hubGraph.get(originHubId).stream()
-                .map(HubRouteInfo::initQueue).toList()
+        hubRouteQue.addAll(hubGraph.get(originHubId).stream().map(
+                HubRouteInfo::initQueue).toList()
         );
 
         while (!hubRouteQue.isEmpty()) {
