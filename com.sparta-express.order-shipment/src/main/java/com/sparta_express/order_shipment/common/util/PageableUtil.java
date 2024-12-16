@@ -1,4 +1,4 @@
-package com.sparta_express.order_shipment.common;
+package com.sparta_express.order_shipment.common.util;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

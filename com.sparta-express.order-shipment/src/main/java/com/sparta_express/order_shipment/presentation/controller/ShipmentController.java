@@ -5,7 +5,7 @@ import com.sparta_express.order_shipment.application.dto.ResponseDataDto;
 import com.sparta_express.order_shipment.application.dto.ResponseMessageDto;
 import com.sparta_express.order_shipment.application.dto.ShipmentResponse;
 import com.sparta_express.order_shipment.application.service.ShipmentService;
-import com.sparta_express.order_shipment.common.PageableUtil;
+import com.sparta_express.order_shipment.common.util.PageableUtil;
 import com.sparta_express.order_shipment.domain.entity.Shipment;
 import com.sparta_express.order_shipment.presentation.dto.ShipmentUpdateRequest;
 import lombok.RequiredArgsConstructor;

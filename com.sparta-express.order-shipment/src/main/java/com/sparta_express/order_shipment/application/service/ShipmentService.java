@@ -7,7 +7,7 @@ import com.sparta_express.order_shipment.application.dto.ShipmentUpdateDto;
 import com.sparta_express.order_shipment.domain.entity.QShipment;
 import com.sparta_express.order_shipment.domain.entity.Shipment;
 import com.sparta_express.order_shipment.domain.entity.ShipmentRoute;
-import com.sparta_express.order_shipment.domain.exception.CustomException;
+import com.sparta_express.order_shipment.common.exception.CustomException;
 import com.sparta_express.order_shipment.domain.repository.ShipmentRepository;
 import com.sparta_express.order_shipment.infrastructure.client.UserClient;
 import com.sparta_express.order_shipment.infrastructure.dto.UserResponseDto;
@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-import static com.sparta_express.order_shipment.domain.exception.ErrorType.SHIPMENT_NOT_FOUND;
-import static com.sparta_express.order_shipment.domain.exception.ErrorType.USER_NOT_SAME;
+import static com.sparta_express.order_shipment.common.exception.ErrorType.SHIPMENT_NOT_FOUND;
+import static com.sparta_express.order_shipment.common.exception.ErrorType.USER_NOT_SAME;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +40,7 @@ public class ShipmentService {
         UserResponseDto userDto = userClient.getUser(userId).getData();
         checkRole(userId);
         Shipment shipment = checkShipment(shipmentId);
-        checkUser(userDto.getId(), shipment);
+        checkUser(userDto.getEmail(), shipment);
         shipment.update(updateDto, userId);
         return ShipmentResponse.from(shipment);
     }

@@ -6,7 +6,7 @@ import com.sparta_express.order_shipment.application.dto.ShipmentRouteResponse;
 import com.sparta_express.order_shipment.application.dto.ShipmentRouteUpdateDto;
 import com.sparta_express.order_shipment.domain.entity.QShipmentRoute;
 import com.sparta_express.order_shipment.domain.entity.ShipmentRoute;
-import com.sparta_express.order_shipment.domain.exception.CustomException;
+import com.sparta_express.order_shipment.common.exception.CustomException;
 import com.sparta_express.order_shipment.domain.repository.ShipmentRouteRepository;
 import com.sparta_express.order_shipment.infrastructure.client.UserClient;
 import com.sparta_express.order_shipment.infrastructure.dto.UserResponseDto;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static com.sparta_express.order_shipment.domain.exception.ErrorType.*;
+import static com.sparta_express.order_shipment.common.exception.ErrorType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +35,9 @@ public class ShipmentRouteService {
             MASTER, HUB_MANAGER, DELIVERY_MANAGER 만 가능
          */
         UserResponseDto userDto = userClient.getUser(userId).getData();
-        checkRole(userDto.getId());
+        checkRole(userDto.getEmail());
         ShipmentRoute shipmentRoute = checkShipmentRoute(shipmentRoutesId);
-        checkUser(userDto.getId(), shipmentRoute);
+        checkUser(userDto.getEmail(), shipmentRoute);
         shipmentRoute.update(updateDto, userId);
         return ShipmentRouteResponse.from(shipmentRoute);
     }
