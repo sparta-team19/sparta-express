@@ -32,12 +32,13 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
 
         String token = extractToken(exchange);
 
-        if (token == null || !validateToken(token, exchange)) {
+        if (token == null) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
 
-        return chain.filter(exchange);
+        // validateAndModifyExchange 호출
+        return validateAndModifyExchange(token, exchange, chain);
     }
 
     private String extractToken(ServerWebExchange exchange) {
@@ -48,7 +49,7 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
         return null;
     }
 
-    private boolean validateToken(String token, ServerWebExchange exchange) {
+    private Mono<Void> validateAndModifyExchange(String token, ServerWebExchange exchange, GatewayFilterChain chain) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
             Jws<Claims> claimsJws = Jwts.parser()
@@ -56,15 +57,22 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
                 .build().parseSignedClaims(token);
             log.info("#####payload :: " + claimsJws.getPayload().toString());
             Claims claims = claimsJws.getPayload();
-            exchange.getRequest().mutate()
+
+            // 요청을 수정
+            ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
                 .header("X-User-Id", claims.get("user_id").toString())
                 .header("X-Role", claims.get("role").toString())
                 .build();
 
-            // 추가적인 검증 로직 (예: 토큰 만료 여부 확인, 로그인 체크 검증 로직 등)을 여기에 추가할 수 있습니다.
-            return true;
+            // 수정된 요청으로 새로운 Exchange 생성
+            ServerWebExchange modifiedExchange = exchange.mutate().request(modifiedRequest).build();
+
+            // 수정된 Exchange로 필터 체인 진행
+            return chain.filter(modifiedExchange);
         } catch (Exception e) {
-            return false;
+            // 인증 실패 시 Unauthorized 응답 반환
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
         }
     }
 
