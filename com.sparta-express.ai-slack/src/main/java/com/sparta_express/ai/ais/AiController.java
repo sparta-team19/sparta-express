@@ -49,7 +49,7 @@ public class AiController {
         @PathVariable UUID requestId,
         @RequestHeader(value = "X-Role", required = true) String role
     ) {
-        if (role != "MASTER") {
+        if (!"MASTER".equals(role)) {
             throw new CustomException(ErrorType.ACCESS_DENIED);
         }
         aiService.deleteAiRequest(requestId);
