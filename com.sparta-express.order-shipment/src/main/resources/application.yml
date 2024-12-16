@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: order-shipment
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://server:8761/eureka/
