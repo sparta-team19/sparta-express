@@ -5,13 +5,13 @@ import lombok.Builder;
 import lombok.Value;
 
 @Value
-public class FinalHubToDestinationResOfGetShipmentRoutes {
+public class FinalHubToDestinationRes {
 
     int distanceKm;
     int estimatedMinutes;
 
     @Builder
-    public FinalHubToDestinationResOfGetShipmentRoutes(int distanceKm, int estimatedMinutes) {
+    public FinalHubToDestinationRes(int distanceKm, int estimatedMinutes) {
 
         assert (distanceKm > 0 && estimatedMinutes > 0);
 
@@ -19,8 +19,8 @@ public class FinalHubToDestinationResOfGetShipmentRoutes {
         this.estimatedMinutes = estimatedMinutes;
     }
 
-    public static FinalHubToDestinationResOfGetShipmentRoutes from(FinalHubToDestination finalHubToDestination) {
-        return FinalHubToDestinationResOfGetShipmentRoutes.builder()
+    public static FinalHubToDestinationRes from(FinalHubToDestination finalHubToDestination) {
+        return FinalHubToDestinationRes.builder()
                 .distanceKm(finalHubToDestination.getDistanceKm())
                 .estimatedMinutes(finalHubToDestination.getEstimatedMinutes())
                 .build();

@@ -11,22 +11,22 @@ public class NaverGeocoding {
     private static final String ACCEPT_HEADER = "application/json";
     private final String clientId;
     private final String clientSecret;
-    private final NaverGeocodingClient naverClient;
+    private final NaverGeocodingClient geocodingClient;
 
-    public NaverGeocoding(@Value("${naver.api.client-id}") String clientId,
-                          @Value("${naver.api.client-secret}") String clientSecret,
-                          NaverGeocodingClient naverClient) {
+    public NaverGeocoding(@Value("${naver.api.client.id}") String clientId,
+                          @Value("${naver.api.client.secret}") String clientSecret,
+                          NaverGeocodingClient geocodingClient) {
 
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.naverClient = naverClient;
+        this.geocodingClient = geocodingClient;
     }
 
 
     public Position searchGeometryPosition(String address) {
 
         NaverGeocodingResponse.Address searched
-                = naverClient.searchCoordinates(clientId, clientSecret, ACCEPT_HEADER, address)
+                = geocodingClient.searchCoordinates(clientId, clientSecret, ACCEPT_HEADER, address)
                 .getAddresses().get(0);
 
         return Position.builder()
@@ -34,6 +34,5 @@ public class NaverGeocoding {
                 .latitude(searched.getLatitude())
                 .build();
     }
-
 
 }

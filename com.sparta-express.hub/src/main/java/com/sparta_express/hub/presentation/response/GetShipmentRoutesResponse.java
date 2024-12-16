@@ -11,7 +11,7 @@ import java.util.List;
 public class GetShipmentRoutesResponse {
 
     List<InterhubRouteResOfGetShipmentRoutes> interhubRoutes;
-    FinalHubToDestinationResOfGetShipmentRoutes finalHubToDestination;
+    FinalHubToDestinationRes finalHubToDestination;
 
 
     public static GetShipmentRoutesResponse from(ShipmentRoute shipmentRoute) {
@@ -23,8 +23,8 @@ public class GetShipmentRoutesResponse {
                 .stream()
                 .map(InterhubRouteResOfGetShipmentRoutes::from)
                 .toList();
-        FinalHubToDestinationResOfGetShipmentRoutes finalHubToDestination
-                = FinalHubToDestinationResOfGetShipmentRoutes.from(shipmentRoute.getFinalHubToDestination());
+        FinalHubToDestinationRes finalHubToDestination
+                = FinalHubToDestinationRes.from(shipmentRoute.getFinalHubToDestination());
 
         return GetShipmentRoutesResponse
                 .builder()

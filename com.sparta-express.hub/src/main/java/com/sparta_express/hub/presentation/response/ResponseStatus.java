@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ResponseStatus {
 
-  GET_SHIPMENT_ROUTES_SUCCESS(HttpStatus.OK, "배송 허브 경로 조회에 성공하였습니다."),
+  GET_SHIPMENT_ROUTES_SUCCESS(HttpStatus.OK, "배송 경로 조회에 성공하였습니다."),
+  GET_SHIPMENT_INTERHUB_ROUTES_SUCCESS(HttpStatus.OK, "배송 허브간 경로 조회에 성공하였습니다."),
   ;
 
   private final HttpStatus httpStatus;

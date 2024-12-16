@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Hub extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @Column(length = 100)
     private String address;

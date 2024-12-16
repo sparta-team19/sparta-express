@@ -39,7 +39,7 @@ public abstract class BaseEntity {
     private LocalDateTime deletedAt;
 
     @Column
-    private Long deletedBy;
+    private String deletedBy;
 
     @Column(nullable = false)
     private boolean isDelete;

@@ -17,13 +17,13 @@ import java.util.UUID;
 public class InterhubRoute extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "UUID")
     private final UUID originHubId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "UUID")
     private final UUID destinationHubId;
 
     @Column(nullable = false)
@@ -32,6 +32,7 @@ public class InterhubRoute extends BaseEntity {
     @Column(nullable = false)
     private final int estimatedMinutes;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private final InterhubRouteStatus status;
 
@@ -43,11 +44,7 @@ public class InterhubRoute extends BaseEntity {
                          int estimatedMinutes,
                          InterhubRouteStatus status) {
 
-        assert (originHubId != null
-                && destinationHubId != null
-                && distanceKm > 0
-                && estimatedMinutes > 0
-                && status != null);
+        assert (distanceKm > 0 && estimatedMinutes > 0);
 
         this.originHubId = originHubId;
         this.destinationHubId = destinationHubId;
