@@ -1,4 +1,4 @@
-package com.sparta_express.order_shipment.domain.exception;
+package com.sparta_express.order_shipment.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +13,8 @@ public enum ErrorType {
   COMMON_INVALID_PARAMETER( BAD_REQUEST, "잘못된 파라미터입니다."),
   COMMON_SERVER_ERROR(INTERNAL_SERVER_ERROR, "서버에서 에러가 발생하였습니다."),
   COMMON_VALIDATION_ERROR(BAD_REQUEST, "요청 데이터가 유효하지 않습니다."),
+
+  ORDER_NOT_FOUND(NOT_FOUND, "대상을 찾을 수 없습니다."),
 
   USER_NOT_SAME(BAD_REQUEST, "해당 작성자가 아닙니다."),
   USER_NOT_FOUND(NOT_FOUND, "사용자가 존재하지 않습니다."),

@@ -1,4 +1,4 @@
-package com.sparta_express.order_shipment.domain.exception;
+package com.sparta_express.order_shipment.common.exception;
 
 import lombok.Getter;
 

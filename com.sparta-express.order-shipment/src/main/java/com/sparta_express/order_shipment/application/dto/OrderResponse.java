@@ -1,10 +1,11 @@
-package com.sparta_express.order_shipment.order.dto;
+package com.sparta_express.order_shipment.application.dto;
 
-import com.sparta_express.order_shipment.order.model.Order;
-import com.sparta_express.order_shipment.order.model.OrderStatus;
+import com.sparta_express.order_shipment.domain.entity.Order;
+import com.sparta_express.order_shipment.domain.entity.OrderStatusEnum;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,9 +18,9 @@ public class OrderResponse {
     private UUID requesterId;
     private UUID receiverId;
     private Integer quantity;
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
     private String requestDetails;
-    private OrderStatus orderStatus;
+    private OrderStatusEnum orderStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

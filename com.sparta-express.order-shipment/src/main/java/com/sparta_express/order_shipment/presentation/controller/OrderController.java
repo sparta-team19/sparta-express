@@ -1,13 +1,15 @@
-package com.sparta_express.order_shipment.order.controller;
+package com.sparta_express.order_shipment.presentation.controller;
 
-import com.sparta_express.order_shipment.common.ResponseDataDto;
-import com.sparta_express.order_shipment.common.ResponseMessageDto;
-import com.sparta_express.order_shipment.common.ResponseStatus;
-import com.sparta_express.order_shipment.order.dto.CreateOrderRequest;
-import com.sparta_express.order_shipment.order.dto.OrderResponse;
-import com.sparta_express.order_shipment.order.dto.UpdateOrderRequest;
-import com.sparta_express.order_shipment.order.model.Order;
-import com.sparta_express.order_shipment.order.service.OrderService;
+
+import com.sparta_express.order_shipment.application.dto.OrderCreateResponse;
+import com.sparta_express.order_shipment.application.dto.OrderResponse;
+import com.sparta_express.order_shipment.application.dto.ResponseDataDto;
+import com.sparta_express.order_shipment.application.dto.ResponseMessageDto;
+import com.sparta_express.order_shipment.application.dto.ResponseStatus;
+import com.sparta_express.order_shipment.application.service.OrderService;
+import com.sparta_express.order_shipment.domain.entity.Order;
+import com.sparta_express.order_shipment.presentation.dto.OrderRequest;
+import com.sparta_express.order_shipment.presentation.dto.UpdateOrderRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +18,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import static com.sparta_express.order_shipment.application.dto.ResponseStatus.*;
+
 @RestController
-@RequestMapping("/api/orders")
 @RequiredArgsConstructor
+@RequestMapping("/api/orders")
 public class OrderController {
 
     private final OrderService orderService;
 
-    // 주문 생성
     @PostMapping
-    public ResponseEntity<ResponseDataDto<OrderResponse>> createOrder(
-            @Valid @RequestBody CreateOrderRequest createOrderRequest) {
-        Order order = orderService.createOrder(createOrderRequest);
-        OrderResponse orderResponse = OrderResponse.from(order);
-        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.CREATE_SUCCESS, orderResponse));
+    public ResponseEntity<ResponseDataDto<OrderCreateResponse>> createOrder(@Valid @RequestBody OrderRequest request,
+                                                                            @RequestHeader(name = "X-User-id") String email) {
+        OrderCreateResponse response = orderService.createOrder(request.toDto(), email);
+        return ResponseEntity.ok(new ResponseDataDto<>(ORDER_CREATE_SUCCESS, response));
     }
 
     // 주문 목록 조회
@@ -38,7 +40,7 @@ public class OrderController {
         List<OrderResponse> orders = orderService.getOrders().stream()
                 .map(OrderResponse::from)
                 .toList();
-        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.LIST_SUCCESS, orders));
+        return ResponseEntity.ok(new ResponseDataDto<>(LIST_SUCCESS, orders));
     }
 
     // 주문 상세 조회
@@ -46,7 +48,7 @@ public class OrderController {
     public ResponseEntity<ResponseDataDto<OrderResponse>> getOrderById(@PathVariable UUID id) {
         Order order = orderService.getOrderById(id);
         OrderResponse orderResponse = OrderResponse.from(order);
-        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.DETAIL_SUCCESS, orderResponse));
+        return ResponseEntity.ok(new ResponseDataDto<>(DETAIL_SUCCESS, orderResponse));
     }
 
     // 주문 수정
