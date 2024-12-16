@@ -1,4 +1,4 @@
-package com.sparta_express.company_product.common;
+package com.sparta_express.order_shipment.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
