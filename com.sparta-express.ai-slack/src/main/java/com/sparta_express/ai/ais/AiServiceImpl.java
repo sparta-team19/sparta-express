@@ -38,4 +38,13 @@ public class AiServiceImpl implements AiService{
 
         return AiResponseDto.from(ai);
     }
+
+    @Transactional
+    @Override
+    public void deleteAiRequest(UUID requestId) {
+        Ai ai = aiRepository.findById(requestId).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_AI));
+
+        ai.setIsDeleted(Boolean.TRUE);
+    }
 }

@@ -7,4 +7,6 @@ public interface AiService {
     AiResponseDto getContents(String prompt);
 
     AiResponseDto getAiRequest(UUID requestId);
+
+    void deleteAiRequest(UUID requestId);
 }
