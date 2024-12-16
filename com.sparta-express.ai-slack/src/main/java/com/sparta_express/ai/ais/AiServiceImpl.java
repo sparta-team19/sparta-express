@@ -1,10 +1,13 @@
 package com.sparta_express.ai.ais;
 
+import com.querydsl.core.types.Predicate;
 import com.sparta_express.ai.common.CustomException;
 import com.sparta_express.ai.common.ErrorType;
 import com.sparta_express.ai.core.Ai;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,5 +49,13 @@ public class AiServiceImpl implements AiService{
             new CustomException(ErrorType.NOT_FOUND_AI));
 
         ai.setIsDeleted(Boolean.TRUE);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<AiResponseDto> searchAiRequest(Pageable pageable,
+        Predicate predicate) {
+        Page<Ai> aiPage = aiRepository.findAll(predicate, pageable);
+        return aiPage.map(AiResponseDto::from);
     }
 }
