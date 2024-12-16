@@ -13,5 +13,4 @@ public class HubApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HubApplication.class, args);
 	}
-
 }

@@ -30,3 +30,9 @@ naver:
     client:
       id: ${NAVER_API_CLIENT_ID}
       secret: ${NAVER_API_CLIENT_SECRET}
+
+logging:
+  level:
+    org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator: DEBUG
+    org.springframework.jdbc.datasource: DEBUG
+    org.hibernate.SQL: DEBUG
