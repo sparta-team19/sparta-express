@@ -1,6 +1,6 @@
-package com.sparta_express.order_shipment.stock.repository;
+package com.sparta_express.company_product.stock.repository;
 
-import com.sparta_express.order_shipment.stock.model.Stock;
+import com.sparta_express.company_product.stock.model.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,4 +13,5 @@ public interface StockRepository extends JpaRepository<Stock, UUID> {
 
     Optional<Stock> findByIdAndIsDeleteFalse(UUID id);
 
+    Optional<Stock> findByProductIdAndIsDeleteFalse(UUID productId);
 }

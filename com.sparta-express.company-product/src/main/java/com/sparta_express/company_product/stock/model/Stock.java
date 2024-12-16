@@ -1,6 +1,6 @@
-package com.sparta_express.order_shipment.stock.model;
+package com.sparta_express.company_product.stock.model;
 
-import com.sparta_express.order_shipment.common.BaseEntity;
+import com.sparta_express.company_product.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -38,6 +38,14 @@ public class Stock extends BaseEntity {
 
     public void update(Integer stockQuantity) {
         if (stockQuantity != null) this.stockQuantity = stockQuantity;
+    }
+
+    public void decrease(Integer quantity) {
+        this.stockQuantity -= quantity;
+    }
+
+    public void restore(Integer quantity) {
+        this.stockQuantity += quantity;
     }
 
 }

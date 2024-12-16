@@ -1,13 +1,13 @@
-package com.sparta_express.order_shipment.stock.controller;
+package com.sparta_express.company_product.stock.controller;
 
-import com.sparta_express.order_shipment.common.ResponseDataDto;
-import com.sparta_express.order_shipment.common.ResponseMessageDto;
-import com.sparta_express.order_shipment.common.ResponseStatus;
-import com.sparta_express.order_shipment.stock.dto.CreateStockRequest;
-import com.sparta_express.order_shipment.stock.dto.StockResponse;
-import com.sparta_express.order_shipment.stock.dto.UpdateStockRequest;
-import com.sparta_express.order_shipment.stock.model.Stock;
-import com.sparta_express.order_shipment.stock.service.StockService;
+import com.sparta_express.company_product.common.ResponseDataDto;
+import com.sparta_express.company_product.common.ResponseMessageDto;
+import com.sparta_express.company_product.common.ResponseStatus;
+import com.sparta_express.company_product.stock.dto.CreateStockRequest;
+import com.sparta_express.company_product.stock.dto.StockResponse;
+import com.sparta_express.company_product.stock.dto.UpdateStockRequest;
+import com.sparta_express.company_product.stock.model.Stock;
+import com.sparta_express.company_product.stock.service.StockService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -63,4 +63,17 @@ public class StockController {
         return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_SUCCESS));
     }
 
+    // 재고 감소
+    @PutMapping("/reduce/{id}")
+    public ResponseEntity<ResponseMessageDto> reduceStock(@PathVariable("id") UUID id, @RequestParam("quantity") Integer quantity) {
+        stockService.reduceStock(id, quantity);
+        return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.UPDATE_SUCCESS));
+    }
+
+    // 재고 복구
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<ResponseMessageDto> restoreStock(@PathVariable("id") UUID id, @RequestParam("quantity") Integer quantity) {
+        stockService.restoreStock(id, quantity);
+        return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.UPDATE_SUCCESS));
+    }
 }
