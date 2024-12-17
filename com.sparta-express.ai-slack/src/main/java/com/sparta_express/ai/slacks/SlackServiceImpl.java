@@ -58,12 +58,14 @@ public class SlackServiceImpl implements SlackService {
         return SlackResponseDto.from(slack);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<SlackResponseDto> getMessages(Pageable pageable) {
         Page<Slack> slackpage = slackRepository.findAll(pageable);
         return slackpage.map(SlackResponseDto::from);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SlackResponseDto getMessage(UUID messageId) {
         Slack slack = slackRepository.findById(messageId).orElseThrow(() ->
@@ -72,6 +74,7 @@ public class SlackServiceImpl implements SlackService {
         return SlackResponseDto.from(slack);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<SlackResponseDto> searchMessage(Predicate predicate, Pageable pageable) {
         Page<Slack> slackPage = slackRepository.findAll(predicate, pageable);
