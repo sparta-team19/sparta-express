@@ -6,7 +6,12 @@ import com.sparta_express.ai.common.ResponseDataDto;
 import com.sparta_express.ai.common.ResponseStatus;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,5 +59,17 @@ public class SlackController {
         }
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.UPDATE_SLACK_SUCCESS,
             slackService.updateMessage(requestDto, messageId)));
+    }
+
+    @GetMapping
+    ResponseEntity<ResponseDataDto<Page<SlackResponseDto>>> getMessages(
+        @RequestHeader(value = "X-Role", required = true) String role,
+        @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable
+    ) {
+        if (!"MASTER".equals(role)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.GET_SLACK_SUCCESS,
+            slackService.getMessages(pageable)));
     }
 }

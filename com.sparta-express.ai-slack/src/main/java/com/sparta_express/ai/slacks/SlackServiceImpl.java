@@ -9,6 +9,8 @@ import com.sparta_express.ai.core.Slack;
 import java.sql.Timestamp;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +55,12 @@ public class SlackServiceImpl implements SlackService {
         slack.updateSlack(requestDto.getMessage());
 
         return SlackResponseDto.from(slack);
+    }
+
+    @Override
+    public Page<SlackResponseDto> getMessages(Pageable pageable) {
+        Page<Slack> slackpage = slackRepository.findAll(pageable);
+        return slackpage.map(SlackResponseDto::from);
     }
 
     private Timestamp convertStringToTimestamp(String unixTimestamp) {
