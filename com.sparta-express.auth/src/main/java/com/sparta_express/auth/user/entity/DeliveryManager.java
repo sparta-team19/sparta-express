@@ -44,10 +44,11 @@ public class DeliveryManager extends BaseEntity {
     private User user;
 
     @Builder
-    private DeliveryManager(UUID hubId, DeliveryType type, int deliverySequence) {
+    private DeliveryManager(UUID hubId, DeliveryType type, int deliverySequence, User user) {
         this.hubId = hubId;
         this.type = type;
         this.deliverySequence = deliverySequence;
+        this.user = user;
     }
 
     public static DeliveryManager from(UserRequestDto requestDto) {
@@ -56,10 +57,11 @@ public class DeliveryManager extends BaseEntity {
             .build();
     }
 
-    public static DeliveryManager of(UserRequestDto requestDto, int deliverySequence) {
+    public static DeliveryManager of(UserRequestDto requestDto, int deliverySequence, User user) {
         return builder()
             .type(requestDto.getType())
             .deliverySequence(deliverySequence)
+            .user(user)
             .build();
     }
 

@@ -27,9 +27,9 @@ public interface UserService {
 
     Page<UserResponseDto> serchUser(String userId, UserRole role, Predicate predicate, Pageable pageable);
 
-    DeliveryManagerResponseDto createDeliveryManager(String userId, UserRequestDto requestDto);
+    DeliveryManagerResponseDto createDeliveryManager(Long id, String userId, UserRequestDto requestDto);
 
-    Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable);
+    Page<DeliveryManagerResponseDto> getDeliveryManagers(Pageable pageable);
 
     DeliveryManagerResponseDto getDeliveryManager(UUID deliveryId);
 

@@ -30,10 +30,6 @@ service:
   jwt:
     access-expiration: 1800000
     secret-key: ${SECRET_KEY}
-    access:
-      expiration: 1000 * 60 * 30
-    refresh:
-      expiration: 1000 * 60 * 60 * 24 * 3
 
 server:
   port: 8083
