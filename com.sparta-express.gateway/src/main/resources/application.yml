@@ -18,6 +18,15 @@ spring:
           predicates:
             - Path=/companies/**, /products/**
 
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/users/**
+
+        - id: ai-slack
+          uri: lb://ai-slack
+          predicates:
+            - Path=/api/v1/ai/**, /api/v1/slack/**
       discovery:
         locator:
           enabled: true
@@ -25,4 +34,11 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://server:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 8080
+
+service:
+  jwt:
+    secret-key: ${SECRET_KEY}
