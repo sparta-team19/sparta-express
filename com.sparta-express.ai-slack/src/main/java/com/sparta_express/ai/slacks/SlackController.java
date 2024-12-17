@@ -1,14 +1,18 @@
 package com.sparta_express.ai.slacks;
 
+import com.querydsl.core.types.Predicate;
 import com.sparta_express.ai.common.CustomException;
 import com.sparta_express.ai.common.ErrorType;
 import com.sparta_express.ai.common.ResponseDataDto;
 import com.sparta_express.ai.common.ResponseStatus;
+import com.sparta_express.ai.core.Ai;
+import com.sparta_express.ai.core.Slack;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -83,5 +87,18 @@ public class SlackController {
         }
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.GET_SLACK_SUCCESS,
             slackService.getMessage(messageId)));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDataDto<Page<SlackResponseDto>>> searchMessage(
+        @RequestHeader(value = "X-Role", required = true) String role,
+        @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable,
+        @QuerydslPredicate(root = Slack.class) Predicate predicate
+    ) {
+        if (!"MASTER".equals(role)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.SEARCH_SLACK_SUCCESS,
+            slackService.searchMessage(predicate, pageable)));
     }
 }

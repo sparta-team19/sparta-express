@@ -1,6 +1,7 @@
 package com.sparta_express.ai.slacks;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.querydsl.core.types.Predicate;
 import com.sparta_express.ai.ais.AiRepository;
 import com.sparta_express.ai.common.CustomException;
 import com.sparta_express.ai.common.ErrorType;
@@ -69,6 +70,12 @@ public class SlackServiceImpl implements SlackService {
             new CustomException(ErrorType.NOT_FOUND_SLACK));
 
         return SlackResponseDto.from(slack);
+    }
+
+    @Override
+    public Page<SlackResponseDto> searchMessage(Predicate predicate, Pageable pageable) {
+        Page<Slack> slackPage = slackRepository.findAll(predicate, pageable);
+        return slackPage.map(SlackResponseDto::from);
     }
 
     private Timestamp convertStringToTimestamp(String unixTimestamp) {
