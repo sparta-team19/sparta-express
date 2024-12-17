@@ -2,7 +2,6 @@ package com.sparta_express.ai.slacks;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.sql.Timestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -16,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @RequiredArgsConstructor
 public class SlackClient {
+
     private final RestTemplate restTemplate;
 
     @Value("${slack.bot.token}")
@@ -57,7 +57,7 @@ public class SlackClient {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseBody = objectMapper.readTree(response.getBody());
             if (responseBody.get("ok").asBoolean()) {
-                 return responseBody; // 메시지 전송 시간(ts)
+                return responseBody; // 메시지 전송 시간(ts)
 
             } else {
                 throw new RuntimeException("Slack API 응답 실패: " + responseBody.toString());

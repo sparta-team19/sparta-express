@@ -69,9 +69,7 @@ public class Slack extends BaseEntity {
             .build();
     }
 
-    public void update(String message) {
-        builder()
-            .message(message)
-            .build();
+    public void updateSlack(String message) {
+        this.message = message;
     }
 }

@@ -7,7 +7,6 @@ import com.sparta_express.ai.common.ErrorType;
 import com.sparta_express.ai.core.Ai;
 import com.sparta_express.ai.core.Slack;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,13 +48,11 @@ public class SlackServiceImpl implements SlackService {
         Slack slack = slackRepository.findById(messageId).orElseThrow(() ->
             new CustomException(ErrorType.NOT_FOUND_SLACK));
 
-        String ts = convertTimestampToString(slack.getSendTime());
+        slackClient.updateMessage(slack.getChannelId(), slack.getTs(), requestDto.getMessage());
 
-        slackClient.updateMessage(requestDto.getChannelId(), ts, requestDto.getMessage());
+        slack.updateSlack(requestDto.getMessage());
 
-        slack.update(requestDto.getMessage());
-
-        return null;
+        return SlackResponseDto.from(slack);
     }
 
     private Timestamp convertStringToTimestamp(String unixTimestamp) {
@@ -65,7 +62,8 @@ public class SlackServiceImpl implements SlackService {
 
             // 초와 나노초 분리
             long seconds = (long) unixTimestampDouble; // 정수 부분 (초)
-            long nanoAdjustment = (long) ((unixTimestampDouble - seconds) * 1_000_000_000); // 소수점 이하 (나노초)
+            long nanoAdjustment = (long) ((unixTimestampDouble - seconds)
+                * 1_000_000_000); // 소수점 이하 (나노초)
 
             // Timestamp 객체 생성: 초를 밀리초로 변환하여 생성
             return new Timestamp(seconds * 1000 + nanoAdjustment / 1_000_000); // 나노초를 밀리초로 변환하여 추가
