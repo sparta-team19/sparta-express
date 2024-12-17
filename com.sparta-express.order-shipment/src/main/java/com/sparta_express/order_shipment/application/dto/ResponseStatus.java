@@ -24,6 +24,8 @@ public enum ResponseStatus {
   SHIPMENT_ROUTE_GET_SUCCESS(HttpStatus.OK, "배송 경로 조회에 성공하였습니다."),
   SHIPMENT_ROUTE_DELETE_SUCCESS(HttpStatus.OK, "배송 경로가 삭제되었습니다."),
 
+  GET_SHIPMENT_ROUTES_SUCCESS(HttpStatus.OK, "배송 경로 조회에 성공하였습니다."),
+
   SIGNUP_SUCCESS(HttpStatus.CREATED, "회원가입 성공"),
   LOGIN_SUCCESS(HttpStatus.OK, "로그인 성공"),
   GET_USER_SUCCESS(HttpStatus.OK, "유저 조회에 성공했습니다."),

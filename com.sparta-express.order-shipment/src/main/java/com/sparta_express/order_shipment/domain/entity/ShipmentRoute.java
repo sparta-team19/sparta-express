@@ -45,7 +45,6 @@ public class ShipmentRoute extends BaseEntity {
 
     private Integer actualTime;
 
-    @Column(nullable = false)
     private UUID deliveryManagerId;
 
     @Column(nullable = false)
@@ -58,21 +57,20 @@ public class ShipmentRoute extends BaseEntity {
     @Builder
     private ShipmentRoute(Integer sequence, UUID originHubId, UUID destinationHubId,
                           String deliveryAddress, Integer estimatedDistance, Integer estimatedTime,
-                          UUID deliveryManagerId, String userId, Shipment shipment) {
+                          String userId, Shipment shipment) {
         this.sequence = sequence;
         this.originHubId = originHubId;
         this.destinationHubId = destinationHubId;
         this.deliveryAddress = deliveryAddress;
         this.estimatedDistance = estimatedDistance;
         this.estimatedTime = estimatedTime;
-        this.deliveryManagerId = deliveryManagerId;
         this.userId = userId;
         this.shipment = shipment;
     }
 
     public static ShipmentRoute of(Integer sequence, UUID originHubId, UUID destinationHubId,
                                    String deliveryAddress, Integer estimatedDistance, Integer estimatedTime,
-                                   UUID deliveryManagerId, String userId, Shipment shipment) {
+                                   String userId, Shipment shipment) {
         return ShipmentRoute.builder()
                 .sequence(sequence)
                 .originHubId(originHubId)
@@ -80,7 +78,6 @@ public class ShipmentRoute extends BaseEntity {
                 .deliveryAddress(deliveryAddress)
                 .estimatedDistance(estimatedDistance)
                 .estimatedTime(estimatedTime)
-                .deliveryManagerId(deliveryManagerId)
                 .userId(userId)
                 .shipment(shipment)
                 .build();
@@ -96,7 +93,6 @@ public class ShipmentRoute extends BaseEntity {
         updateEstimatedTime(updateDto.getEstimatedTime());
         updateActualDistance(updateDto.getActualDistance());
         updateActualTime(updateDto.getActualTime());
-        updateDeliveryManagerId(updateDto.getDeliveryManagerId());
         updateUserId(email);
     }
 
@@ -154,11 +150,6 @@ public class ShipmentRoute extends BaseEntity {
         }
     }
 
-    private void updateDeliveryManagerId(UUID deliveryManagerId) {
-        if (deliveryManagerId != null) {
-            this.deliveryManagerId = deliveryManagerId;
-        }
-    }
 
     private void updateUserId(String email) {
         if (email != null) {

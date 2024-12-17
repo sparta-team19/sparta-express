@@ -23,8 +23,7 @@ public class ShipmentRouteService {
     private final MapInfra mapApp;
 
 
-    @Cacheable(cacheNames = "shipmentRoutes",
-            key = "#originHubId.toString() + destinationAddress")
+
     public ShipmentRoute findShipmentRoutes(UUID originHubId, String destinationAddress) {
 
         return shipmentRouteDomainService.findShipmentRoutes(
@@ -32,8 +31,6 @@ public class ShipmentRouteService {
         );
     }
 
-    @Cacheable(cacheNames = "shipmentInterhubRoutes",
-            key = "#originHubId.toString() + #destinationHubId.toString()")
     public final List<InterhubRoute> findShipmentInterhubRoutes(UUID originHubId,
                                                                 UUID destinationHubId) {
 
@@ -42,7 +39,7 @@ public class ShipmentRouteService {
         );
     }
 
-    @Cacheable(cacheNames = "finalHubToDestinations", key = "#destinationAddress")
+
     public final FinalHubToDestination findFinalHubToDestination(String destinationAddress) {
 
         return shipmentRouteDomainService.findFinalHubToDestination(
@@ -50,7 +47,6 @@ public class ShipmentRouteService {
         );
     }
 
-    @Cacheable(cacheNames = "nearestHubs", key = "#address")
     public final Hub findNearestHub(String address) {
 
         return shipmentRouteDomainService.findNearestHub(
@@ -58,7 +54,6 @@ public class ShipmentRouteService {
         );
     }
 
-    @Cacheable(cacheNames = "addressGeometryPositions", key = "#address")
     protected final Position findGeometryPosition(String address) {
 
         return mapApp.searchGeometryPoint(address);

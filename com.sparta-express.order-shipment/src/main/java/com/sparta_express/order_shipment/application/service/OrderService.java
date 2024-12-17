@@ -10,6 +10,7 @@ import com.sparta_express.order_shipment.domain.entity.ShipmentRoute;
 import com.sparta_express.order_shipment.domain.repository.OrderRepository;
 import com.sparta_express.order_shipment.domain.repository.ShipmentRouteRepository;
 import com.sparta_express.order_shipment.infrastructure.client.CompanyProductClient;
+import com.sparta_express.order_shipment.infrastructure.client.HubClient;
 import com.sparta_express.order_shipment.infrastructure.client.UserClient;
 import com.sparta_express.order_shipment.infrastructure.dto.*;
 import com.sparta_express.order_shipment.presentation.dto.UpdateOrderRequest;
@@ -32,22 +33,10 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ShipmentRouteRepository shipmentRouteRepository;
     private final CompanyProductClient companyProductClient;
-//    private final HubClient hubClient;
+    private final HubClient hubClient;
     private final UserClient userClient;
 
     public OrderCreateResponse createOrder(OrderDto request, String email) {
-        /*
-        todo: 각 api 담당자가 구현 완료하면 응답 값 맞춰서 수정 예정
-         * 1. 사용자 조회 (완료)
-         * 2. 업체 조회 -> 업체 체크 (완료)
-         * 3. 상품 조회 -> 상품 체크 (완료)
-         * 4. 상품 재고 감소 (완료)
-         * 5. 허브 경로 조회
-         * 6. 배송 담당자 조회 (배송담당자 애플리케이션 내에서 구현):
-                    - redis sortedset 이용해서 round-robin 형식으로 순번 낮은 사람 가져오기
-                    - 해당 api 호출 시 허브 간 경로의 개수만큼 조회하여 가져오기
-         * 7. 상품 재고 복구 (완료)
-         * */
 
         boolean isProductStockDecreased = false;
 
@@ -62,19 +51,16 @@ public class OrderService {
             log.info("### Fetching productResponse details : {}", productResponse.toString());
             companyProductClient.reduceStock(productResponse.getId(), request.getQuantity());
             isProductStockDecreased = true;
-//            List<HubResponseDto> hubResponseList = hubClient.getHubRoutesInfo(requesterResponse.getHubId(), receiverResponse.getHubId()).getData();
-            // todo: 6.
-//            DeliveryManagerResponseDto managerList = userClient.getDeliveryManager().getData();
-//
-//            Order order = buildOrder(requesterResponse, receiverResponse, productResponse, userResponse, request);
-//            Shipment shipment = buildShipment(requesterResponse, receiverResponse, userResponse, request, order);
-//            order.updateShipment(shipment);
-//            orderRepository.save(order);
-//            shipmentRouteRepository.saveAll(createShipmentRoutes(hubResponseList, managerList, shipment, request, email));
-//
-//            return OrderCreateResponse.from(order);
+            List<HubResponseDto> hubResponseList = hubClient.getHubRoutesInfo(requesterResponse.getHubId(), receiverResponse.getHubId()).getData();
+            log.info("### Fetching productResponse details : {}", hubResponseList.toString());
 
-            return null;
+            Order order = buildOrder(requesterResponse, receiverResponse, productResponse, userResponse, request);
+            Shipment shipment = buildShipment(requesterResponse, receiverResponse, userResponse, request, order);
+            order.updateShipment(shipment);
+            orderRepository.save(order);
+            shipmentRouteRepository.saveAll(createShipmentRoutes(hubResponseList, shipment, request, email));
+
+            return OrderCreateResponse.from(order);
 
         } catch (Exception e) {
             if (isProductStockDecreased) {
@@ -145,18 +131,16 @@ public class OrderService {
     }
 
     private List<ShipmentRoute> createShipmentRoutes(List<HubResponseDto> hubResponseList,
-                                                     DeliveryManagerResponseDto managerList,
                                                      Shipment shipment,
                                                      OrderDto request,
                                                      String userId) {
         return IntStream.range(0, hubResponseList.size())
-                .mapToObj(i -> buildShipmentRoute(hubResponseList.get(i), i + 1, managerList, shipment, request, userId))
+                .mapToObj(i -> buildShipmentRoute(hubResponseList.get(i), i + 1, shipment, request, userId))
                 .collect(Collectors.toList());
     }
 
     private ShipmentRoute buildShipmentRoute(HubResponseDto hubResponseDto,
                                              int sequence,
-                                             DeliveryManagerResponseDto managerList,
                                              Shipment shipment,
                                              OrderDto request,
                                              String userId) {
@@ -167,7 +151,6 @@ public class OrderService {
                 request.getDeliveryAddress(),
                 hubResponseDto.getDistanceKm(),
                 hubResponseDto.getEstimatedMinutes(),
-                managerList.getDeliveryManagerId(),
                 userId,
                 shipment
         );
