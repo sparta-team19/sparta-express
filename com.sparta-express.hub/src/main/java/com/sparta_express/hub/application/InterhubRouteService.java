@@ -18,4 +18,9 @@ public class InterhubRouteService {
 
         return repo.readInterhubRoute(interhubRouteId);
     }
+
+    public void deleteInterhubRoute(UUID interhubRouteId) {
+        repo.deleteInterhubRoute(interhubRouteId);
+
+    }
 }

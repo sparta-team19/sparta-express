@@ -72,4 +72,19 @@ public class InterhubRoutesController {
         );
     }
 
+    @DeleteMapping("/{interhubRouteId}")
+    public ResponseEntity<ResponseDataDto<Void>>
+    deleteInterhubRoute(@PathVariable UUID interhubRouteId) {
+
+        interhubRouteService.deleteInterhubRoute(interhubRouteId);
+
+        return ResponseEntity.ok(
+                new ResponseDataDto<>(
+                        ResponseStatus.REQUEST_SUCCESS,
+                        null
+                )
+        );
+    }
+
+
 }

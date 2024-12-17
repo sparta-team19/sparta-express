@@ -18,6 +18,7 @@ public enum ErrorType {
 
     //common
     NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "존재하지 않는 엔티티"),
+
     //hub
     USER_ID_INVALID(HttpStatus.BAD_REQUEST, "잘못된 회원 id"),
     INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "잘못된 요청 헤더"),
