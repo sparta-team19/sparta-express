@@ -16,7 +16,7 @@ public enum ResponseStatus {
     DELETE_AI_SUCCESS(HttpStatus.OK, "AI 요청 및 응답 삭제에 성공했습니다."),
     SEARCH_AI_SUCCESS(HttpStatus.OK, "AI 요청 및 응답 검색에 성공했습니다."),
     CREATE_SLACK_SUCCESS(HttpStatus.OK, "Slack 메시지 생성에 성공했습니다."
-        );
+        ), UPDATE_SLACK_SUCCESS(HttpStatus.OK, "Slack 메시지 수정에 성공했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
