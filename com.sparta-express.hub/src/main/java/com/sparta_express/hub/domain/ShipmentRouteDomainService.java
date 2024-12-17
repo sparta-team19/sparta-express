@@ -4,9 +4,10 @@ import com.sparta_express.hub.domain.model.FinalHubToDestination;
 import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,8 +15,9 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparingDouble;
 import static java.util.Comparator.comparingInt;
 
+@Getter //todo 지우기
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class ShipmentRouteDomainService {
 
@@ -105,8 +107,8 @@ public class ShipmentRouteDomainService {
         ));
         PriorityQueue<HubRouteInfo> hubRouteQue
                 = new PriorityQueue<>(comparingInt(HubRouteInfo::getDistance));
-        hubRouteQue.addAll(hubGraph.get(originHubId).stream()
-                .map(HubRouteInfo::initQueue).toList()
+        hubRouteQue.addAll(hubGraph.get(originHubId).stream().map(
+                HubRouteInfo::initQueue).toList()
         );
 
         while (!hubRouteQue.isEmpty()) {
