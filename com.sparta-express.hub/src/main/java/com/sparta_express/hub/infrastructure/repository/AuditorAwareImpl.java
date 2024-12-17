@@ -12,7 +12,6 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
 
         String userId = "testUser";
-//                = RequestExtractor.extractHeaderOf("X-User-Id");//todo 지우고, extractHeaderOf 디버깅
 
         return Optional.of(userId);
     }
