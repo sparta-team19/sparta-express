@@ -16,11 +16,13 @@ public enum ErrorType {
     NOT_AVAILABLE_PERMISSION(HttpStatus.LOCKED, "권한이 없습니다.")
      */
 
+    //common
+    NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "존재하지 않는 엔티티"),
     //hub
     USER_ID_INVALID(HttpStatus.BAD_REQUEST, "잘못된 회원 id"),
     INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "잘못된 요청 헤더"),
-    MAP_API_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "지도 API 오류");
-
-  private final HttpStatus httpStatus;
-  private final String message;
+    MAP_API_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "지도 API 오류"),
+;
+    private final HttpStatus httpStatus;
+    private final String message;
 }
