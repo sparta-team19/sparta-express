@@ -77,14 +77,14 @@ public class Shipment extends BaseEntity {
                 .build();
     }
 
-    public void update(ShipmentUpdateDto updateDto, String userId) {
+    public void update(ShipmentUpdateDto updateDto, String email) {
         updateOriginHubId(updateDto.getOriginHubId());
         updateDestinationHubId(updateDto.getDestinationHubId());
         updateDeliveryAddress(updateDto.getDeliveryAddress());
         updateRecipientName(updateDto.getRecipientName());
         updateRecipientSlackId(updateDto.getRecipientSlackId());
         updateStatus(updateDto.getStatus());
-        updateUserId(userId);
+        updateUserId(email);
     }
 
     public void updateShipmentRoutes(List<ShipmentRoute> shipmentRoutes) {
@@ -127,9 +127,9 @@ public class Shipment extends BaseEntity {
         }
     }
 
-    private void updateUserId(String userId) {
-        if (userId != null) {
-            this.userId = userId;
+    private void updateUserId(String email) {
+        if (email != null) {
+            this.userId = email;
         }
     }
 

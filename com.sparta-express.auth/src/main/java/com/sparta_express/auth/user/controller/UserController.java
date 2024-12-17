@@ -71,20 +71,28 @@ public class UserController {
             new PagedModel(responseDto)));
     }
 
-    /**
-     * 유저 정보 단일 조회
-     *
-     * @param userId
-     * @param userDetails
-     * @return
-     */
-    @GetMapping("/{userId}")
-    public ResponseEntity<ResponseDataDto<UserResponseDto>> getUser(
-        @PathVariable Long userId,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        UserResponseDto responseDto = userService.getUser(userId, userDetails.getUser());
+//    /**
+//     * 유저 정보 단일 조회
+//     *
+//     * @param userId
+//     * @param userDetails
+//     * @return
+//     */
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<ResponseDataDto<UserResponseDto>> getUser(
+//        @PathVariable Long userId,
+//        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        UserResponseDto responseDto = userService.getUser(userId, userDetails.getUser());
+//        return ResponseEntity.ok(new ResponseDataDto(ResponseStatus.GET_USER_SUCCESS,
+//            responseDto));
+//    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<ResponseDataDto<UserResponseDto>> getUserByEmail(
+            @PathVariable String email) {
+        UserResponseDto responseDto = userService.getUserByEmail(email);
         return ResponseEntity.ok(new ResponseDataDto(ResponseStatus.GET_USER_SUCCESS,
-            responseDto));
+                responseDto));
     }
 
     /**

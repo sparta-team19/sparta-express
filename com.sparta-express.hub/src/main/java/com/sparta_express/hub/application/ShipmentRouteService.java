@@ -22,6 +22,7 @@ public class ShipmentRouteService {
     private final MapInfra mapApp;
 
 
+
     public ShipmentRoute findShipmentRoutes(UUID originHubId, String destinationAddress) {
 
         return shipmentRouteDomainService.findShipmentRoutes(

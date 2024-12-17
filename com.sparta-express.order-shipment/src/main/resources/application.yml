@@ -23,6 +23,7 @@ server:
 eureka:
   client:
     service-url:
+#      defaultZone: http://server:8761/eureka/
       defaultZone: http://localhost:8761/eureka/
 
 resilience4j:
@@ -45,3 +46,9 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 3  # 서킷 브레이커가 Half-open 상태에서 허용하는 최대 호출 수를 3으로 설정
         # 서킷 브레이커가 Open 상태에서 Half-open 상태로 전환되기 전에 기다리는 시간
         waitDurationInOpenState: 20s  # Open 상태에서 Half-open 상태로 전환되기 전에 대기하는 시간을 20초로 설정
+
+logging:
+  level:
+    root: INFO
+    com.sparta_express.order_shipment.infrastructure: DEBUG # com.example은 FeignClient 패키지 기준
+    feign: DEBUG
