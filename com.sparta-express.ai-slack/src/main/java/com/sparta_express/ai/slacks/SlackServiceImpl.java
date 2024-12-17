@@ -10,6 +10,7 @@ import com.sparta_express.ai.core.Slack;
 import java.sql.Timestamp;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class SlackServiceImpl implements SlackService {
             new CustomException(ErrorType.NOT_FOUND_AI));
 
         // 메시지 만들기
-        String message = ai.getAiRequest() + "\n\n" + ai.getAiResponse();
+        String message = createMessage(ai);
 
         // 응답 내용 받아오기
         JsonNode responseBody = slackClient.sendMessage(requestDto.getReceiverId(),
@@ -56,11 +57,21 @@ public class SlackServiceImpl implements SlackService {
         Slack slack = slackRepository.findById(messageId).orElseThrow(() ->
             new CustomException(ErrorType.NOT_FOUND_SLACK));
 
-        slackClient.updateMessage(slack.getChannelId(), slack.getTs(), requestDto.getMessage());
+        Ai ai = aiRepository.findById(requestDto.getAiId()).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_AI));
+        
+        // 메시지 만들기
+        String message = createMessage(ai);
 
-        slack.updateSlack(requestDto.getMessage());
+        slackClient.updateMessage(slack.getChannelId(), slack.getTs(), message);
+
+        slack.updateSlack(message);
 
         return SlackResponseDto.from(slack);
+    }
+
+    private static @NotNull String createMessage(Ai ai) {
+        return ai.getAiRequest() + "\n\n" + ai.getAiResponse();
     }
 
     @Transactional(readOnly = true)
