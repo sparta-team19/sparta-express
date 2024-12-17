@@ -32,6 +32,12 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/users/**
+
+        - id: hub
+          uri: lb://hub
+          predicates:
+            - Path=/api/interhub-routes/**
+
       discovery:
         locator:
           enabled: true
