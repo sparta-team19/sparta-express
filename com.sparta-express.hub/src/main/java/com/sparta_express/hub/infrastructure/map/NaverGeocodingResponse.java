@@ -1,4 +1,4 @@
-package com.sparta_express.hub.infrastructure.map.naver_geocoding;
+package com.sparta_express.hub.infrastructure.map;
 
 import lombok.Data;
 
@@ -8,7 +8,13 @@ import java.util.List;
 @Data
 public class NaverGeocodingResponse {
 
+    private String status;
     private List<Address> addresses;
+
+    public boolean isFailed() {
+
+        return !status.equals("OK");
+    }
 
     @Data
     public static class Address {

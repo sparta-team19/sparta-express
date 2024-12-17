@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
+//read only
 public interface InterhubRouteJpaRepository extends JpaRepository<InterhubRoute, UUID> {
 }

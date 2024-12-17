@@ -26,4 +26,15 @@ public class HubRepositoryInfra implements HubRepository {
     public List<InterhubRoute> readAllInterhubRoutes() {
         return interhubRouteJpaRepo.findAll();
     }
+
+
+    @Override
+    public void saveAllHubs(List<Hub> hubs) {
+        hubJpaRepo.saveAll(hubs);
+    }
+
+    @Override
+    public void saveAllInterhubRoutes(List<InterhubRoute> interhubRoutes) {
+        interhubRouteJpaRepo.saveAll(interhubRoutes);
+    }
 }
