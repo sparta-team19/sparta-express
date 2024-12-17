@@ -38,4 +38,7 @@ public interface UserService {
     void deleteDeliveryManager(UUID deliveryId);
 
     Page<DeliveryManagerResponseDto> searchDeliveryManager(Predicate predicate, Pageable pageable);
+
+    UserResponseDto getUserByEmail(String email);
+
 }

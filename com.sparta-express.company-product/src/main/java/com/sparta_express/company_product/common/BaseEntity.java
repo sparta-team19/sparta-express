@@ -3,7 +3,6 @@ package com.sparta_express.company_product.common;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -36,7 +35,6 @@ public class BaseEntity {
     private String updatedBy;
 
     private LocalDateTime deletedAt;
-
 
     private String deletedBy;
 

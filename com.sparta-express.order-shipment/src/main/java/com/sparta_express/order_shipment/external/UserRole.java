@@ -17,11 +17,4 @@ public enum UserRole {
         return this.authority;
     }
 
-    public static class Authority {
-        public static final String MASTER = "ROLE_MANAGER";
-        public static final String HUB_MANAGER = "ROLE_HUB_MANAGER";
-        public static final String DELIVERY_MANAGER = "ROLE_DELIVERY_MANAGER";
-        public static final String COMPANY_MANAGER = "ROLE_COMPANY_MANAGER";
-    }
-
 }

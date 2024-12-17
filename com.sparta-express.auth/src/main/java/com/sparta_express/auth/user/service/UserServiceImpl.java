@@ -205,4 +205,11 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(ErrorType.DUPLICATE_EMAIL);
         });
     }
+
+    @Override
+    public UserResponseDto getUserByEmail(String email) {
+        return UserResponseDto.from(userRepository.findByEmail(email).orElseThrow(() ->
+                new CustomException(ErrorType.NOT_FOUND_USER)));
+    }
+
 }

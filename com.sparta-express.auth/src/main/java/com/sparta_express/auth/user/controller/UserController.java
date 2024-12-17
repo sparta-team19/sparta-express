@@ -259,4 +259,22 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.SEARCH_DELIVERY_MANAGER_SUCCESS,
             userService.searchDeliveryManager(predicate, pageable)));
     }
+
+    /**
+     * 이메일로 유저 정보 조회
+     *
+     * @param email
+     * @return
+     */
+    @GetMapping("/email/{email}")
+    public ResponseEntity<ResponseDataDto<UserResponseDto>> getUserByEmail(
+            @PathVariable String email
+    ) {
+        UserResponseDto responseDto = userService.getUserByEmail(email);
+        System.out.println("responseDto.getEmail() = " + responseDto.getEmail());
+
+        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.GET_USER_SUCCESS,
+                responseDto));
+    }
+
 }
