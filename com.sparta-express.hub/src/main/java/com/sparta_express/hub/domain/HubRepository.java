@@ -10,4 +10,8 @@ public interface HubRepository {
     List<Hub> readAllHubs();
 
     List<InterhubRoute> readAllInterhubRoutes();
+
+    void saveAllHubs(List<Hub> hubs);//todo 지우기
+
+    void saveAllInterhubRoutes(List<InterhubRoute> interhubRoutes);//todo 지우기
 }

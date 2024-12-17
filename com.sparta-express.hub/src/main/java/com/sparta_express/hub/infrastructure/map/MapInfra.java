@@ -5,6 +5,6 @@ import com.sparta_express.hub.domain.Position;
 
 public interface MapInfra extends MapApplication {
 
-    Position searchGeometryPoint(String address);
+    Position searchPosition(String address);
 
 }

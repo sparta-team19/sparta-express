@@ -24,10 +24,10 @@ public class Hub extends BaseEntity {
     private String address;
     @Column(length = 100)
     private HubStatus status;
-    @Column
-    private Double latitude;
-    @Column
-    private Double longitude;
+    @Column(nullable = false)
+    private double latitude;
+    @Column(nullable = false)
+    private double longitude;
 
     public Position geometryPosition() {
 
@@ -37,4 +37,16 @@ public class Hub extends BaseEntity {
                 .build();
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        if (!(o instanceof Hub)) return false;
+
+        if (this == o || id == ((Hub) o).id) return true;
+
+        return status == ((Hub) o).status
+                && address.equals(((Hub) o).address)
+                && latitude == ((Hub) o).latitude
+                && longitude == ((Hub) o).longitude;
+    }
 }

@@ -61,6 +61,7 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
             // 요청을 수정
             ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
                 .header("X-User-Id", claims.get("user_id").toString())
+                .header("X-Email", claims.get("email").toString())
                 .header("X-Role", claims.get("role").toString())
                 .build();
 

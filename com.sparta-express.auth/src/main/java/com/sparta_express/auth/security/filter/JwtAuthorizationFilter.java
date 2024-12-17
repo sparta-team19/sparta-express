@@ -92,7 +92,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
 
                 // 새로운 Access Token 생성
-                token = JwtTokenProvider.createAccessToken(found.getEmail(), found.getRole());
+                token = JwtTokenProvider.createAccessToken(found.getId(), found.getEmail(), found.getRole());
 
                 // Redis에 새로운 Access Token 저장
                 refreshTokenRepository.save(
@@ -111,17 +111,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     }
 
     // 인증 처리
-    public void setAuthentication(String username) {
+    public void setAuthentication(String email) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = createAuthentication(username);
+        Authentication authentication = createAuthentication(email);
         context.setAuthentication(authentication);
 
         SecurityContextHolder.setContext(context);
     }
 
     // 인증 객체 생성
-    private Authentication createAuthentication(String username) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    private Authentication createAuthentication(String email) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetails, null,
             userDetails.getAuthorities());
     }
@@ -141,7 +141,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 putRefreshTokenInAuthorization(response);
             }
 
-            setAuthentication(claims.get("user_id").toString());
+            setAuthentication(claims.get("email").toString());
 
         }
 
