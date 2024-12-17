@@ -55,11 +55,12 @@ public class JwtTokenProvider {
     }
 
     // AccessToken 토큰 생성
-    public static String createAccessToken(String email, UserRole role) {
+    public static String createAccessToken(Long userId, String email, UserRole role) {
 
         return BEARER_PREFIX +
             Jwts.builder()
-                .claim("user_id", email) // 사용자 식별자값(email)
+                .claim("user_id", userId)
+                .claim("email", email) // 사용자 식별자값(email)
                 .claim("role", role) // 사용자 권한
                 .expiration(new Date(System.currentTimeMillis() + accessTokenValidate)) // 만료 시간
                 .issuedAt(new Date(System.currentTimeMillis())) // 발급일
@@ -87,7 +88,7 @@ public class JwtTokenProvider {
     public static String getEmailFromToken(String token) {
         try {
             Claims claims = getUserInfoFromToken(token);
-            String email = claims.get("user_id").toString(); // 이메일 가져오기
+            String email = claims.get("email").toString(); // 이메일 가져오기
 
             if (email == null || email.isEmpty()) {
                 throw new IllegalArgumentException("이메일이 없습니다."); // 이메일이 없을 경우 예외 발생

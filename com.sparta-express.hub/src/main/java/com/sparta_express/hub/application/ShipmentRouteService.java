@@ -8,7 +8,6 @@ import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
 import com.sparta_express.hub.infrastructure.map.MapInfra;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class ShipmentRouteService {
         );
     }
 
-
+//    @Cacheable(cacheNames = "finalHubToDestinations", key = "#destinationAddress")
     public final FinalHubToDestination findFinalHubToDestination(String destinationAddress) {
 
         return shipmentRouteDomainService.findFinalHubToDestination(
@@ -56,6 +55,6 @@ public class ShipmentRouteService {
 
     protected final Position findGeometryPosition(String address) {
 
-        return mapApp.searchGeometryPoint(address);
+        return mapApp.searchPosition(address);
     }
 }

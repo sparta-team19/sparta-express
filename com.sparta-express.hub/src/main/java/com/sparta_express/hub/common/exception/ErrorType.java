@@ -18,8 +18,8 @@ public enum ErrorType {
 
     //hub
     USER_ID_INVALID(HttpStatus.BAD_REQUEST, "잘못된 회원 id"),
-    INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "잘못된 요청 헤더")
-    ;
+    INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "잘못된 요청 헤더"),
+    MAP_API_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "지도 API 오류");
 
   private final HttpStatus httpStatus;
   private final String message;

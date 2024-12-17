@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public DeliveryManagerResponseDto createDeliveryManager(String userId,
+    public DeliveryManagerResponseDto createDeliveryManager(Long id, String userId,
         UserRequestDto requestDto) {
 
         // 현재 최대 deliverySequence 값 조회
@@ -140,7 +140,11 @@ public class UserServiceImpl implements UserService {
         // 새로운 deliverySequence 설정
         int newDeliverySequence = (maxSequence == null ? 1 : maxSequence + 1);
 
-        DeliveryManager deliveryManager = DeliveryManager.of(requestDto, newDeliverySequence);
+        // 배송 담당자로 등록할 유저
+        User user = userRepository.findById(id).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_USER));
+
+        DeliveryManager deliveryManager = DeliveryManager.of(requestDto, newDeliverySequence, user);
 
         deliveryManagerRepository.save(deliveryManager);
 
@@ -149,7 +153,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<DeliveryManagerResponseDto> getDeliveryManagers(String userId, Pageable pageable) {
+    public Page<DeliveryManagerResponseDto> getDeliveryManagers(Pageable pageable) {
         Page<DeliveryManager> deliveryManagerPage = deliveryManagerRepository.findAll(pageable);
         return deliveryManagerPage.map(DeliveryManagerResponseDto::from);
     }

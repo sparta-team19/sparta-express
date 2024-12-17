@@ -12,7 +12,8 @@ spring:
         use_sql_comments: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/hub
+#    url: jdbc:postgresql://localhost:5432/hub  # local url
+    url: jdbc:postgresql://43.203.205.156:5432/hub_db	#공용 url
     platform: postgres
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
