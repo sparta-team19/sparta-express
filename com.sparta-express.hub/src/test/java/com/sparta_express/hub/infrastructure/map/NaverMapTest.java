@@ -1,4 +1,4 @@
-package com.sparta_express.hub.infrastructure.map.naver_geocoding;
+package com.sparta_express.hub.infrastructure.map;
 
 import com.sparta_express.hub.domain.Position;
 import com.sparta_express.hub.infrastructure.map.NaverMap;

@@ -63,4 +63,18 @@ public class InterhubRoute extends BaseEntity {
     public UUID getDestinationHubId() {
         return destinationHub.getId();
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!(o instanceof InterhubRoute)) return false;
+
+        if (this == o || id == ((InterhubRoute) o).id) return true;
+
+        return status == ((InterhubRoute) o).status
+                && originHub.equals(((InterhubRoute) o).originHub)
+                && destinationHub.equals(((InterhubRoute) o).destinationHub)
+                && distanceKm == ((InterhubRoute) o).distanceKm
+                && estimatedMinutes == ((InterhubRoute) o).estimatedMinutes;
+    }
 }
