@@ -45,7 +45,7 @@ public class NaverMap implements MapInfra {
                         (int) Math.round(response.getDistanceMeter() / 1000.0)
                 )
                 .estimatedMinutes(
-                        (int) Math.round(response.getDurationMilliSeconds() / 3600.0)
+                        (int) Math.round(response.getDurationMilliSeconds() / (1000.0 * 60.0))
                 )
                 .build();
     }

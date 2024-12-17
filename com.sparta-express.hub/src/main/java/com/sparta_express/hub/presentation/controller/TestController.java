@@ -2,7 +2,7 @@ package com.sparta_express.hub.presentation.controller;
 
 import com.sparta_express.hub.domain.HubToDestinationDTO;
 import com.sparta_express.hub.domain.Position;
-import com.sparta_express.hub.infrastructure.map.NaverMap;
+import com.sparta_express.hub.infrastructure.map.MapInfra;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestController {
 
-    private final NaverMap naverMap;
+//    private final MapApplication naverMap;
+    private final MapInfra naverMap;
 
     @GetMapping("/geocoding")
     public Position geocodingTest() {
@@ -21,12 +22,10 @@ public class TestController {
         Position position = naverMap.searchPosition(address);
 
         return position;
-
     }
 
     @GetMapping("/direction5")
     public HubToDestinationDTO direction5Test() {
-//        36.036453, 129.375581
 
         Position start = Position.builder().latitude(36.036453).longitude(129.375581).build(); //"포항시 송도동 418-14";
         Position goal = Position.builder().latitude(35.856675).longitude(129.225107).build(); //"경주 시청";
@@ -34,6 +33,5 @@ public class TestController {
         HubToDestinationDTO hubToDestinationDTO = naverMap.searchRoute(start, goal);
 
         return hubToDestinationDTO;
-
     }
 }
