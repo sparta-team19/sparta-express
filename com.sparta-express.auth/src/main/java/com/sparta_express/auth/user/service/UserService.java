@@ -19,7 +19,7 @@ public interface UserService {
 
     Page<UserResponseDto> getUsers(Pageable pageable, User user);
 
-    UserResponseDto getUser(Long userId, User user);
+//    UserResponseDto getUser(Long userId, User user);
 
     UserResponseDto updateUser(Long userId, User user, UserRequestDto requestDto);
 
@@ -38,4 +38,6 @@ public interface UserService {
     void deleteDeliveryManager(UUID deliveryId);
 
     Page<DeliveryManagerResponseDto> searchDeliveryManager(Predicate predicate, Pageable pageable);
+
+    UserResponseDto getUserByEmail(String email);
 }

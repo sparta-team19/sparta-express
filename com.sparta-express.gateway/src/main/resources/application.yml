@@ -8,10 +8,20 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: order-shipment
+        - id: order
           uri: lb://order-shipment
           predicates:
-            - Path=/orders/**
+            - Path=/api/orders/**
+
+        - id: order-shipments
+          uri: lb://order-shipment
+          predicates:
+            - Path=/api/shipments/**
+
+        - id: order-shipmentRoutes
+          uri: lb://order-shipment
+          predicates:
+            - Path=/api/shipmentRoutes/**
 
         - id: company-product
           uri: lb://company-product
@@ -27,6 +37,12 @@ spring:
           uri: lb://ai-slack
           predicates:
             - Path=/api/v1/ai/**, /api/v1/slack/**
+
+        - id: hub
+          uri: lb://hub
+          predicates:
+            - Path=/api/interhub-routes/**
+
       discovery:
         locator:
           enabled: true
