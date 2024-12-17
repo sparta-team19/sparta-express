@@ -62,7 +62,7 @@ public class SlackController {
     }
 
     @GetMapping
-    ResponseEntity<ResponseDataDto<Page<SlackResponseDto>>> getMessages(
+    public ResponseEntity<ResponseDataDto<Page<SlackResponseDto>>> getMessages(
         @RequestHeader(value = "X-Role", required = true) String role,
         @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable
     ) {
@@ -71,5 +71,17 @@ public class SlackController {
         }
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.GET_SLACK_SUCCESS,
             slackService.getMessages(pageable)));
+    }
+
+    @GetMapping("/{messageId}")
+    public ResponseEntity<ResponseDataDto<SlackResponseDto>> getMessage(
+        @RequestHeader(value = "X-Role", required = true) String role,
+        @PathVariable UUID messageId
+    ) {
+        if (!"MASTER".equals(role)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.GET_SLACK_SUCCESS,
+            slackService.getMessage(messageId)));
     }
 }

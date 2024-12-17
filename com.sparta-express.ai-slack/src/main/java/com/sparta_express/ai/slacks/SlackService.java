@@ -11,4 +11,6 @@ public interface SlackService {
     SlackResponseDto updateMessage(SlackRequestDto requestDto, UUID messageId);
 
     Page<SlackResponseDto> getMessages(Pageable pageable);
+
+    SlackResponseDto getMessage(UUID messageId);
 }

@@ -63,6 +63,14 @@ public class SlackServiceImpl implements SlackService {
         return slackpage.map(SlackResponseDto::from);
     }
 
+    @Override
+    public SlackResponseDto getMessage(UUID messageId) {
+        Slack slack = slackRepository.findById(messageId).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_SLACK));
+
+        return SlackResponseDto.from(slack);
+    }
+
     private Timestamp convertStringToTimestamp(String unixTimestamp) {
         try {
             // 문자열을 double로 변환
