@@ -1,6 +1,6 @@
 spring:
   application:
-    name: user-service
+    name: ai-slack
   datasource:
     url: ${DB_URL}
     username: ${DB_ID}
@@ -21,15 +21,22 @@ spring:
       port: ${REDiS_PORT}
       password: ${REDIS_PASSWORD}
 
+gemini:
+  api:
+    url: ${GEMINI_URL}
+    key: ${GEMINI_KEY}
+
+slack:
+  bot:
+    token: ${SLACK_BOT_TOKEN}
+  default:
+    channel: C07K61091EG
+
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-service:
-  jwt:
-    access-expiration: 1800000
-    secret-key: ${SECRET_KEY}
-
 server:
-  port: 8083
+  port: 8085
