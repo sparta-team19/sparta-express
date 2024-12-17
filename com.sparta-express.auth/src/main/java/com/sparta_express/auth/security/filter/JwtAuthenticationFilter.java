@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserRole role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
         long userId = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getId();
 
-        String accessToken = JwtTokenProvider.createAccessToken(username, role);
+        String accessToken = JwtTokenProvider.createAccessToken(userId, username, role);
         String refreshToken = JwtTokenProvider.createRefreshToken();
 
         refreshTokenService.saveTokenInfo(userId, refreshToken, accessToken);
