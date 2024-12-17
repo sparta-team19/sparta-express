@@ -13,7 +13,7 @@ public class CustomAuditorAware implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
-            String userId = attributes.getRequest().getHeader("X-User-Id");
+            String userId = attributes.getRequest().getHeader("X-Email");
             return Optional.ofNullable(userId); // null일 경우 Optional.empty() 반환
         }
         return Optional.empty();
