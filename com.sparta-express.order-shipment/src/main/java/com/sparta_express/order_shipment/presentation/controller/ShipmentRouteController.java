@@ -27,8 +27,8 @@ public class ShipmentRouteController {
     @PutMapping("/{shipmentRoutesId}")
     public ResponseEntity<ResponseDataDto<ShipmentRouteResponse>> updateShipmentRoute(@PathVariable("shipmentRoutesId") UUID shipmentRoutesId,
                                                                                       @RequestBody ShipmentRouteUpdateRequest request,
-                                                                                      @RequestHeader(name = "X-User-Id") String userId) {
-        ShipmentRouteResponse responseDto = shipmentRouteService.updateShipmentRoute(shipmentRoutesId, request.toDto(), userId);
+                                                                                      @RequestHeader(name = "X-User-Id") String email) {
+        ShipmentRouteResponse responseDto = shipmentRouteService.updateShipmentRoute(shipmentRoutesId, request.toDto(), email);
         return ResponseEntity.ok(new ResponseDataDto<ShipmentRouteResponse>(SHIPMENT_ROUTE_UPDATE_SUCCESS, responseDto));
     }
 

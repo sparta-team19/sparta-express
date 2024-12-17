@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
 import java.util.UUID;
 
 import static com.sparta_express.order_shipment.common.exception.ErrorType.*;
@@ -27,18 +28,14 @@ public class ShipmentRouteService {
 
     private final ShipmentRouteRepository shipmentRouteRepository;
     private final UserClient userClient;
+    private static final Set<String> ALLOWED_ROLES = Set.of("MASTER", "HUB_MANAGER", "DELIVERY_MANAGER");
 
-    public ShipmentRouteResponse updateShipmentRoute(UUID shipmentRoutesId, ShipmentRouteUpdateDto updateDto, String userId) {
-        /* todo:
-            1. 권한 체크 로직 추가 - checkRole 메소드 내 구현
-            feignclient 로 유저 조회 한 뒤 권한 체크
-            MASTER, HUB_MANAGER, DELIVERY_MANAGER 만 가능
-         */
-        UserResponseDto userDto = userClient.getUser(userId).getData();
-        checkRole(userDto.getEmail());
+    public ShipmentRouteResponse updateShipmentRoute(UUID shipmentRoutesId, ShipmentRouteUpdateDto updateDto, String email) {
+        UserResponseDto userDto = userClient.getUserByEmail(email).getData();
+        checkRole(userDto.getRole());
         ShipmentRoute shipmentRoute = checkShipmentRoute(shipmentRoutesId);
         checkUser(userDto.getEmail(), shipmentRoute);
-        shipmentRoute.update(updateDto, userId);
+        shipmentRoute.update(updateDto, email);
         return ShipmentRouteResponse.from(shipmentRoute);
     }
 
@@ -64,9 +61,11 @@ public class ShipmentRouteService {
         shipmentRoute.delete(userId);
     }
 
-    private void checkRole(String userId) {
-        // todo: 권한체크
-
+    private void checkRole(String role) {
+        // MASTER, HUB_MANAGER, DELIVERY_MANAGER 만 가능
+        if(!ALLOWED_ROLES.contains(role)) {
+            throw new CustomException(COMMON_INVALID_ROLE);
+        }
     }
 
     private ShipmentRoute checkShipmentRoute(UUID shipmentRoutesId) {

@@ -86,7 +86,7 @@ public class ShipmentRoute extends BaseEntity {
                 .build();
     }
 
-    public void update(ShipmentRouteUpdateDto updateDto, String userId) {
+    public void update(ShipmentRouteUpdateDto updateDto, String email) {
         updateSequence(updateDto.getSequence());
         updateOriginHubId(updateDto.getOriginHubId());
         updateDestinationHubId(updateDto.getDestinationHubId());
@@ -97,7 +97,7 @@ public class ShipmentRoute extends BaseEntity {
         updateActualDistance(updateDto.getActualDistance());
         updateActualTime(updateDto.getActualTime());
         updateDeliveryManagerId(updateDto.getDeliveryManagerId());
-        updateUserId(userId);
+        updateUserId(email);
     }
 
     private void updateSequence(Integer sequence) {
@@ -160,9 +160,9 @@ public class ShipmentRoute extends BaseEntity {
         }
     }
 
-    private void updateUserId(String userId) {
-        if (userId != null) {
-            this.userId = userId;
+    private void updateUserId(String email) {
+        if (email != null) {
+            this.userId = email;
         }
     }
 
