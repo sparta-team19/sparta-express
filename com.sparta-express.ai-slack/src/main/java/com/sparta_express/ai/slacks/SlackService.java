@@ -16,4 +16,6 @@ public interface SlackService {
     SlackResponseDto getMessage(UUID messageId);
 
     Page<SlackResponseDto> searchMessage(Predicate predicate, Pageable pageable);
+
+    void deleteMessage(UUID messageId);
 }

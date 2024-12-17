@@ -4,6 +4,7 @@ import com.querydsl.core.types.Predicate;
 import com.sparta_express.ai.common.CustomException;
 import com.sparta_express.ai.common.ErrorType;
 import com.sparta_express.ai.common.ResponseDataDto;
+import com.sparta_express.ai.common.ResponseMessageDto;
 import com.sparta_express.ai.common.ResponseStatus;
 import com.sparta_express.ai.core.Ai;
 import com.sparta_express.ai.core.Slack;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +67,13 @@ public class SlackController {
             slackService.updateMessage(requestDto, messageId)));
     }
 
+    /**
+     * Slack 메시지 조회
+     *
+     * @param role
+     * @param pageable
+     * @return
+     */
     @GetMapping
     public ResponseEntity<ResponseDataDto<Page<SlackResponseDto>>> getMessages(
         @RequestHeader(value = "X-Role", required = true) String role,
@@ -77,6 +86,13 @@ public class SlackController {
             slackService.getMessages(pageable)));
     }
 
+    /**
+     * Slack 메시지 단일 조회
+     *
+     * @param role
+     * @param messageId
+     * @return
+     */
     @GetMapping("/{messageId}")
     public ResponseEntity<ResponseDataDto<SlackResponseDto>> getMessage(
         @RequestHeader(value = "X-Role", required = true) String role,
@@ -89,6 +105,14 @@ public class SlackController {
             slackService.getMessage(messageId)));
     }
 
+    /**
+     * Slack 메시지 검색
+     *
+     * @param role
+     * @param pageable
+     * @param predicate
+     * @return
+     */
     @GetMapping("/search")
     public ResponseEntity<ResponseDataDto<Page<SlackResponseDto>>> searchMessage(
         @RequestHeader(value = "X-Role", required = true) String role,
@@ -100,5 +124,17 @@ public class SlackController {
         }
         return ResponseEntity.ok(new ResponseDataDto<>(ResponseStatus.SEARCH_SLACK_SUCCESS,
             slackService.searchMessage(predicate, pageable)));
+    }
+
+    @DeleteMapping("/{messageId}")
+    public ResponseEntity<ResponseMessageDto> deleteSlack(
+        @RequestHeader(value = "X-Role", required = true) String role,
+        @PathVariable UUID messageId
+    ) {
+        if (!"MASTER".equals(role)) {
+            throw new CustomException(ErrorType.ACCESS_DENIED);
+        }
+        slackService.deleteMessage(messageId);
+        return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_SLACK_SUCCESS));
     }
 }

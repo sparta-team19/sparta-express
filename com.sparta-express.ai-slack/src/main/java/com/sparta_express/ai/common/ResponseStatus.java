@@ -20,7 +20,8 @@ public enum ResponseStatus {
     CREATE_SLACK_SUCCESS(HttpStatus.OK, "Slack 메시지 생성에 성공했습니다."),
     UPDATE_SLACK_SUCCESS(HttpStatus.OK, "Slack 메시지 수정에 성공했습니다."),
     GET_SLACK_SUCCESS(HttpStatus.OK, "Slack 메시지 조회에 성공했습니다."),
-    SEARCH_SLACK_SUCCESS(HttpStatus.OK, "Slack 메시지 검색에 성공했습니다.");
+    SEARCH_SLACK_SUCCESS(HttpStatus.OK, "Slack 메시지 검색에 성공했습니다."),
+    DELETE_SLACK_SUCCESS(HttpStatus.OK, "Slack 메시지 삭제에 성공했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

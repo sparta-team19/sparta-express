@@ -81,6 +81,21 @@ public class SlackServiceImpl implements SlackService {
         return slackPage.map(SlackResponseDto::from);
     }
 
+    @Transactional
+    @Override
+    public void deleteMessage(UUID messageId) {
+        Slack slack = slackRepository.findById(messageId).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_SLACK));
+
+        boolean isDeleted = slackClient.deleteMessage(slack.getChannelId(), slack.getTs());
+
+        if (isDeleted) {
+            slack.setIsDeleted(Boolean.TRUE);
+        } else {
+            throw new CustomException(ErrorType.DELETE_SLACK_FAIL);
+        }
+    }
+
     private Timestamp convertStringToTimestamp(String unixTimestamp) {
         try {
             // 문자열을 double로 변환

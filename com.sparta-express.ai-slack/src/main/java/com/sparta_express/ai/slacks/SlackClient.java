@@ -17,12 +17,14 @@ import org.springframework.web.client.RestTemplate;
 public class SlackClient {
 
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
     @Value("${slack.bot.token}")
     private String botToken;
 
     private static final String POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
     private static final String UPDATE_MESSAGE_URL = "https://slack.com/api/chat.update";
+    private static final String DELETE_MESSAGE_URL = "https://slack.com/api/chat.delete";
 
     /**
      * Slack 사용자에게 메시지를 전송하는 메서드
@@ -67,7 +69,13 @@ public class SlackClient {
         }
     }
 
-    // 슬랙 메시지 수정
+    /**
+     * Slack 메시지 수정
+     *
+     * @param channelId
+     * @param timestamp
+     * @param newMessage
+     */
     public void updateMessage(String channelId, String timestamp, String newMessage) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + botToken);
@@ -94,7 +102,6 @@ public class SlackClient {
         }
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseBody = objectMapper.readTree(response.getBody());
 
             if (!responseBody.get("ok").asBoolean()) {
@@ -102,6 +109,47 @@ public class SlackClient {
             }
         } catch (Exception e) {
             throw new RuntimeException("Slack API 응답 파싱 실패: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Slack 메시지 삭제
+     *
+     * @param channelId 메시지가 있는 채널 ID
+     * @param timestamp 메시지의 타임스탬프
+     */
+    public boolean deleteMessage(String channelId, String timestamp) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + botToken);
+        headers.set("Content-Type", "application/json");
+
+        // 요청 바디 구성
+        String body = String.format(
+            "{\"channel\":\"%s\", \"ts\":\"%s\"}",
+            channelId, timestamp
+        );
+
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
+
+        // Slack API 호출
+        ResponseEntity<String> response = restTemplate.exchange(
+            DELETE_MESSAGE_URL,
+            HttpMethod.POST,
+            request,
+            String.class
+        );
+
+        // JSON 응답 확인
+        try {
+            JsonNode jsonResponse = objectMapper.readTree(response.getBody());
+            boolean isOk = jsonResponse.get("ok").asBoolean();
+            if (!isOk) {
+                String error = jsonResponse.get("error").asText();
+                throw new RuntimeException("Slack 메시지 삭제 실패: " + error);
+            }
+            return isOk;
+        } catch (Exception e) {
+            throw new RuntimeException("Slack 메시지 삭제 중 오류 발생", e);
         }
     }
 }
