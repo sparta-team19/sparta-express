@@ -30,10 +30,13 @@ public class SlackServiceImpl implements SlackService {
         String unixTimestamp = responseBody.get("ts").asText();
         Timestamp sendTime = convertStringToTimestamp(unixTimestamp);
 
+        // 채널Id
+        String channelId = responseBody.get("channel").asText();
+
         Ai ai = aiRepository.findById(requestDto.getAiId()).orElseThrow(() ->
             new CustomException(ErrorType.NOT_FOUND_AI));
 
-        Slack slack = Slack.of(requestDto, sendTime, ai);
+        Slack slack = Slack.of(requestDto, sendTime, ai, channelId, unixTimestamp);
 
         slackRepository.save(slack);
 

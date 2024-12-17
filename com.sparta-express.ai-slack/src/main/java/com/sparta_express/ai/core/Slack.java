@@ -37,25 +37,35 @@ public class Slack extends BaseEntity {
     @Column(nullable = false)
     Timestamp sendTime;
 
+    @Column(nullable = false)
+    String channelId;   // 슬랙 메시지의 채널 id
+
+    @Column(nullable = false)
+    String ts;  // 슬랙 메시지의 Unix Timestamp
+
     @OneToOne
     @JoinColumn(name = "ai_delivery_time_id", nullable = false)
     @Setter(value = AccessLevel.NONE)
     private Ai ai;
 
     @Builder
-    private Slack(String receiverId, String message, Timestamp sendTime, Ai ai) {
+    private Slack(String receiverId, String message, Timestamp sendTime, Ai ai, String channelId, String ts) {
         this.receiverId = receiverId;
         this.message = message;
         this.sendTime = sendTime;
         this.ai = ai;
+        this.channelId = channelId;
+        this.ts = ts;
     }
 
-    public static Slack of(SlackRequestDto requestDto, Timestamp sendTime, Ai ai) {
+    public static Slack of(SlackRequestDto requestDto, Timestamp sendTime, Ai ai, String channelId, String ts) {
         return builder()
             .receiverId(requestDto.getReceiverId())
             .message(requestDto.getMessage())
             .sendTime(sendTime)
             .ai(ai)
+            .channelId(channelId)
+            .ts(ts)
             .build();
     }
 

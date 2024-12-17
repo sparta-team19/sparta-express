@@ -9,4 +9,5 @@ public class SlackRequestDto {
     private UUID aiId;
     private String receiverId;
     private String message;
+    private String channelId;
 }
