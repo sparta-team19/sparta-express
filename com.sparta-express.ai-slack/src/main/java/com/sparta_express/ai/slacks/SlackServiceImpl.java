@@ -26,17 +26,19 @@ public class SlackServiceImpl implements SlackService {
     @Transactional
     @Override
     public SlackResponseDto createMessage(SlackRequestDto requestDto) {
+
+        Ai ai = aiRepository.findById(requestDto.getAiId()).orElseThrow(() ->
+            new CustomException(ErrorType.NOT_FOUND_AI));
+
         // 응답 내용 받아오기
-        JsonNode responseBody = slackClient.sendMessage(requestDto);
+        JsonNode responseBody = slackClient.sendMessage(requestDto.getReceiverId(),
+            requestDto.getMessage());
         // 전송 시간
         String unixTimestamp = responseBody.get("ts").asText();
         Timestamp sendTime = convertStringToTimestamp(unixTimestamp);
 
         // 채널Id
         String channelId = responseBody.get("channel").asText();
-
-        Ai ai = aiRepository.findById(requestDto.getAiId()).orElseThrow(() ->
-            new CustomException(ErrorType.NOT_FOUND_AI));
 
         Slack slack = Slack.of(requestDto, sendTime, ai, channelId, unixTimestamp);
 
