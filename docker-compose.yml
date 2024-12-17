@@ -37,6 +37,16 @@ services:
     depends_on:
       - server
 
+  hub:
+    build:
+      context: ./com.sparta-express.hub
+    image: hub
+    ports:
+      - "8084:8084"
+    depends_on:
+      - server
+
+
 networks:
   default:
     driver: bridge
