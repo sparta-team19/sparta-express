@@ -3,10 +3,7 @@ package com.sparta_express.hub.presentation.controller;
 
 import com.sparta_express.hub.application.ShipmentRouteService;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
-import com.sparta_express.hub.presentation.response.GetShipmentRoutesResponse;
-import com.sparta_express.hub.presentation.response.InterhubRouteResOfGetShipmentRoutes;
-import com.sparta_express.hub.presentation.response.ResponseDataDto;
-import com.sparta_express.hub.presentation.response.ResponseStatus;
+import com.sparta_express.hub.presentation.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,13 +38,13 @@ public class InterhubRoutesController {
     }
 
     @GetMapping("/shipment-interhub-routes")
-    public ResponseEntity<ResponseDataDto<List<InterhubRouteResOfGetShipmentRoutes>>>
+    public ResponseEntity<ResponseDataDto<List<InterhubRouteResponse>>>
     getShipmentInterhubRoutes(@RequestParam UUID originHubId,
                               @RequestParam UUID destinationHubId) {
 
-        List<InterhubRouteResOfGetShipmentRoutes> interhubRoutes
+        List<InterhubRouteResponse> interhubRoutes
                 = shipmentRouteService.findShipmentInterhubRoutes(originHubId, destinationHubId)
-                .stream().map(InterhubRouteResOfGetShipmentRoutes::from).toList();
+                .stream().map(InterhubRouteResponse::from).toList();
 
         return ResponseEntity.ok(
                 new ResponseDataDto<>(
