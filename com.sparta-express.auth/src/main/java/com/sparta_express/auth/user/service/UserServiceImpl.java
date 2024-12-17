@@ -75,11 +75,20 @@ public class UserServiceImpl implements UserService {
         return usersPage.map(UserResponseDto::from);
     }
 
+//    @Transactional(readOnly = true)
+//    @Override
+//    public UserResponseDto getUser(Long userId, User loginUser) {
+//        User user = userRepository.findById(userId).orElseThrow(() ->
+//            new CustomException(ErrorType.NOT_FOUND_USER));
+//
+//        return UserResponseDto.from(user);
+//    }
+
     @Transactional(readOnly = true)
     @Override
-    public UserResponseDto getUser(Long userId, User loginUser) {
-        User user = userRepository.findById(userId).orElseThrow(() ->
-            new CustomException(ErrorType.NOT_FOUND_USER));
+    public UserResponseDto getUserByEmail(String email) {
+        User user = userRepository.findByEmailAndIsDeleted(email, false).orElseThrow(() ->
+                new CustomException(ErrorType.NOT_FOUND_USER));
 
         return UserResponseDto.from(user);
     }
