@@ -1,6 +1,6 @@
-package com.sparta_express.order_shipment.stock.model;
+package com.sparta_express.company_product.stock.model;
 
-import com.sparta_express.order_shipment.common.BaseEntity;
+import com.sparta_express.company_product.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,12 +1,12 @@
-package com.sparta_express.order_shipment.stock.service;
+package com.sparta_express.company_product.stock.service;
 
-import com.sparta_express.order_shipment.common.CustomException;
-import com.sparta_express.order_shipment.common.ErrorType;
-import com.sparta_express.order_shipment.stock.dto.CreateStockRequest;
-import com.sparta_express.order_shipment.stock.dto.StockResponse;
-import com.sparta_express.order_shipment.stock.dto.UpdateStockRequest;
-import com.sparta_express.order_shipment.stock.model.Stock;
-import com.sparta_express.order_shipment.stock.repository.StockRepository;
+import com.sparta_express.company_product.common.CustomException;
+import com.sparta_express.company_product.common.ErrorType;
+import com.sparta_express.company_product.stock.dto.CreateStockRequest;
+import com.sparta_express.company_product.stock.dto.StockResponse;
+import com.sparta_express.company_product.stock.dto.UpdateStockRequest;
+import com.sparta_express.company_product.stock.model.Stock;
+import com.sparta_express.company_product.stock.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

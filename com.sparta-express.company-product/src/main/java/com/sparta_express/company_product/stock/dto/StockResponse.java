@@ -1,7 +1,6 @@
-package com.sparta_express.order_shipment.stock.dto;
+package com.sparta_express.company_product.stock.dto;
 
-
-import com.sparta_express.order_shipment.stock.model.Stock;
+import com.sparta_express.company_product.stock.model.Stock;
 import lombok.Getter;
 
 import java.util.UUID;
