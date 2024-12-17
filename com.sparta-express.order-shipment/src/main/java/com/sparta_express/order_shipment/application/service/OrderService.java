@@ -1,7 +1,7 @@
 package com.sparta_express.order_shipment.application.service;
 
-import com.sparta_express.order_shipment.application.dto.OrderDto;
 import com.sparta_express.order_shipment.application.dto.OrderCreateResponse;
+import com.sparta_express.order_shipment.application.dto.OrderDto;
 import com.sparta_express.order_shipment.common.exception.CustomException;
 import com.sparta_express.order_shipment.common.exception.ErrorType;
 import com.sparta_express.order_shipment.domain.entity.Order;
@@ -10,12 +10,8 @@ import com.sparta_express.order_shipment.domain.entity.ShipmentRoute;
 import com.sparta_express.order_shipment.domain.repository.OrderRepository;
 import com.sparta_express.order_shipment.domain.repository.ShipmentRouteRepository;
 import com.sparta_express.order_shipment.infrastructure.client.CompanyProductClient;
-import com.sparta_express.order_shipment.infrastructure.client.HubClient;
 import com.sparta_express.order_shipment.infrastructure.client.UserClient;
-import com.sparta_express.order_shipment.infrastructure.dto.CompanyResponseDto;
-import com.sparta_express.order_shipment.infrastructure.dto.HubResponseDto;
-import com.sparta_express.order_shipment.infrastructure.dto.ProductResponseDto;
-import com.sparta_express.order_shipment.infrastructure.dto.UserResponseDto;
+import com.sparta_express.order_shipment.infrastructure.dto.*;
 import com.sparta_express.order_shipment.presentation.dto.UpdateOrderRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,23 +36,23 @@ public class OrderService {
     private final UserClient userClient;
 
     public OrderCreateResponse createOrder(OrderDto request, String email) {
-
         /*
         todo: 각 api 담당자가 구현 완료하면 응답 값 맞춰서 수정 예정
-         * 1. 사용자 조회
-         * 2. 업체 조회 -> 업체 체크
-         * 3. 상품 조회 -> 상품 체크
-         * 4. 상품 재고 감소
+         * 1. 사용자 조회 (완료)
+         * 2. 업체 조회 -> 업체 체크 (완료)
+         * 3. 상품 조회 -> 상품 체크 (완료)
+         * 4. 상품 재고 감소 (완료)
          * 5. 허브 경로 조회
          * 6. 배송 담당자 조회 (배송담당자 애플리케이션 내에서 구현):
                     - redis sortedset 이용해서 round-robin 형식으로 순번 낮은 사람 가져오기
                     - 해당 api 호출 시 허브 간 경로의 개수만큼 조회하여 가져오기
+         * 7. 상품 재고 복구 (완료)
          * */
 
         boolean isProductStockDecreased = false;
 
         try {
-            UserResponseDto userResponse = userClient.getUser(email).getData();
+            UserResponseDto userResponse = userClient.getUserByEmail(email).getData();
             log.info("### Fetching userResponse details : {}", userResponse.toString());
             CompanyResponseDto requesterResponse = companyProductClient.getCompanyById(request.getRequesterId()).getData();
             log.info("### Fetching requesterResponse details : {}", requesterResponse.toString());
@@ -66,9 +62,9 @@ public class OrderService {
             log.info("### Fetching productResponse details : {}", productResponse.toString());
             companyProductClient.reduceStock(productResponse.getId(), request.getQuantity());
             isProductStockDecreased = true;
-//            List<HubResponseDto> hubResponseList = hubClient.getHubRoutesInfo(requesterResponse.getHubID(), receiverResponse.getHubID()).getData();
-//            // 6.
-//            UserResponseDto managerList = userClient.getDeliveryManager().getData();
+//            List<HubResponseDto> hubResponseList = hubClient.getHubRoutesInfo(requesterResponse.getHubId(), receiverResponse.getHubId()).getData();
+            // todo: 6.
+//            DeliveryManagerResponseDto managerList = userClient.getDeliveryManager().getData();
 //
 //            Order order = buildOrder(requesterResponse, receiverResponse, productResponse, userResponse, request);
 //            Shipment shipment = buildShipment(requesterResponse, receiverResponse, userResponse, request, order);
@@ -77,6 +73,7 @@ public class OrderService {
 //            shipmentRouteRepository.saveAll(createShipmentRoutes(hubResponseList, managerList, shipment, request, email));
 //
 //            return OrderCreateResponse.from(order);
+
             return null;
 
         } catch (Exception e) {
@@ -147,54 +144,33 @@ public class OrderService {
         );
     }
 
-//    private List<ShipmentRoute> createShipmentRoutes(List<HubResponseDto> hubResponseList,
-//                                                     UserResponseDto managerList,
-//                                                     Shipment shipment,
-//                                                     OrderDto request,
-//                                                     String userId) {
-//        return IntStream.range(0, hubResponseList.size())
-//                .mapToObj(i -> buildShipmentRoute(hubResponseList.get(i), i + 1, managerList, shipment, request, userId))
-//                .collect(Collectors.toList());
-//    }
+    private List<ShipmentRoute> createShipmentRoutes(List<HubResponseDto> hubResponseList,
+                                                     DeliveryManagerResponseDto managerList,
+                                                     Shipment shipment,
+                                                     OrderDto request,
+                                                     String userId) {
+        return IntStream.range(0, hubResponseList.size())
+                .mapToObj(i -> buildShipmentRoute(hubResponseList.get(i), i + 1, managerList, shipment, request, userId))
+                .collect(Collectors.toList());
+    }
 
-//    private ShipmentRoute buildShipmentRoute(HubResponseDto hubResponseDto,
-//                                             int sequence,
-//                                             UserResponseDto managerList,
-//                                             Shipment shipment,
-//                                             OrderDto request,
-//                                             String userId) {
-//        return ShipmentRoute.of(
-//                sequence,
-//                hubResponseDto.getOriginHubId(),
-//                hubResponseDto.getDestinationHubId(),
-//                request.getDeliveryAddress(),
-//                hubResponseDto.getEstimatedDistance(),
-//                hubResponseDto.getEstimatedTime(),
-//                managerList.getDeliveryManagerId(),
-//                userId,
-//                shipment
-//        );
-//    }
-
-//    private List<ShipmentRoute> createShipmentRoutes(List<HubResponseDto> hubResponseList, UserResponseDto managerList,
-//                                                     Shipment shipment, OrderDto request, String userId) {
-//        List<ShipmentRoute> shipmentRoutes = new ArrayList<>();
-//        for(int i = 0; i < hubResponseList.size(); i++) {
-//            HubResponseDto hubResponseDto = hubResponseList.get(i);
-//            ShipmentRoute shipmentRoute = ShipmentRoute.of(
-//                    i + 1,
-//                    hubResponseDto.getOriginHubId(),
-//                    hubResponseDto.getDestinationHubId(),
-//                    request.getDeliveryAddress(),
-//                    hubResponseDto.getEstimatedDistance(),
-//                    hubResponseDto.getEstimatedTime(),
-//                    managerList.getDeliveryManagerId(),
-//                    userId,
-//                    shipment
-//            );
-//            shipmentRoutes.add(shipmentRoute);
-//        }
-//        return shipmentRoutes;
-//    }
+    private ShipmentRoute buildShipmentRoute(HubResponseDto hubResponseDto,
+                                             int sequence,
+                                             DeliveryManagerResponseDto managerList,
+                                             Shipment shipment,
+                                             OrderDto request,
+                                             String userId) {
+        return ShipmentRoute.of(
+                sequence,
+                hubResponseDto.getOriginHubId(),
+                hubResponseDto.getDestinationHubId(),
+                request.getDeliveryAddress(),
+                hubResponseDto.getDistanceKm(),
+                hubResponseDto.getEstimatedMinutes(),
+                managerList.getDeliveryManagerId(),
+                userId,
+                shipment
+        );
+    }
 
 }
