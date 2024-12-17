@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.io.StringReader;
 import java.sql.Timestamp;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -58,10 +59,10 @@ public class Slack extends BaseEntity {
         this.ts = ts;
     }
 
-    public static Slack of(SlackRequestDto requestDto, Timestamp sendTime, Ai ai, String channelId, String ts) {
+    public static Slack of(String receiverId, String message, Timestamp sendTime, Ai ai, String channelId, String ts) {
         return builder()
-            .receiverId(requestDto.getReceiverId())
-            .message(requestDto.getMessage())
+            .receiverId(receiverId)
+            .message(message)
             .sendTime(sendTime)
             .ai(ai)
             .channelId(channelId)

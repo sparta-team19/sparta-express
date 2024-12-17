@@ -30,9 +30,12 @@ public class SlackServiceImpl implements SlackService {
         Ai ai = aiRepository.findById(requestDto.getAiId()).orElseThrow(() ->
             new CustomException(ErrorType.NOT_FOUND_AI));
 
+        // 메시지 만들기
+        String message = ai.getAiRequest() + "\n\n" + ai.getAiResponse();
+
         // 응답 내용 받아오기
         JsonNode responseBody = slackClient.sendMessage(requestDto.getReceiverId(),
-            requestDto.getMessage());
+            message);
         // 전송 시간
         String unixTimestamp = responseBody.get("ts").asText();
         Timestamp sendTime = convertStringToTimestamp(unixTimestamp);
@@ -40,7 +43,7 @@ public class SlackServiceImpl implements SlackService {
         // 채널Id
         String channelId = responseBody.get("channel").asText();
 
-        Slack slack = Slack.of(requestDto, sendTime, ai, channelId, unixTimestamp);
+        Slack slack = Slack.of(requestDto.getReceiverId(), message, sendTime, ai, channelId, unixTimestamp);
 
         slackRepository.save(slack);
 
