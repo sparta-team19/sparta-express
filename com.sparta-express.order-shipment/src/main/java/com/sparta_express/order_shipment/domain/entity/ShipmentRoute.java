@@ -150,7 +150,6 @@ public class ShipmentRoute extends BaseEntity {
         }
     }
 
-
     private void updateUserId(String email) {
         if (email != null) {
             this.userId = email;
