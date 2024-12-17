@@ -52,9 +52,32 @@ public class HubRepositoryInfra implements HubRepository {
 
     public void deleteInterhubRoute(UUID interhubRouteId) {
         InterhubRoute toDelete = interhubRouteJpaRepo.findById(interhubRouteId)
-                .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_RESOURCE));
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_RESOURCE));
 
         toDelete.setDelete(true);
         interhubRouteJpaRepo.save(toDelete);
+    }
+
+    public Hub readHub(UUID hubId) {
+
+        return hubJpaRepo.findById(hubId)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_RESOURCE));
+
+    }
+
+    public void deleteHub(UUID hubId) {
+        Hub hubToDelete
+                = hubJpaRepo.findById(hubId)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_RESOURCE));
+        hubToDelete.setDelete(true);
+        hubJpaRepo.save(hubToDelete);
+
+        List<InterhubRoute> interhubRoutesToDelete
+                = interhubRouteJpaRepo.findByOriginHubOrDestinationHub(hubToDelete, hubToDelete);
+        for (InterhubRoute interhubRoute : interhubRoutesToDelete) {
+            interhubRoute.setDelete(true);
+        }
+        interhubRouteJpaRepo.saveAll(interhubRoutesToDelete);
+
     }
 }
