@@ -27,7 +27,7 @@ public class ShipmentRouteController {
     @PutMapping("/{shipmentRoutesId}")
     public ResponseEntity<ResponseDataDto<ShipmentRouteResponse>> updateShipmentRoute(@PathVariable("shipmentRoutesId") UUID shipmentRoutesId,
                                                                                       @RequestBody ShipmentRouteUpdateRequest request,
-                                                                                      @RequestHeader(name = "X-User-Id") String email) {
+                                                                                      @RequestHeader(name = "X-Email") String email) {
         ShipmentRouteResponse responseDto = shipmentRouteService.updateShipmentRoute(shipmentRoutesId, request.toDto(), email);
         return ResponseEntity.ok(new ResponseDataDto<ShipmentRouteResponse>(SHIPMENT_ROUTE_UPDATE_SUCCESS, responseDto));
     }
@@ -52,7 +52,7 @@ public class ShipmentRouteController {
 
     @DeleteMapping("/{shipmentRoutesId}")
     public ResponseEntity<ResponseMessageDto> deleteShipmentRoute(@PathVariable("shipmentRoutesId") UUID shipmentRoutesId,
-                                                                  @RequestHeader(name = "X-User-Id") String userId) {
+                                                                  @RequestHeader(name = "X-Email") String userId) {
         shipmentRouteService.deleteShipmentRoute(shipmentRoutesId, userId);
         return ResponseEntity.ok(new ResponseMessageDto(SHIPMENT_ROUTE_DELETE_SUCCESS));
     }

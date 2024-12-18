@@ -29,7 +29,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<ResponseDataDto<OrderCreateResponse>> createOrder(@Valid @RequestBody OrderRequest request,
-                                                                            @RequestHeader(name = "X-User-id") String email) {
+                                                                            @RequestHeader(name = "X-Email") String email) {
         OrderCreateResponse response = orderService.createOrder(request.toDto(), email);
         return ResponseEntity.ok(new ResponseDataDto<>(ORDER_CREATE_SUCCESS, response));
     }
@@ -64,7 +64,7 @@ public class OrderController {
     // 주문 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseMessageDto> deleteOrder(
-            @RequestHeader("X-User-Id") String email,
+            @RequestHeader("X-Email") String email,
             @PathVariable UUID id) {
         orderService.deleteOrder(id, email);
         return ResponseEntity.ok(new ResponseMessageDto(ResponseStatus.DELETE_SUCCESS));
