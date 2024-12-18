@@ -1,6 +1,7 @@
 package com.sparta_express.hub.presentation.controller;
 
 import com.sparta_express.hub.application.HubService;
+import com.sparta_express.hub.presentation.response.GetHubRes;
 import com.sparta_express.hub.presentation.response.ResponseDataDto;
 import com.sparta_express.hub.presentation.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
