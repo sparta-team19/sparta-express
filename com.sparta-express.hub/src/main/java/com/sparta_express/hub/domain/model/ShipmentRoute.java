@@ -13,5 +13,5 @@ import java.util.List;
 public class ShipmentRoute {
 
     private final List<InterhubRoute> interhubRoutes;
-    private final FinalHubToDestination finalHubToDestination;
+    private final LastHubToDestination lastHubToDestination;
 }

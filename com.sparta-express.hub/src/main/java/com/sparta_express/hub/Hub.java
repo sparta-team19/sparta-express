@@ -1,7 +1,8 @@
-package com.sparta_express.hub.domain.model;
+package com.sparta_express.hub;
 
 
 import com.sparta_express.hub.domain.Position;
+import com.sparta_express.hub.domain.model.BaseEntity;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import jakarta.persistence.*;
 import lombok.*;
