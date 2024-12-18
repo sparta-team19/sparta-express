@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparingDouble;
 import static java.util.Comparator.comparingInt;
 
-@Getter //todo 지우기
+@Getter
 
 @Component
 @RequiredArgsConstructor

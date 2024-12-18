@@ -38,7 +38,6 @@ public class ShipmentRouteService {
         );
     }
 
-//    @Cacheable(cacheNames = "finalHubToDestinations", key = "#destinationAddress")
     public final FinalHubToDestination findFinalHubToDestination(String destinationAddress) {
 
         return shipmentRouteDomainService.findFinalHubToDestination(

@@ -29,7 +29,7 @@ public class ShipmentController {
     @PutMapping("/{shipmentId}")
     public ResponseEntity<ResponseDataDto<ShipmentResponse>> updateShipment(@PathVariable("shipmentId") UUID shipmentId,
                                                                             @RequestBody ShipmentUpdateRequest request,
-                                                                            @RequestHeader(value = "X-User-Id") String email) {
+                                                                            @RequestHeader(value = "X-Email") String email) {
         ShipmentResponse responseDto = shipmentService.updateShipment(shipmentId, request.toDto(), email);
         return ResponseEntity.ok(new ResponseDataDto<>(SHIPMENT_UPDATE_SUCCESS, responseDto));
     }
@@ -53,7 +53,7 @@ public class ShipmentController {
 
     @DeleteMapping("/{shipmentId}")
     public ResponseEntity<ResponseMessageDto> deleteShipment(@PathVariable("shipmentId") UUID shipmentId,
-                                                             @RequestHeader(value = "X-User-Id") String userId) {
+                                                             @RequestHeader(value = "X-Email") String userId) {
         shipmentService.deleteShipment(shipmentId, userId);
         return ResponseEntity.ok(new ResponseMessageDto(SHIPMENT_DELETE_SUCCESS));
     }
