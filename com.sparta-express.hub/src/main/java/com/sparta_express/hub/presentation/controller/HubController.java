@@ -1,6 +1,7 @@
 package com.sparta_express.hub.presentation.controller;
 
 import com.sparta_express.hub.application.HubService;
+import com.sparta_express.hub.presentation.response.GetHubRes;
 import com.sparta_express.hub.presentation.response.ResponseDataDto;
 import com.sparta_express.hub.presentation.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,7 @@ public class HubController {
     private final HubService hubService;
 
     @GetMapping("/{hubId}")
-    public ResponseEntity<ResponseDataDto<GetHubRes>>
-    getInterhubRoute(@PathVariable UUID hubId) {
+    public ResponseEntity<ResponseDataDto<GetHubRes>> getInterhubRoute(@PathVariable UUID hubId) {
 
         GetHubRes hubRes = GetHubRes.from(hubService.readHub(hubId));
 
@@ -31,8 +31,7 @@ public class HubController {
     }
 
     @DeleteMapping("/{hubId}")
-    public ResponseEntity<ResponseDataDto<Void>>
-    deleteInterhubRoute(@PathVariable UUID hubId) {
+    public ResponseEntity<ResponseDataDto<Void>> deleteInterhubRoute(@PathVariable UUID hubId) {
         hubService.deleteHub(hubId);
 
         return ResponseEntity.ok(
@@ -42,4 +41,6 @@ public class HubController {
                 )
         );
     }
+
+    //create, update, search(page), search deleted(page)
 }

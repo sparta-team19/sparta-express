@@ -1,7 +1,7 @@
-package com.sparta_express.hub.presentation.controller;
+package com.sparta_express.hub.presentation.response;
 
 
-import com.sparta_express.hub.domain.model.Hub;
+import com.sparta_express.hub.Hub;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import lombok.Builder;
 import lombok.Value;

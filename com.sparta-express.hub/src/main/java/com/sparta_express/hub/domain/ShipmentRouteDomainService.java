@@ -1,7 +1,7 @@
 package com.sparta_express.hub.domain;
 
-import com.sparta_express.hub.domain.model.FinalHubToDestination;
-import com.sparta_express.hub.domain.model.Hub;
+import com.sparta_express.hub.Hub;
+import com.sparta_express.hub.domain.model.LastHubToDestination;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
 import lombok.Getter;
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparingDouble;
 import static java.util.Comparator.comparingInt;
 
+@SuppressWarnings("UnnecessaryLocalVariable")
 @Getter
 
 @Component
@@ -30,38 +31,38 @@ public class ShipmentRouteDomainService {
 
         List<Hub> hubList = hubRepo.readAllHubs();
 
-        FinalHubToDestination finalHubToDestination
+        LastHubToDestination lastHubToDestination
                 = findFinalHubToDestination(hubList, destination);
 
         List<InterhubRoute> shipmentInterhubRoutes
                 = findShipmentInterhubRoutes(
-                originHubId, finalHubToDestination.getFinalHubId(), hubList
+                originHubId, lastHubToDestination.getLastHubId(), hubList
         );
 
         return ShipmentRoute.builder()
                 .interhubRoutes(shipmentInterhubRoutes)
-                .finalHubToDestination(finalHubToDestination)
+                .lastHubToDestination(lastHubToDestination)
                 .build();
     }
 
 
-    public final FinalHubToDestination findFinalHubToDestination(Position destinationPoint) {
+    public final LastHubToDestination findFinalHubToDestination(Position destinationPoint) {
         return findFinalHubToDestination(hubRepo.readAllHubs(), destinationPoint);
     }
 
-    protected final FinalHubToDestination findFinalHubToDestination(List<Hub> hubList,
-                                                                    Position destination) {
+    protected final LastHubToDestination findFinalHubToDestination(List<Hub> hubList,
+                                                                   Position destination) {
 
         assert (!hubList.isEmpty());
 
-        Hub finalHub = findNearestHub(destination, hubList);
+        Hub lastHub = findNearestHub(destination, hubList);
 
-        HubToDestinationDTO route = mapApplication.searchRoute(finalHub.geometryPosition(), destination);
+        HubToDestinationDTO route = mapApplication.searchRoute(lastHub.geometryPosition(), destination);
 
-        return FinalHubToDestination.builder()
+        return LastHubToDestination.builder()
                 .distanceKm(route.getDistanceKm())
                 .estimatedMinutes(route.getEstimatedMinutes())
-                .finalHubId(finalHub.getId())
+                .lastHub(lastHub)
                 .build();
     }
 

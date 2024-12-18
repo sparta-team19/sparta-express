@@ -1,4 +1,4 @@
-package com.sparta_express.hub.presentation.controller;
+package com.sparta_express.hub.presentation.response;
 
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.enumumerate.InterhubRouteStatus;
