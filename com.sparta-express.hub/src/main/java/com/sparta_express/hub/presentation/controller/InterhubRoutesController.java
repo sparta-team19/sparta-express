@@ -22,9 +22,11 @@ public class InterhubRoutesController {
     private final InterhubRouteService interhubRouteService;
 
     @GetMapping("/shipment-routes")
-    public ResponseEntity<ResponseDataDto<GetShipmentRoutesResponse>>
-    getShipmentRoutes(@RequestParam UUID originHubId,
-                      @RequestParam String destinationAddress) {
+    public ResponseEntity<ResponseDataDto<GetShipmentRoutesResponse>> getShipmentRoutes
+            (
+                    @RequestParam UUID originHubId,
+                    @RequestParam String destinationAddress
+            ) {
 
         ShipmentRoute shipmentRoute
                 = shipmentRouteService.findShipmentRoutes(originHubId, destinationAddress);
@@ -38,9 +40,11 @@ public class InterhubRoutesController {
     }
 
     @GetMapping("/shipment-interhub-routes")
-    public ResponseEntity<ResponseDataDto<List<InterhubRouteResponse>>>
-    getShipmentInterhubRoutes(@RequestParam UUID originHubId,
-                              @RequestParam UUID destinationHubId) {
+    public ResponseEntity<ResponseDataDto<List<InterhubRouteResponse>>> getShipmentInterhubRoutes
+            (
+                    @RequestParam UUID originHubId,
+                    @RequestParam UUID destinationHubId
+            ) {
 
         List<InterhubRouteResponse> interhubRoutes
                 = shipmentRouteService.findShipmentInterhubRoutes(originHubId, destinationHubId)
@@ -55,8 +59,7 @@ public class InterhubRoutesController {
     }
 
     @GetMapping("/{interhubRouteId}")
-    public ResponseEntity<ResponseDataDto<GetInterhubRouteRes>>
-    getInterhubRoute(@PathVariable UUID interhubRouteId) {
+    public ResponseEntity<ResponseDataDto<GetInterhubRouteRes>> getInterhubRoute(@PathVariable UUID interhubRouteId) {
 
         GetInterhubRouteRes interhubRouteRes = GetInterhubRouteRes.from(
                 interhubRouteService.readInterhubRoute(interhubRouteId)
@@ -71,8 +74,7 @@ public class InterhubRoutesController {
     }
 
     @DeleteMapping("/{interhubRouteId}")
-    public ResponseEntity<ResponseDataDto<Void>>
-    deleteInterhubRoute(@PathVariable UUID interhubRouteId) {
+    public ResponseEntity<ResponseDataDto<Void>> deleteInterhubRoute(@PathVariable UUID interhubRouteId) {
 
         interhubRouteService.deleteInterhubRoute(interhubRouteId);
 
