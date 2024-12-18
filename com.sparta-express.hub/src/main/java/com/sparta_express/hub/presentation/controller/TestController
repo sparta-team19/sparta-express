@@ -6,7 +6,7 @@ import com.sparta_express.hub.domain.Position;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import com.sparta_express.hub.domain.model.enumumerate.InterhubRouteStatus;
-import com.sparta_express.hub.infrastructure.map.MapInfra;
+import com.sparta_express.hub.infrastructure.map.MapApiInfra;
 import com.sparta_express.hub.infrastructure.repository.HubJpaRepository;
 import com.sparta_express.hub.infrastructure.repository.InterhubRouteJpaRepository;
 import lombok.RequiredArgsConstructor;

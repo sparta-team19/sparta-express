@@ -23,7 +23,7 @@ import static java.util.Comparator.comparingInt;
 public class ShipmentRouteDomainService {
 
     private final HubRepository hubRepo;
-    private final MapApplication mapApplication;
+    private final MapApi mapApi;
 
 
     public final ShipmentRoute findShipmentRoutes(UUID originHubId,
@@ -57,7 +57,7 @@ public class ShipmentRouteDomainService {
 
         Hub lastHub = findNearestHub(destination, hubList);
 
-        HubToDestinationDTO route = mapApplication.searchRoute(lastHub.geometryPosition(), destination);
+        HubToDestinationDTO route = mapApi.searchRoute(lastHub.geometryPosition(), destination);
 
         return LastHubToDestination.builder()
                 .distanceKm(route.getDistanceKm())
