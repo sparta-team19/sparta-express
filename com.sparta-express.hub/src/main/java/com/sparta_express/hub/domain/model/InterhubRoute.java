@@ -17,7 +17,7 @@ import java.util.UUID;
 public class InterhubRoute extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
