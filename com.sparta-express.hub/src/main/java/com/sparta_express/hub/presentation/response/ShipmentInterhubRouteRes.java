@@ -11,10 +11,12 @@ import java.util.UUID;
 
 @Value
 @Builder
-public class InterhubRouteResOfGetShipmentRoutes {
+public class ShipmentInterhubRouteRes {
 
     UUID originHubId;
+    String originHubAddress;
     UUID destinationHubId;
+    String destinationHubAddress;
     int distanceKm;
     int estimatedMinutes;
     InterhubRouteStatus status;
@@ -23,11 +25,13 @@ public class InterhubRouteResOfGetShipmentRoutes {
     LocalDateTime updatedAt;
     String updatedBy;
 
-    public static InterhubRouteResOfGetShipmentRoutes from(InterhubRoute interhubRoute) {
+    public static ShipmentInterhubRouteRes from(InterhubRoute interhubRoute) {
 
-        return InterhubRouteResOfGetShipmentRoutes.builder()
+        return ShipmentInterhubRouteRes.builder()
                 .originHubId(interhubRoute.getOriginHubId())
+                .originHubAddress(interhubRoute.getOriginHub().getAddress())
                 .destinationHubId(interhubRoute.getDestinationHubId())
+                .destinationHubAddress(interhubRoute.getDestinationHub().getAddress())
                 .distanceKm(interhubRoute.getDistanceKm())
                 .estimatedMinutes(interhubRoute.getEstimatedMinutes())
                 .status(interhubRoute.getStatus())

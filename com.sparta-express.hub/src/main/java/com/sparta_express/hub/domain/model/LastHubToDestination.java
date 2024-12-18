@@ -1,6 +1,7 @@
 package com.sparta_express.hub.domain.model;
 
 
+import com.sparta_express.hub.Hub;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,19 +9,23 @@ import java.util.UUID;
 
 
 @Getter
-public class FinalHubToDestination {
+public class LastHubToDestination {
 
     private final int distanceKm;
     private final int estimatedMinutes;
-    private final UUID finalHubId;
+    private final Hub lastHub;
 
     @Builder
-    public FinalHubToDestination(int distanceKm, int estimatedMinutes, UUID finalHubId) {
+    public LastHubToDestination(int distanceKm, int estimatedMinutes, Hub lastHub) {
 
         assert (distanceKm > 0 && estimatedMinutes > 0);
 
         this.distanceKm = distanceKm;
         this.estimatedMinutes = estimatedMinutes;
-        this.finalHubId = finalHubId;
+        this.lastHub = lastHub;
+    }
+
+    public UUID getLastHubId() {
+        return lastHub.getId();
     }
 }

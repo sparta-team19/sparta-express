@@ -3,7 +3,7 @@ package com.sparta_express.hub.presentation.controller;
 
 import com.sparta_express.hub.application.InterhubRouteService;
 import com.sparta_express.hub.application.ShipmentRouteService;
-import com.sparta_express.hub.domain.model.ShipmentRoute;
+import com.sparta_express.hub.domain.model.LastHubToDestination;
 import com.sparta_express.hub.presentation.response.*;
 import com.sparta_express.hub.presentation.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/api/interhub-routes")
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class InterhubRoutesController {
     private final ShipmentRouteService shipmentRouteService;
     private final InterhubRouteService interhubRouteService;
 
+
     @GetMapping("/shipment-routes")
     public ResponseEntity<ResponseDataDto<GetShipmentRoutesResponse>> getShipmentRoutes
             (
@@ -28,27 +30,36 @@ public class InterhubRoutesController {
                     @RequestParam String destinationAddress
             ) {
 
-        ShipmentRoute shipmentRoute
-                = shipmentRouteService.findShipmentRoutes(originHubId, destinationAddress);
+        LastHubToDestination lastHubToDestination
+                = shipmentRouteService.findFinalHubToDestination(destinationAddress);
+
+        LastHubToDestinationRes lastHubToDestinationRes
+                = LastHubToDestinationRes.from(lastHubToDestination);
+
+        List<ShipmentInterhubRouteRes> shipmentInterhubRoutes
+                = shipmentRouteService.findShipmentInterhubRoutes(
+                        originHubId, lastHubToDestination.getLastHubId()
+                ).stream()
+                .map(ShipmentInterhubRouteRes::from).toList();
 
         return ResponseEntity.ok(
                 new ResponseDataDto<>(
                         ResponseStatus.GET_SHIPMENT_ROUTES_SUCCESS,
-                        GetShipmentRoutesResponse.from(shipmentRoute)
+                        GetShipmentRoutesResponse.of(shipmentInterhubRoutes, lastHubToDestinationRes)
                 )
         );
     }
 
     @GetMapping("/shipment-interhub-routes")
-    public ResponseEntity<ResponseDataDto<List<InterhubRouteResponse>>> getShipmentInterhubRoutes
+    public ResponseEntity<ResponseDataDto<List<ShipmentInterhubRouteRes>>> getShipmentInterhubRoutes
             (
                     @RequestParam UUID originHubId,
                     @RequestParam UUID destinationHubId
             ) {
 
-        List<InterhubRouteResponse> interhubRoutes
+        List<ShipmentInterhubRouteRes> interhubRoutes
                 = shipmentRouteService.findShipmentInterhubRoutes(originHubId, destinationHubId)
-                .stream().map(InterhubRouteResponse::from).toList();
+                .stream().map(ShipmentInterhubRouteRes::from).toList();
 
         return ResponseEntity.ok(
                 new ResponseDataDto<>(

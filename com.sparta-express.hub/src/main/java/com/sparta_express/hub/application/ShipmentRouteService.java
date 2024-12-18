@@ -1,11 +1,10 @@
 package com.sparta_express.hub.application;
 
+import com.sparta_express.hub.Hub;
 import com.sparta_express.hub.domain.Position;
 import com.sparta_express.hub.domain.ShipmentRouteDomainService;
-import com.sparta_express.hub.domain.model.FinalHubToDestination;
-import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;
-import com.sparta_express.hub.domain.model.ShipmentRoute;
+import com.sparta_express.hub.domain.model.LastHubToDestination;
 import com.sparta_express.hub.infrastructure.map.MapInfra;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,14 +21,8 @@ public class ShipmentRouteService {
     private final MapInfra mapApp;
 
 
-
-    public ShipmentRoute findShipmentRoutes(UUID originHubId, String destinationAddress) {
-
-        return shipmentRouteDomainService.findShipmentRoutes(
-                originHubId, findGeometryPosition(destinationAddress)
-        );
-    }
-
+//    @Cacheable(cacheNames = "shipmentInterhubRoutes",
+//            key = "#originHubId.toString() + #destinationHubId.toString()")
     public final List<InterhubRoute> findShipmentInterhubRoutes(UUID originHubId,
                                                                 UUID destinationHubId) {
 
@@ -38,14 +31,14 @@ public class ShipmentRouteService {
         );
     }
 
-    public final FinalHubToDestination findFinalHubToDestination(String destinationAddress) {
+    public final LastHubToDestination findFinalHubToDestination(String destinationAddress) {
 
         return shipmentRouteDomainService.findFinalHubToDestination(
                 findGeometryPosition(destinationAddress)
         );
     }
 
-    public final Hub findNearestHub(String address) {
+    protected final Hub findNearestHub(String address) {
 
         return shipmentRouteDomainService.findNearestHub(
                 findGeometryPosition(address)

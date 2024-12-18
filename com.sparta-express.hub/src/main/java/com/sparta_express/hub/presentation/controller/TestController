@@ -1,15 +1,14 @@
 package com.sparta_express.hub.presentation.controller;
 
-import com.sparta_express.hub.domain.HubRepository;
+import com.sparta_express.hub.Hub;
 import com.sparta_express.hub.domain.HubToDestinationDTO;
 import com.sparta_express.hub.domain.Position;
-import com.sparta_express.hub.domain.ShipmentRouteDomainService;
-import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import com.sparta_express.hub.domain.model.enumumerate.InterhubRouteStatus;
 import com.sparta_express.hub.infrastructure.map.MapInfra;
 import com.sparta_express.hub.infrastructure.repository.HubJpaRepository;
+import com.sparta_express.hub.infrastructure.repository.InterhubRouteJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +23,8 @@ public class TestController {
 
     //    private final MapApplication naverMap;
     private final MapInfra naverMap;
-
-    private final ShipmentRouteDomainService shipmentRouteDomainService;
+    private final HubJpaRepository hubJpaRepo;
+    private final InterhubRouteJpaRepository interhubRouteJpaRepo;
 
 
     @GetMapping("/geocoding")
@@ -68,20 +67,16 @@ public class TestController {
 
     @GetMapping("/hubRepo/save")
     public String hubRepoSaveTest() {
-        HubRepository hubRepo = shipmentRouteDomainService.getHubRepo();
-        hubRepo.saveAllHubs(hubList);
+        hubJpaRepo.saveAll(hubList);
         return "success";
     }
 
     @GetMapping("/hubRepo/read")
     public List<Hub> hubRepoTest() {
-        HubRepository hubRepo = shipmentRouteDomainService.getHubRepo();
-        hubRepo.saveAllHubs(hubList);
-        return hubRepo.readAllHubs();
+        hubJpaRepo.saveAll(hubList);
+        return hubJpaRepo.findAll();
     }
 
-
-    private final HubJpaRepository hubJpaRepo;
 
     @GetMapping("/interhubRepo/save")
     public String interhubRouteRepoSaveTest() {
@@ -112,14 +107,12 @@ public class TestController {
                 InterhubRoute.builder().status(InterhubRouteStatus.ACTIVE).originHub(seoul).destinationHub(gyeongi)
                         .distanceKm(200).estimatedMinutes(120).build()
         );
-        HubRepository hubRepo = shipmentRouteDomainService.getHubRepo();
-        hubRepo.saveAllInterhubRoutes(givenInterhubRoutes);
+        interhubRouteJpaRepo.saveAll(givenInterhubRoutes);
         return "success";
     }
 
     @GetMapping("/interhubRepo/read")
     public List<InterhubRoute> interhubRouteRepoTest() {
-        HubRepository hubRepo = shipmentRouteDomainService.getHubRepo();
-        return hubRepo.readAllInterhubRoutes();
+        return interhubRouteJpaRepo.findAll();
     }
 }
