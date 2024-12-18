@@ -2,7 +2,7 @@
 # sparta-express
 MSA 기반 물류 관리 및 배송 시스템
 프로젝트 설명 및 소개 노션
-: https://www.notion.so/teamsparta/af5801b621b54825af41778ea0373067
+: [https://www.notion.so/teamsparta/af5801b621b54825af41778ea0373067](https://teamsparta.notion.site/af5801b621b54825af41778ea0373067)
 <br/>
 
 ## 목차
