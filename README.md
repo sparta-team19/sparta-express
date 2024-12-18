@@ -1,7 +1,8 @@
 ![image](https://github.com/user-attachments/assets/f3f0a52a-dc7f-4445-a43e-53b9b6fd4a6e)
 # sparta-express
 MSA 기반 물류 관리 및 배송 시스템
-프로젝트 설명 및 소개 노션: https://www.notion.so/teamsparta/af5801b621b54825af41778ea0373067
+프로젝트 설명 및 소개 노션
+: https://www.notion.so/teamsparta/af5801b621b54825af41778ea0373067
 <br/>
 
 ## 목차
