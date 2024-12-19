@@ -15,6 +15,7 @@ public class HubService {
 
     private final HubRepositoryInfra hubRepo;
 
+
     @Cacheable(cacheNames = "hub", key = "#hubId.toString()")
     public Hub readHub(UUID hubId) {
 

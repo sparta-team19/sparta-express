@@ -32,7 +32,7 @@ public class InterhubRoutesController {
             ) {
 
         LastHubToDestination lastHubToDestination
-                = shipmentRouteService.findFinalHubToDestination(destinationAddress);
+                = shipmentRouteService.findLastHubToDestination(destinationAddress);
 
         LastHubToDestinationRes lastHubToDestinationRes
                 = LastHubToDestinationRes.from(lastHubToDestination);
