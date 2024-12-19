@@ -17,7 +17,7 @@ public class HubController {
     private final HubService hubService;
 
     @GetMapping("/{hubId}")
-    public ResponseEntity<ResponseDataDto<GetHubRes>> getInterhubRoute(@PathVariable UUID hubId) {
+    public ResponseEntity<ResponseDataDto<GetHubRes>> getHub(@PathVariable UUID hubId) {
 
         GetHubRes hubRes = GetHubRes.from(hubService.readHub(hubId));
 
@@ -31,7 +31,7 @@ public class HubController {
     }
 
     @DeleteMapping("/{hubId}")
-    public ResponseEntity<ResponseDataDto<Void>> deleteInterhubRoute(@PathVariable UUID hubId) {
+    public ResponseEntity<ResponseDataDto<Void>> deleteHub(@PathVariable UUID hubId) {
         hubService.deleteHub(hubId);
 
         return ResponseEntity.ok(

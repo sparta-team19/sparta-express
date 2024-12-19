@@ -11,9 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class CacheConfig {
 
+    @SuppressWarnings("unused")
     @Bean
     public CacheManager cacheManager() {
 
-        return new ConcurrentMapCacheManager("shipmentInterhubRoutes");
+        return new ConcurrentMapCacheManager("shipmentInterhubRoutes", "hub");
     }
 }

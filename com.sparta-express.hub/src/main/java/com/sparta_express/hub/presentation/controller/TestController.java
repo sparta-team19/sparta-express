@@ -16,13 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
+
 @RestController
 @RequestMapping("/test")
 @RequiredArgsConstructor
 public class TestController {
 
     //    private final MapApplication naverMap;
-    private final MapInfra naverMap;
+    private final MapApiInfra naverMap;
     private final HubJpaRepository hubJpaRepo;
     private final InterhubRouteJpaRepository interhubRouteJpaRepo;
 
