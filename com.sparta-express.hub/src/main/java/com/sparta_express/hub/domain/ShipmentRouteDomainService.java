@@ -1,6 +1,6 @@
 package com.sparta_express.hub.domain;
 
-import com.sparta_express.hub.Hub;
+import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.LastHubToDestination;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
@@ -23,7 +23,7 @@ import static java.util.Comparator.comparingInt;
 public class ShipmentRouteDomainService {
 
     private final HubRepository hubRepo;
-    private final MapApplication mapApplication;
+    private final MapApi mapApi;
 
 
     public final ShipmentRoute findShipmentRoutes(UUID originHubId,
@@ -57,7 +57,7 @@ public class ShipmentRouteDomainService {
 
         Hub lastHub = findNearestHub(destination, hubList);
 
-        HubToDestinationDTO route = mapApplication.searchRoute(lastHub.geometryPosition(), destination);
+        HubToDestinationDTO route = mapApi.searchRoute(lastHub.geometryPosition(), destination);
 
         return LastHubToDestination.builder()
                 .distanceKm(route.getDistanceKm())

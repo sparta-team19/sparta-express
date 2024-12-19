@@ -1,7 +1,6 @@
 package com.sparta_express.hub.domain.model;
 
 
-import com.sparta_express.hub.Hub;
 import com.sparta_express.hub.domain.model.enumumerate.InterhubRouteStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
