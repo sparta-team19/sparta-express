@@ -1,6 +1,6 @@
 package com.sparta_express.hub.domain;
 
-import com.sparta_express.hub.Hub;
+import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.ShipmentInterhubRoutesTestCase;
 import com.sparta_express.hub.domain.model.LastHubToDestination;
 import com.sparta_express.hub.domain.model.InterhubRoute;

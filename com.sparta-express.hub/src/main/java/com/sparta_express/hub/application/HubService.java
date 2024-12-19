@@ -1,7 +1,7 @@
 package com.sparta_express.hub.application;
 
 
-import com.sparta_express.hub.Hub;
+import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.infrastructure.repository.HubRepositoryInfra;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

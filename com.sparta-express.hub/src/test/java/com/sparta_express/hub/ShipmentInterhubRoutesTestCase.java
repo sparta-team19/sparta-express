@@ -1,5 +1,6 @@
 package com.sparta_express.hub;
 
+import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import com.sparta_express.hub.domain.model.enumumerate.InterhubRouteStatus;
