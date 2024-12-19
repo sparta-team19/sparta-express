@@ -1,10 +1,9 @@
 package com.sparta_express.hub.domain;
 
 import com.sparta_express.hub.domain.model.Hub;
-import com.sparta_express.hub.domain.model.LastHubToDestination;
 import com.sparta_express.hub.domain.model.InterhubRoute;
+import com.sparta_express.hub.domain.model.LastHubToDestination;
 import com.sparta_express.hub.domain.model.ShipmentRoute;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.stereotype.Component;
@@ -15,8 +14,6 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparingDouble;
 import static java.util.Comparator.comparingInt;
 
-@SuppressWarnings("UnnecessaryLocalVariable")
-@Getter
 
 @Component
 @RequiredArgsConstructor
@@ -26,8 +23,8 @@ public class ShipmentRouteDomainService {
     private final MapApi mapApi;
 
 
-    public final ShipmentRoute findShipmentRoutes(UUID originHubId,
-                                                  Position destination) {
+    public ShipmentRoute findShipmentRoutes(UUID originHubId,
+                                            Position destination) {
 
         List<Hub> hubList = hubRepo.readAllHubs();
 
@@ -46,12 +43,12 @@ public class ShipmentRouteDomainService {
     }
 
 
-    public final LastHubToDestination findFinalHubToDestination(Position destinationPoint) {
+    public LastHubToDestination findFinalHubToDestination(Position destinationPoint) {
         return findFinalHubToDestination(hubRepo.readAllHubs(), destinationPoint);
     }
 
-    protected final LastHubToDestination findFinalHubToDestination(List<Hub> hubList,
-                                                                   Position destination) {
+    protected LastHubToDestination findFinalHubToDestination(List<Hub> hubList,
+                                                             Position destination) {
 
         assert (!hubList.isEmpty());
 
@@ -67,11 +64,11 @@ public class ShipmentRouteDomainService {
     }
 
 
-    public final Hub findNearestHub(Position target) {
+    public Hub findNearestHub(Position target) {
         return findNearestHub(target, hubRepo.readAllHubs());
     }
 
-    protected final Hub findNearestHub(Position target, List<Hub> hubList) {
+    protected Hub findNearestHub(Position target, List<Hub> hubList) {
 
         assert (!hubList.isEmpty());
 
@@ -83,15 +80,15 @@ public class ShipmentRouteDomainService {
     }
 
 
-    public final List<InterhubRoute> findShipmentInterhubRoutes(UUID originHubId,
-                                                                UUID destinationHubId) {
+    public List<InterhubRoute> findShipmentInterhubRoutes(UUID originHubId,
+                                                          UUID destinationHubId) {
 
         return findShipmentInterhubRoutes(originHubId, destinationHubId, hubRepo.readAllHubs());
     }
 
-    protected final List<InterhubRoute> findShipmentInterhubRoutes(UUID originHubId,
-                                                                   UUID destinationHubId,
-                                                                   List<Hub> hubList) {
+    protected List<InterhubRoute> findShipmentInterhubRoutes(UUID originHubId,
+                                                             UUID destinationHubId,
+                                                             List<Hub> hubList) {
 
         assert (originHubId != destinationHubId);
         assert (hubList.stream().anyMatch(hub -> hub.getId().equals(originHubId)));
