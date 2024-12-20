@@ -1,12 +1,12 @@
 package com.sparta_express.hub.presentation.controller;
 
-import com.sparta_express.hub.Hub;
+import com.sparta_express.hub.domain.model.Hub;
 import com.sparta_express.hub.domain.HubToDestinationDTO;
 import com.sparta_express.hub.domain.Position;
 import com.sparta_express.hub.domain.model.InterhubRoute;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import com.sparta_express.hub.domain.model.enumumerate.InterhubRouteStatus;
-import com.sparta_express.hub.infrastructure.map.MapInfra;
+import com.sparta_express.hub.infrastructure.map.MapApiInfra;
 import com.sparta_express.hub.infrastructure.repository.HubJpaRepository;
 import com.sparta_express.hub.infrastructure.repository.InterhubRouteJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
+
 @RestController
 @RequestMapping("/test")
 @RequiredArgsConstructor
 public class TestController {
 
     //    private final MapApplication naverMap;
-    private final MapInfra naverMap;
+    private final MapApiInfra naverMap;
     private final HubJpaRepository hubJpaRepo;
     private final InterhubRouteJpaRepository interhubRouteJpaRepo;
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class NaverMap implements MapInfra {
+public class NaverMap implements MapApiInfra {
 
     private static final String ACCEPT_HEADER = "application/json";
     private final String clientId;

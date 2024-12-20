@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
+
 @RestController
 @RequestMapping("/api/interhub-routes")
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class InterhubRoutesController {
             ) {
 
         LastHubToDestination lastHubToDestination
-                = shipmentRouteService.findFinalHubToDestination(destinationAddress);
+                = shipmentRouteService.findLastHubToDestination(destinationAddress);
 
         LastHubToDestinationRes lastHubToDestinationRes
                 = LastHubToDestinationRes.from(lastHubToDestination);

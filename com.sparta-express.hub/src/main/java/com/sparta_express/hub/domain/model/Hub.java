@@ -1,8 +1,7 @@
-package com.sparta_express.hub;
+package com.sparta_express.hub.domain.model;
 
 
 import com.sparta_express.hub.domain.Position;
-import com.sparta_express.hub.domain.model.BaseEntity;
 import com.sparta_express.hub.domain.model.enumumerate.HubStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,8 +9,8 @@ import lombok.*;
 import java.util.UUID;
 
 
-//root aggregate
-@Entity
+
+@Entity // root aggregate
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @AllArgsConstructor
 @Builder(toBuilder = true)
