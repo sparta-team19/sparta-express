@@ -29,3 +29,8 @@
   - Slack API 활용하여 최종 발생 시한 메시지 알림
  
 
+## ERD
+![Image](https://github.com/user-attachments/assets/8bbc3a59-55d2-4604-bf54-02cc6539eb5c)
+
+## 아키텍처
+![Image](https://github.com/user-attachments/assets/76313107-32f0-46a3-b38e-01238edbbd8e)
